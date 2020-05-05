@@ -1,0 +1,77 @@
+#.gitattributes
+
+ 
+
+#Images
+
+*.jpgfilter=lfs diff=lfs merge=lfs -text
+
+*.jpegfilter=lfs diff=lfs merge=lfs -text
+
+*.pngfilter=lfs diff=lfs merge=lfs -text
+
+*.giffilter=lfs diff=lfs merge=lfs -text
+
+*.psdfilter=lfs diff=lfs merge=lfs -text
+
+*.aifilter=lfs diff=lfs merge=lfs -text
+
+*.tiffilter=lfs diff=lfs merge=lfs -text
+
+*.cubemapfilter=lfs diff=lfs merge=lfs -text
+
+ 
+
+#Audio
+
+*.mp3filter=lfs diff=lfs merge=lfs -text
+
+*.wavfilter=lfs diff=lfs merge=lfs -text
+
+*.oggfilter=lfs diff=lfs merge=lfs -text
+
+ 
+
+#Video
+
+*.mp4filter=lfs diff=lfs merge=lfs -text
+
+*.movfilter=lfs diff=lfs merge=lfs -text
+
+ 
+
+#3D Objects
+
+*.FBXfilter=lfs diff=lfs merge=lfs -text
+
+*.fbxfilter=lfs diff=lfs merge=lfs -text
+
+*.blendfilter=lfs diff=lfs merge=lfs -text
+
+*.objfilter=lfs diff=lfs merge=lfs -text
+
+ 
+
+#Other
+
+*.afilter=lfs diff=lfs merge=lfs -text
+
+*.exrfilter=lfs diff=lfs merge=lfs -text
+
+*.tgafilter=lfs diff=lfs merge=lfs -text
+
+*.pdffilter=lfs diff=lfs merge=lfs -text
+
+*.zipfilter=lfs diff=lfs merge=lfs -text
+
+*.dllfilter=lfs diff=lfs merge=lfs -text
+
+*.aiffilter=lfs diff=lfs merge=lfs -text
+
+*.ttffilter=lfs diff=lfs merge=lfs -text
+
+*.rnsfilter=lfs diff=lfs merge=lfs -text
+
+*.reasonfilter=lfs diff=lfs merge=lfs -text
+
+*.lxofilter=lfs diff=lfs merge=lfs -text
