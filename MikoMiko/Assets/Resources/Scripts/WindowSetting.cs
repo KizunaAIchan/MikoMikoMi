@@ -73,6 +73,9 @@ public class WindowSetting : MonoBehaviour
     private const int ULW_EX_NORESIZE = 0x00000008;
     #endregion
 
+
+    public static WindowSetting instance = null;
+
     public int winWidth;
     public int winHeight;
 
@@ -86,6 +89,8 @@ public class WindowSetting : MonoBehaviour
 
     void Awake()
     {
+        instance = this;
+
         _hwnd = GetActiveWindow();
 
         if (isDebug)
