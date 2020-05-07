@@ -60,8 +60,8 @@ public class HttpRequest : MonoBehaviour
     //backup
 
 
-    // Save curLiveStream Title  key video id   value  title
-    private Dictionary<string, string> _curLiveStream = new Dictionary<string, string>();
+    // Save curLiveStream Title key channelid key video id   value  title
+    private Dictionary<string, Dictionary<string,string>> _curLiveStream = new Dictionary<string, Dictionary<string, string>>();
     private StringBuilder _strBuilder = new StringBuilder(256);
     private void Awake()
     {
@@ -72,7 +72,7 @@ public class HttpRequest : MonoBehaviour
     {
         for (int i=0; i<channelIds.Length; ++i)
         {
-            StartCoroutine(CheckLiveState(ContactGetUrl(channelIds[i], _youtubeApiKey)));
+            StartCoroutine(CheckLiveState(ContactGetUrl(channelIds[i], _youtubeApiKey), channelIds[i]));
         }
     }
 
@@ -89,6 +89,7 @@ public class HttpRequest : MonoBehaviour
 
     public IEnumerator CheckLiveState(string _url, string _waifu = "")
     {
+        
         while (true)
         {
             WWW res = new WWW(youtubeUrl);
@@ -100,7 +101,7 @@ public class HttpRequest : MonoBehaviour
             else
             {
                 EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, res.error);
-                GetLiveStateFromJson(res.text);
+                GetLiveStateFromJson(res.text, _waifu);
             }
 
             yield return new WaitForSecondsRealtime(updateInterval);
@@ -109,13 +110,20 @@ public class HttpRequest : MonoBehaviour
 
 
 
-    public bool GetLiveStateFromJson(string _url)
+    public bool GetLiveStateFromJson(string _url, string _waifu)
     {
         bool isNew = false;
         var youtube = JsonUtility.FromJson<YoutubeJson>(_url);
+        Dictionary<string, string> dic = null;
+        if (!_curLiveStream.TryGetValue(_waifu, out dic))
+        {
+            dic = new Dictionary<string, string>();
+            _curLiveStream[_waifu] = dic;
+        }
+
         if (youtube.pageInfo.totalResults < 1 || youtube.items == null)
         {
-            _curLiveStream.Clear();
+            dic.Clear();
             return false;
         }
 
@@ -123,8 +131,8 @@ public class HttpRequest : MonoBehaviour
         {
             var item = youtube.items[i];
             if (item.id == null || item.snippet == null) continue;
-            if (_curLiveStream.ContainsKey(item.id.videoId)) continue;
-            _curLiveStream[item.id.videoId] = item.snippet.title;
+            if (dic.ContainsKey(item.id.videoId)) continue;
+            dic[item.id.videoId] = item.snippet.title;
             isNew = true;
         }
 
