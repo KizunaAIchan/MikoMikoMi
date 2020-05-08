@@ -45,23 +45,27 @@ public class HttpRequest : MonoBehaviour
     public static HttpRequest instance = null;
     public float updateInterval = 10f;
 
-
+    #region 
+    //---------------------------------------------------
     //only for mikochi now
-    public static string youtubeUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC-hM6YJuNYVAmUWxeIr9FeA&eventType=live&type=video&key=AIzaSyBqEEHXfDAZ-4v8PEClTy0H6xWUE7SIxo4";
+    //  public static string youtubeUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC-//hM6YJuNYVAmUWxeIr9FeA&eventType=live&type=video&key=AIzaSyBqEEHXfDAZ-4v8PEClTy0H6xWUE7SIxo4";
 
 
-    private const string _contactString1 = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=";
-    private const string _contactString2 = "&eventType=live&type=video&key=";
-    private const string _youtubeApiKey = "AIzaSyBqEEHXfDAZ-4v8PEClTy0H6xWUE7SIxo4";
+    //private const string _contactString1 = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=";
+    //private const string _contactString2 = "&eventType=live&type=video&key=";
+    //private const string _youtubeApiKey = "AIzaSyBqEEHXfDAZ-4v8PEClTy0H6xWUE7SIxo4";
+    //---------------------------------------------------
+    #endregion
 
 
+    // this url leads to the latest live streaming
+    private const string youtubeUrl = "https://www.youtube.com/embed/live_stream?channel=";
     //to do
     public string[] channelIds = new string[] { "UC-hM6YJuNYVAmUWxeIr9FeA" };
-    //backup
 
 
-    // Save curLiveStream Title key channelid key video id   value  title
-    private Dictionary<string, Dictionary<string,string>> _curLiveStream = new Dictionary<string, Dictionary<string, string>>();
+    // Save curLiveStream State key channelid   value  State
+    private Dictionary<string,bool> _curLiveStreamState = new Dictionary<string, bool>();
     private StringBuilder _strBuilder = new StringBuilder(256);
     private void Awake()
     {
@@ -70,15 +74,17 @@ public class HttpRequest : MonoBehaviour
 
     void Start()
     {
+
         for (int i=0; i<channelIds.Length; ++i)
         {
-            StartCoroutine(CheckLiveState(ContactGetUrl(channelIds[i], _youtubeApiKey), channelIds[i]));
+            _curLiveStreamState[channelIds[i]] = false;
+            StartCoroutine(CheckLiveState(ContactGetUrl(youtubeUrl, channelIds[i]), channelIds[i]));
         }
     }
 
     void OnDestory()
     {
-        _curLiveStream.Clear();
+        _curLiveStreamState.Clear();
     }
 
 
@@ -92,7 +98,7 @@ public class HttpRequest : MonoBehaviour
         
         while (true)
         {
-            WWW res = new WWW(youtubeUrl);
+            WWW res = new WWW(_url);
             yield return res;
             if (res.error != null)
             {
@@ -100,8 +106,7 @@ public class HttpRequest : MonoBehaviour
             }
             else
             {
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, res.error);
-                GetLiveStateFromJson(res.text, _waifu);
+                GetLiveStateFromViewCount(res.text, _waifu);
             }
 
             yield return new WaitForSecondsRealtime(updateInterval);
@@ -110,44 +115,39 @@ public class HttpRequest : MonoBehaviour
 
 
 
-    public bool GetLiveStateFromJson(string _url, string _waifu)
+    public bool GetLiveStateFromViewCount(string _body, string _waifu)
     {
         bool isNew = false;
-        var youtube = JsonUtility.FromJson<YoutubeJson>(_url);
-        Dictionary<string, string> dic = null;
-        if (!_curLiveStream.TryGetValue(_waifu, out dic))
-        {
-            dic = new Dictionary<string, string>();
-            _curLiveStream[_waifu] = dic;
-        }
+        int idx = _body.LastIndexOf("\"view_count\":");
+        if (idx + 13 >= _body.Length)
+            return false;
+        char count = _body[idx + 13];
+        EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, null);
 
-        if (youtube.pageInfo.totalResults < 1 || youtube.items == null)
+        if (count == '0')
         {
-            dic.Clear();
+            if (_curLiveStreamState[_waifu])
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, null);
+            _curLiveStreamState[_waifu] = false;
             return false;
         }
-
-        for (int i=0; i< youtube.pageInfo.totalResults; ++i)
+        else
         {
-            var item = youtube.items[i];
-            if (item.id == null || item.snippet == null) continue;
-            if (dic.ContainsKey(item.id.videoId)) continue;
-            dic[item.id.videoId] = item.snippet.title;
-            isNew = true;
+            if (_curLiveStreamState[_waifu])
+                return true;
+            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, null);
+            _curLiveStreamState[_waifu] = true;
         }
 
         return false;
     }
 
 
-    public string ContactGetUrl(string _channelId, string _apiKey)
+    public string ContactGetUrl(string url, string _channelId)
     {
         _strBuilder.Length = 0;
-        _strBuilder.Append(_contactString1);
-        _strBuilder.Append(channelIds);
-        _strBuilder.Append(_contactString2);
-        _strBuilder.Append(_apiKey);
-
+        _strBuilder.Append(url);
+        _strBuilder.Append(_channelId);
         return _strBuilder.ToString();
    
     }

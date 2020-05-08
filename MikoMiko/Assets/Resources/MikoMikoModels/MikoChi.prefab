@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 7794953227612006478}
   - component: {fileID: 2002681948767797032}
   - component: {fileID: 6145712097950179501}
+  - component: {fileID: 838455869811026717}
   m_Layer: 8
   m_Name: MikoChi
   m_TagString: Untagged
@@ -277,7 +278,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4c01a3529b6be1548b2e340293da865b, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -376,6 +377,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 80, y: 100, z: 45}
   m_Center: {x: -5, y: 39, z: 5}
+--- !u!114 &838455869811026717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067821763460154880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281c93f67a5561947997e4ab921bc525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mikoFace: {fileID: 0}
+  mikoRenderer: {fileID: 0}
+  mikoFaceArray: []
+  currentFace: 0
+  animation: {fileID: 0}
+  animator: {fileID: 0}
+  animatorParameters: []
+  body: {fileID: 0}
+  audioToFace: 
 --- !u!1 &3033265021874853391
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,14 +745,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7633920348068796569}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.08253124, y: -0, z: -0, w: 0.9965885}
   m_LocalPosition: {x: 1.5, y: -6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6845721695256300331}
   m_Father: {fileID: 5044628070361380385}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 9.468, y: 0, z: 0}
 --- !u!1 &9071953414046435873
 GameObject:
   m_ObjectHideFlags: 0

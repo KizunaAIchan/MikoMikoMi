@@ -7,7 +7,9 @@ public class EventManager : Singleton<EventManager>
     public enum EventType
     {
         MikoChi_Hajimaruyo,
+        MikoChi_Oyasumi,
         Faq,
+        Bug,
     }
 
 
@@ -16,6 +18,7 @@ public class EventManager : Singleton<EventManager>
         MikoChi,
     }
 
+    //public enum Default
 
 
     public delegate void EventCallBack(int eventId, object args);

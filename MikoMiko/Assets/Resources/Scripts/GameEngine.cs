@@ -9,15 +9,13 @@ public class GameEngine : MonoBehaviour
     public string mikoPath = "MikoMikoModels/MikoChi";
 
     //test
-    public GameObject miko;
+    public MikoChi miko;
     private void Awake()
     {
         instance = this;
-        var mikoO = Resources.Load(mikoPath) as GameObject;
-        miko = GameObject.Instantiate(mikoO, null);
-        miko.transform.position = Vector3.zero;
-        miko.transform.rotation = Quaternion.identity;
+      
         Init();
+        CreateMikoChi();
     }
 
     public void Init()
@@ -26,9 +24,19 @@ public class GameEngine : MonoBehaviour
         EventManager.InitSingletonInstance();
 
 
-        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ForTest,1);
-        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, ForTest1, 1);
+       
+    //    EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest1, 1);
 
+    }
+
+    public void CreateMikoChi()
+    {
+        var mikoO = Resources.Load(mikoPath) as GameObject;
+        var miko = GameObject.Instantiate(mikoO, null);
+        miko.transform.position = Vector3.zero;
+        miko.transform.rotation = Quaternion.identity;
+        this.miko = miko.GetComponent<MikoChi>();
+        this.miko.InitMikoChi();
     }
 
 
@@ -41,13 +49,20 @@ public class GameEngine : MonoBehaviour
 
     public void ForTest(int id, object args)
     {
-        string a = (string)args;
-        Debug.Log(a);
+       // string a = (string)args;
+        Debug.Log("111");
     }
 
     public void ForTest1(int id, object args)
     {
-        string a = (string)args;
-        Debug.Log(a);
+       // string a = (string)args;
+        Debug.Log("222");
+    }
+
+
+
+    public void Error(string log)
+    {
+        Debug.Log(log);
     }
 }
