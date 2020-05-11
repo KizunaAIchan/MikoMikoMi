@@ -265,6 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mikoPath: MikoMikoModels/MikoChi
   miko: {fileID: 0}
+  t: {fileID: 1199302900}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,13 +351,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.8716489, y: -0.4107671, z: 0.22685176, w: 0.14155154}
+  m_LocalRotation: {x: 0.8750409, y: -0.4590678, z: 0.09720287, w: -0.11879365}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 25.667002, y: 161.95601, z: 226.32199}
+  m_LocalEulerAnglesHint: {x: -6.814, y: 163.67001, z: 236.344}
 --- !u!1 &754317088
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +443,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 59
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -467,13 +468,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 2, y: 39, z: 137}
+  m_LocalRotation: {x: -0, y: 0.99990046, z: -0, w: 0.014112716}
+  m_LocalPosition: {x: -76, y: 13, z: 137}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 178.38301, z: 0}
 --- !u!1 &1124568890
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,8 +518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f63fc3b1c6bcc41bdf3dcff11be963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winWidth: 600
-  winHeight: 400
+  winWidth: 400
+  winHeight: 200
   isDebug: 1
   t: {fileID: 1199302900}
 --- !u!1 &1199028416
@@ -564,6 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a115801589db74428f26f742a181af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configJson: Config.txt
   audioClipsPath: 
 --- !u!1 &1199302898
 GameObject:
@@ -599,7 +601,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 27.3, y: -106.586296}
+  m_AnchoredPosition: {x: 27.3, y: -63.999996}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1199302900
@@ -615,17 +617,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.8949356, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0

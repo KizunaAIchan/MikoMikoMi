@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class EventArgs
+{
+    public Dictionary<string, string> strArgs;
+}
+
 public class EventManager : Singleton<EventManager>
 {
     public enum EventType

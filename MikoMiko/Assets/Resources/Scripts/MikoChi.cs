@@ -160,12 +160,19 @@ public class MikoChi : MonoBehaviour
         switch (id)
         {
             case (int)EventManager.EventType.MikoChi_Hajimaruyo:
-                PlayAudio("nya");
-                break;
+                {
+                    ChannelConfig cf = (ChannelConfig)args;
+                    PlayAudio(cf.startNotification);
+                    break;
+                }
             case (int)EventManager.EventType.MikoChi_Oyasumi:
-                PlayAudio("FAQ");
+                {
+                    ChannelConfig cf = (ChannelConfig)args;
 
-                break;
+                    PlayAudio(cf.closureNotice);
+
+                    break;
+                }
             default:
                 break;
         }

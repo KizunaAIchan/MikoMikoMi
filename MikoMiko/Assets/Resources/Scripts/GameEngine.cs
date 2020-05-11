@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameEngine : MonoBehaviour
 {
@@ -14,18 +15,29 @@ public class GameEngine : MonoBehaviour
     {
         instance = this;
       
+        
+    }
+    public void Start()
+    {
         Init();
         CreateMikoChi();
     }
 
     public void Init()
     {
+
         TimerManager.InitSingletonInstance();
         EventManager.InitSingletonInstance();
-
-
        
-    //    EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest1, 1);
+
+
+
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, ForTest, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ForTest, 1);
+
+        HttpRequest.instance.InitListener();
+
 
     }
 
@@ -44,19 +56,30 @@ public class GameEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
+    private void LateUpdate()
+    {
+       
+    }
+
+    public Text t;
 
     public void ForTest(int id, object args)
     {
-       // string a = (string)args;
-        Debug.Log("111");
+        if ((int)EventManager.EventType.MikoChi_Hajimaruyo == id)
+        {
+
+        }
+      //  string a = (string)args;
+      ////  Debug.Log("111");
+        t.text = (int)EventManager.EventType.MikoChi_Hajimaruyo == id ? "Online" :"offline";
     }
 
     public void ForTest1(int id, object args)
     {
        // string a = (string)args;
-        Debug.Log("222");
+        //Debug.Log("222");
     }
 
 
