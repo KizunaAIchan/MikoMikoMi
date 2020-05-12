@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
+using NAudio;
+using NAudio.Wave;
 
 [Serializable]
 public class ChannelConfig
@@ -64,6 +67,9 @@ public class ResourcesManager : MonoBehaviour
             File.Create(path).Dispose();
         string json = File.ReadAllText(path,Encoding.UTF8);
 
+        //if(!json.Contains(":\\"))
+        //    json.Replace(":\", ":\\");
+
         if (json == null || json.Length == 0) json = "";
         mikoConfig = JsonUtility.FromJson<MikoWindowConfig>(json);
         if (mikoConfig == null)
@@ -77,6 +83,8 @@ public class ResourcesManager : MonoBehaviour
 
     }
 
+
+
     public void PaddingConfigDefaultChannelId()
     {
         mikoConfig.channelConfigs = new List<ChannelConfig>();
@@ -87,7 +95,9 @@ public class ResourcesManager : MonoBehaviour
         mikoConfig.channelConfigs[0].startAnima = "さくらみこ";
         mikoConfig.channelConfigs[0].endAnima = "さくらみこ";
         mikoConfig.channelConfigs[0].startNotification = "nya";
-        mikoConfig.channelConfigs[0].closureNotice = "FAQ";
+        //   mikoConfig.channelConfigs[0].closureNotice = "FAQ";
+        mikoConfig.channelConfigs[0].closureNotice = "E:\\Unity";
+       
     }
     public void PaddingConfigDefaultConfig()
     {
@@ -95,11 +105,6 @@ public class ResourcesManager : MonoBehaviour
         mikoConfig.autoStart = 1;
         mikoConfig.startAnima = "";
         mikoConfig.startVoice = "";
-
-
-
-      
-
     }
 
     public void SaveToJsonConfig()
@@ -118,7 +123,6 @@ public class ResourcesManager : MonoBehaviour
         {
             var audio = Instantiate<AudioClip>(audios[i]);
             audioCllips.Add(audios[i].name, audio);
-      //      Debug.Log(audios[i].name);
 
         }
     }
@@ -126,12 +130,34 @@ public class ResourcesManager : MonoBehaviour
     public AudioClip GetAudioClipByName(string name)
     {
         AudioClip audio = null;
-        audioCllips.TryGetValue(name, out audio);
+        if(!audioCllips.TryGetValue(name, out audio))
+        {
+            return LoadAudio(name);
+        }
         return audio;
     }
 
     public List<ChannelConfig> GetChannelConfigs()
     {
         return mikoConfig.channelConfigs;
+    }
+
+    public AudioClip LoadAudio(string path)
+    {
+        var name = Path.GetFileNameWithoutExtension(path);
+        var aud = new AudioFileReader(path);
+
+        var AudioData = new float[aud.Length];
+        aud.Read(AudioData, 0, (int)aud.Length);
+        var clip = AudioClip.Create(name, (int)aud.Length, aud.WaveFormat.Channels, aud.WaveFormat.SampleRate, false);
+        clip.SetData(AudioData, 0);
+
+        if (clip.isReadyToPlay)
+        {
+            aud.Dispose();
+            audioCllips.Add(path, clip);
+            return clip;
+        }
+        return null;
     }
 }

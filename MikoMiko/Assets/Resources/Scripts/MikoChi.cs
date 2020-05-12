@@ -178,9 +178,9 @@ public class MikoChi : MonoBehaviour
         }
     }
     
-    public void PlayAudio(string str)
+    public void PlayAudio(string str, bool force = false)
     {
-        audio.Play(str);
+        audio.Play(str, force);
     }
     
 }

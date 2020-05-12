@@ -201,5 +201,13 @@ public class WindowSetting : MonoBehaviour
         SendMessage(_hwnd, 0x0202, 0, 0);
     }
 
-   
+
+
+
+
+    public void OpenFile()
+    {
+        Debug.Log(OpenFileDialog.OpenFile("mp3|wav"));
+    }
+
 }
