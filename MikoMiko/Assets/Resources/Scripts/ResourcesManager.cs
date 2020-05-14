@@ -36,13 +36,16 @@ public class ResourcesManager : MonoBehaviour
 
     public string configJson = "Config.txt";
     public string audioClipsPath = "Audios/";
-
+    public string uiPath = "UI/Prefabs/";
+    
     public Dictionary<string, AudioClip> audioCllips = new Dictionary<string, AudioClip>();
+    public Dictionary<string, UIBase> uiPrefabs = new Dictionary<string, UIBase>();
     private MikoWindowConfig mikoConfig;
     private void Awake()
     {
         instance = this;
         InitAudioClips();
+        InitUIPrefabs();
         InitChannelConfigs();
     }
     // Start is called before the first frame update
@@ -81,6 +84,16 @@ public class ResourcesManager : MonoBehaviour
             PaddingConfigDefaultChannelId();
         SaveToJsonConfig();
 
+    }
+
+    public void InitUIPrefabs()
+    {
+        var uis = Resources.LoadAll<UIBase>(uiPath);
+        Debug.Log(uis.Length);
+        for (int i = 0; i < uis.Length; ++i)
+        {
+            uiPrefabs[uis[i].name] = uis[i];
+        }
     }
 
 
@@ -159,5 +172,16 @@ public class ResourcesManager : MonoBehaviour
             return clip;
         }
         return null;
+    }
+
+
+
+    public UIBase CreateUIPrefab(string name)
+    {
+        UIBase ui = null;
+
+        uiPrefabs.TryGetValue(name, out ui);
+        var t = Instantiate<UIBase>(ui);
+        return t;
     }
 }

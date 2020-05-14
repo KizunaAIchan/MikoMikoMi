@@ -122,12 +122,32 @@ public class WindowSetting : MonoBehaviour
     }
     public void LateUpdate()
     {
+        if (Input.GetMouseButtonUp(1))
+        {
+            var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
+           
+            menu.transform.position = Input.mousePosition;
+            Debug.Log(menu.transform.position);
+            var pos = menu.transform.position;
+            pos.x += menu.width / 2;
+            pos.y -= menu.height;
+            menu.transform.position = pos;
+
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            UIManager.instance.CloseUIByName(UINames.rightClickMenu);
+        }
+
         if (isDebug)
             return;
         CheckPosition();
 
         if (_canDrag)
         {
+            
+
             if (Input.GetMouseButtonDown(0))
             {
                 DragWindow();
