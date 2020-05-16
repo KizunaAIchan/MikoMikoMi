@@ -39,7 +39,9 @@ public class ResourcesManager : MonoBehaviour
     public string uiPath = "UI/Prefabs/";
     
     public Dictionary<string, AudioClip> audioCllips = new Dictionary<string, AudioClip>();
+    public Dictionary<string, AudioClip> audioCllipsByPath = new Dictionary<string, AudioClip>();
     public Dictionary<string, UIBase> uiPrefabs = new Dictionary<string, UIBase>();
+    public Dictionary<string, UIComponentBase> uiComponentPrefabs = new Dictionary<string, UIComponentBase>();
     private MikoWindowConfig mikoConfig;
     private void Awake()
     {
@@ -89,10 +91,15 @@ public class ResourcesManager : MonoBehaviour
     public void InitUIPrefabs()
     {
         var uis = Resources.LoadAll<UIBase>(uiPath);
-        Debug.Log(uis.Length);
         for (int i = 0; i < uis.Length; ++i)
         {
             uiPrefabs[uis[i].name] = uis[i];
+        }
+
+        var components = Resources.LoadAll<UIComponentBase>(uiPath);
+        for (int i = 0; i < components.Length; ++i)
+        {
+            uiComponentPrefabs[components[i].name] = components[i];
         }
     }
 
@@ -112,6 +119,36 @@ public class ResourcesManager : MonoBehaviour
         mikoConfig.channelConfigs[0].closureNotice = "E:\\Unity";
        
     }
+
+    public void DeleteChannelConfig(ChannelConfig config)
+    {
+        for (int i = 0; i < mikoConfig.channelConfigs.Count; ++i)
+        {
+            if (config.channelId == mikoConfig.channelConfigs[i].channelId)
+            {
+                mikoConfig.channelConfigs.RemoveAt(i);
+                break;
+            }
+        }
+
+        SaveToJsonConfig();
+    }
+
+    public void SaveChannelConfig(ChannelConfig config)
+    {
+        for (int i = 0; i< mikoConfig.channelConfigs.Count; ++i){
+            if (config.channelId == mikoConfig.channelConfigs[i].channelId)
+            {
+                mikoConfig.channelConfigs[i] = config;
+                SaveToJsonConfig();
+                return;
+            }
+        }
+
+        mikoConfig.channelConfigs.Add(config);
+        SaveToJsonConfig();
+    }
+
     public void PaddingConfigDefaultConfig()
     {
         mikoConfig = new MikoWindowConfig();
@@ -157,9 +194,10 @@ public class ResourcesManager : MonoBehaviour
 
     public AudioClip LoadAudio(string path)
     {
+        Debug.Log(path);
+        Debug.Log(Application.dataPath);
         var name = Path.GetFileNameWithoutExtension(path);
         var aud = new AudioFileReader(path);
-
         var AudioData = new float[aud.Length];
         aud.Read(AudioData, 0, (int)aud.Length);
         var clip = AudioClip.Create(name, (int)aud.Length, aud.WaveFormat.Channels, aud.WaveFormat.SampleRate, false);
@@ -168,7 +206,8 @@ public class ResourcesManager : MonoBehaviour
         if (clip.isReadyToPlay)
         {
             aud.Dispose();
-            audioCllips.Add(path, clip);
+            audioCllips.Add(name, clip);
+           // audioCllips.Add(name, clip);
             return clip;
         }
         return null;
@@ -182,6 +221,15 @@ public class ResourcesManager : MonoBehaviour
 
         uiPrefabs.TryGetValue(name, out ui);
         var t = Instantiate<UIBase>(ui);
+        return t;
+    }
+
+    public UIComponentBase CreateUIComponent(string name)
+    {
+        UIComponentBase ui = null;
+
+        uiComponentPrefabs.TryGetValue(name, out ui);
+        var t = Instantiate<UIComponentBase>(ui);
         return t;
     }
 }

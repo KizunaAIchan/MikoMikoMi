@@ -18,6 +18,12 @@ public class LanguageManager : MonoBehaviour
         )
     {   {"[LID:1]", "終了"},
         {"[LID:2]", "通知設定"},
+        {"[LID:3]", "名前"},
+        {"[LID:4]", "チャンネルID"},
+        {"[LID:5]", "開始"},
+        {"[LID:6]", "音声"},
+        {"[LID:7]", "通知設定"},
+        {"[LID:8]", "通知設定"},
     };
 
     public Dictionary<string, string> lagToEn = new Dictionary<string, string>(

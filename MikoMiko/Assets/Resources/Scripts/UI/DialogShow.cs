@@ -73,7 +73,7 @@ public class OpenFileDialog
 
         if (DialogShow.GetOpenFileName(dialog))
         {
-            Debug.Log(dialog.file);
+          //  Debug.Log(dialog.file);
             return dialog.file;
         }
         return "";

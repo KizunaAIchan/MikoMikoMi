@@ -28,7 +28,7 @@ public class GameEngine : MonoBehaviour
 
         TimerManager.InitSingletonInstance();
         EventManager.InitSingletonInstance();
-       
+        WinForm.InitSingletonInstance();
 
 
 

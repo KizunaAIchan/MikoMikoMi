@@ -6,6 +6,8 @@ using UnityEngine;
 public class UINames
 {
     public static string rightClickMenu = "RightClickMenu";
+    public static string configPage = "UIConfig";
+    public static string ConfigComponet = "ConfigComponet";
 }
 
 
@@ -47,8 +49,25 @@ public class UIManager : MonoBehaviour
         }
         ui.transform.SetParent(root);
         T t = ui as T;
-
+        ui.name = name;
+        ui.uiName = name;
         allAliveUi.Add(name, t);
+        return t;
+    }
+
+    public T CreateComponent<T>(string name, Transform parent) where T : UIComponentBase
+    {
+        UIComponentBase ui = null;
+
+        ui = ResourcesManager.instance.CreateUIComponent(name);
+        if (ui == null)
+        {
+            Debug.Log("Check it !!!!");
+            return null;
+        }
+        ui.transform.SetParent(parent);
+        T t = ui as T;
+        ui.name = name;
         return t;
     }
 

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Windows.Forms;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class WindowSetting : MonoBehaviour
 {
@@ -118,21 +119,23 @@ public class WindowSetting : MonoBehaviour
     public void Update()
     {
 
-       
     }
     public void LateUpdate()
     {
+
         if (Input.GetMouseButtonUp(1))
         {
-            var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
-           
-            menu.transform.position = Input.mousePosition;
-            Debug.Log(menu.transform.position);
-            var pos = menu.transform.position;
-            pos.x += menu.width / 2;
-            pos.y -= menu.height;
-            menu.transform.position = pos;
+            var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
+            menu.transform.localPosition = Vector3.zero;
+            menu.InitComponent();
+            //var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
 
+            //menu.transform.position = Input.mousePosition;
+            //Debug.Log(menu.transform.position);
+            //var pos = menu.transform.position;
+            //pos.x += menu.width / 2;
+            //pos.y -= menu.height;
+            //menu.transform.position = pos;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -148,7 +151,7 @@ public class WindowSetting : MonoBehaviour
         {
             
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !IsPointOnUI(Input.mousePosition))
             {
                 DragWindow();
             }
@@ -162,9 +165,11 @@ public class WindowSetting : MonoBehaviour
         var pos = GetMousePos();
         var screenPos = new Vector3(pos.x, pos.y, 0);
         if (Vector3.Distance(screenPos, _lastMousePositon) < 1) return;
-        RaycastHit hitInfo;
 
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hitInfo, 10000f, LayerMask.GetMask("WindowRect")))
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hitInfo, 10000f, LayerMask.GetMask("WindowRect"))
+            || IsPointOnUI(screenPos))
         {
             if (!_canDrag)
             {
@@ -223,11 +228,15 @@ public class WindowSetting : MonoBehaviour
 
 
 
-
-
-    public void OpenFile()
+    public static bool IsPointOnUI(Vector3 pos)
     {
-        Debug.Log(OpenFileDialog.OpenFile("mp3|wav"));
-    }
 
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = pos;
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+
+        return raycastResults.Count > 0;
+
+    }
 }

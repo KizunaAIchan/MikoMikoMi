@@ -1,0 +1,1 @@
+{"channelConfigs":[{"channelId":"UC-hM6YJuNYVAmUWxeIr9FeA","name":"さくらみこ","startNotification":"nya","closureNotice":"E:\\Unity","startAnima":"さくらみこ","endAnima":"さくらみこ"}],"autoStart":1,"startVoice":"","startAnima":""}
