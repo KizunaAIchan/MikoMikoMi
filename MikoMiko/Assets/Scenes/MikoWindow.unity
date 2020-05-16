@@ -566,7 +566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winWidth: 600
   winHeight: 400
-  isDebug: 0
+  isDebug: 1
   t: {fileID: 1199302900}
 --- !u!1 &1199028416
 GameObject:
