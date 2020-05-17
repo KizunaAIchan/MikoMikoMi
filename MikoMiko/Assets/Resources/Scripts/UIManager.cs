@@ -8,6 +8,7 @@ public class UINames
     public static string rightClickMenu = "RightClickMenu";
     public static string configPage = "UIConfig";
     public static string ConfigComponet = "ConfigComponet";
+    public static string Dialog = "Dialog";
 }
 
 
@@ -48,6 +49,7 @@ public class UIManager : MonoBehaviour
             return null;
         }
         ui.transform.SetParent(root);
+        ui.transform.position = Vector3.zero;
         T t = ui as T;
         ui.name = name;
         ui.uiName = name;
@@ -90,5 +92,10 @@ public class UIManager : MonoBehaviour
     public void AddCustomText(CustomText txt)
     {
         customTexts[txt.GetInstanceID()] = txt;
+    }
+
+    public bool IsAlive(string name)
+    {
+        return allAliveUi.ContainsKey(name);
     }
 }

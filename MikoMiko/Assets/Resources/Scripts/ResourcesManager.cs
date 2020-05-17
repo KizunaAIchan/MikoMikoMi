@@ -17,6 +17,8 @@ public class ChannelConfig
     public string closureNotice = "";
     public string startAnima = "";
     public string endAnima = "";
+    public int channelType = 0; // 0 youtube 1 bilibil
+    public int monitor = 0; // 0 open 1 close
 }
 
 [Serializable]
@@ -26,6 +28,7 @@ public class MikoWindowConfig
     public int autoStart = 0;// 0- open 1-close
     public string startVoice = "";
     public string startAnima = "";
+    public int language = 0;
 }
 
 
@@ -42,6 +45,9 @@ public class ResourcesManager : MonoBehaviour
     public Dictionary<string, AudioClip> audioCllipsByPath = new Dictionary<string, AudioClip>();
     public Dictionary<string, UIBase> uiPrefabs = new Dictionary<string, UIBase>();
     public Dictionary<string, UIComponentBase> uiComponentPrefabs = new Dictionary<string, UIComponentBase>();
+
+
+    private Dictionary<string, ChannelConfig> channelConfigs = new Dictionary<string, ChannelConfig>();
     private MikoWindowConfig mikoConfig;
     private void Awake()
     {
@@ -49,6 +55,8 @@ public class ResourcesManager : MonoBehaviour
         InitAudioClips();
         InitUIPrefabs();
         InitChannelConfigs();
+        InitChannelConfigDic();
+        LoadCustomAudio();
     }
     // Start is called before the first frame update
     void Start()
@@ -84,7 +92,6 @@ public class ResourcesManager : MonoBehaviour
 
         if (mikoConfig.channelConfigs == null || mikoConfig.channelConfigs.Count == 0)
             PaddingConfigDefaultChannelId();
-        SaveToJsonConfig();
 
     }
 
@@ -117,7 +124,18 @@ public class ResourcesManager : MonoBehaviour
         mikoConfig.channelConfigs[0].startNotification = "nya";
         //   mikoConfig.channelConfigs[0].closureNotice = "FAQ";
         mikoConfig.channelConfigs[0].closureNotice = "E:\\Unity";
-       
+        mikoConfig.channelConfigs[0].monitor = 0;
+        mikoConfig.channelConfigs[0].channelType = 0;
+
+    }
+
+    public void InitChannelConfigDic()
+    {
+        for (int i = 0; i < mikoConfig.channelConfigs.Count; ++i)
+        {
+            channelConfigs[mikoConfig.channelConfigs[i].channelId] = mikoConfig.channelConfigs[i];
+
+        }
     }
 
     public void DeleteChannelConfig(ChannelConfig config)
@@ -125,8 +143,11 @@ public class ResourcesManager : MonoBehaviour
         for (int i = 0; i < mikoConfig.channelConfigs.Count; ++i)
         {
             if (config.channelId == mikoConfig.channelConfigs[i].channelId)
-            {
+            {;
+                HttpRequest.instance.StopListener(mikoConfig.channelConfigs[i].channelId);
+                channelConfigs.Remove(mikoConfig.channelConfigs[i].channelId);
                 mikoConfig.channelConfigs.RemoveAt(i);
+
                 break;
             }
         }
@@ -140,12 +161,18 @@ public class ResourcesManager : MonoBehaviour
             if (config.channelId == mikoConfig.channelConfigs[i].channelId)
             {
                 mikoConfig.channelConfigs[i] = config;
+                channelConfigs[mikoConfig.channelConfigs[i].channelId] = mikoConfig.channelConfigs[i];
+
                 SaveToJsonConfig();
                 return;
             }
         }
 
         mikoConfig.channelConfigs.Add(config);
+        channelConfigs[config.channelId] = config;
+        HttpRequest.instance.AddListener(config);
+
+
         SaveToJsonConfig();
     }
 
@@ -164,6 +191,11 @@ public class ResourcesManager : MonoBehaviour
         string json = JsonUtility.ToJson(mikoConfig);
         Debug.Log(json);
         File.WriteAllText(path, json);
+    }
+
+    public void SetLanguageType(int id)
+    {
+        mikoConfig.language = id;
     }
 
     public void InitAudioClips()
@@ -192,24 +224,48 @@ public class ResourcesManager : MonoBehaviour
         return mikoConfig.channelConfigs;
     }
 
+    public void LoadCustomAudio()
+    {
+        for (int i = 0; i < mikoConfig.channelConfigs.Count; ++i)
+        {
+            if (!audioCllips.ContainsKey( mikoConfig.channelConfigs[i].startNotification))
+            {
+                LoadAudio(mikoConfig.channelConfigs[i].startNotification);
+            }
+
+            if (!audioCllips.ContainsKey(mikoConfig.channelConfigs[i].closureNotice))
+            {
+                LoadAudio(mikoConfig.channelConfigs[i].closureNotice);
+            }
+        }
+    }
+
     public AudioClip LoadAudio(string path)
     {
         Debug.Log(path);
         Debug.Log(Application.dataPath);
         var name = Path.GetFileNameWithoutExtension(path);
-        var aud = new AudioFileReader(path);
-        var AudioData = new float[aud.Length];
-        aud.Read(AudioData, 0, (int)aud.Length);
-        var clip = AudioClip.Create(name, (int)aud.Length, aud.WaveFormat.Channels, aud.WaveFormat.SampleRate, false);
-        clip.SetData(AudioData, 0);
-
-        if (clip.isReadyToPlay)
+        try
         {
-            aud.Dispose();
-            audioCllips.Add(name, clip);
-           // audioCllips.Add(name, clip);
-            return clip;
+            var aud = new AudioFileReader(path);
+            var AudioData = new float[aud.Length];
+            aud.Read(AudioData, 0, (int)aud.Length);
+            var clip = AudioClip.Create(name, (int)aud.Length, aud.WaveFormat.Channels, aud.WaveFormat.SampleRate, false);
+            clip.SetData(AudioData, 0);
+
+            if (clip.isReadyToPlay)
+            {
+                aud.Dispose();
+                audioCllips.Add(path, clip);
+                // audioCllips.Add(name, clip);
+                return clip;
+            }
         }
+        catch
+        {
+            return null;
+        }
+       
         return null;
     }
 
@@ -231,5 +287,21 @@ public class ResourcesManager : MonoBehaviour
         uiComponentPrefabs.TryGetValue(name, out ui);
         var t = Instantiate<UIComponentBase>(ui);
         return t;
+    }
+
+
+    public bool CanMonitorChannel(string id)
+    {
+        ChannelConfig config = null;
+        if (channelConfigs.TryGetValue(id, out config))
+        {
+            return config.monitor == 0;
+        }
+        return false;
+    }
+
+    public int GetLanguageType()
+    {
+        return mikoConfig.language;
     }
 }

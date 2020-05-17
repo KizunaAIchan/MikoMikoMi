@@ -20,6 +20,8 @@ public class UI_DetailPage : UIComponentBase
 
 
     private ChannelConfig config;
+
+    public AudioSource audio;
     public void Init()
     {
         config = new ChannelConfig();
@@ -83,14 +85,16 @@ public class UI_DetailPage : UIComponentBase
         var list = drop.options;
         
         audio = list[drop.value].text;
-        GameEngine.instance.miko.PlayAudio(audio, true);
+   //     GameEngine.instance.miko.PlayAudio(audio, true);
+        PlayAudio(audio);
+
     }
 
     public void OnBtnClickOpenFile(int index)
     {
         string path = OpenFileDialog.OpenFile("mp3|wav");
         path = path.Replace(@"\", "/");
-        GameEngine.instance.miko.PlayAudio(path, true);
+        PlayAudio(path);
         RefreshNotificationDropDown();
     }
 
@@ -101,6 +105,15 @@ public class UI_DetailPage : UIComponentBase
 
     public void OnClickDel()
     {
+        audio.Stop();
+        if (config.channelId == "UC-hM6YJuNYVAmUWxeIr9FeA")
+        {
+            PlayAudio("aasdsad");
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            return;
+        }
+
         ResourcesManager.instance.DeleteChannelConfig(config);
         mainPage.DelComponent(config);
 
@@ -115,11 +128,12 @@ public class UI_DetailPage : UIComponentBase
         config.closureNotice = GetDropDownText(notificationOver);
         config.startAnima = GetDropDownText(animationStart);
         config.endAnima = GetDropDownText(animationOver);
+        config.monitor = 0;
 
-
-        mainPage.AddOrRefreshComponent(config);
         ResourcesManager.instance.SaveChannelConfig(config);
+        mainPage.AddOrRefreshComponent(config);
 
+        audio.Stop();
         mainPage.OnBtnClickBack();
     }
 
@@ -130,4 +144,22 @@ public class UI_DetailPage : UIComponentBase
         return list[drop.value].text;
     }
 
+    public void StopAudio()
+    {
+        audio.Stop();
+    }
+
+    public void PlayAudio(string str)
+    {
+        var audioclip = ResourcesManager.instance.GetAudioClipByName(str);
+        if (audioclip == null)
+        {
+            GameEngine.instance.Error("Can't find audio：" + str);
+            return;
+        }
+
+        audio.Stop();
+        audio.clip = audioclip;
+        audio.Play();
+    }
 }

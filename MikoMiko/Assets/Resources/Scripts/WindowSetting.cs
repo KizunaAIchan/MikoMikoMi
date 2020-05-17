@@ -125,9 +125,13 @@ public class WindowSetting : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))
         {
-            var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
-            menu.transform.localPosition = Vector3.zero;
-            menu.InitComponent();
+            if (!UIManager.instance.IsAlive(UINames.configPage))
+            {
+                var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
+                menu.transform.localPosition = new Vector3(0, -60f, 0);
+                menu.InitComponent();
+            }
+           
             //var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
 
             //menu.transform.position = Input.mousePosition;

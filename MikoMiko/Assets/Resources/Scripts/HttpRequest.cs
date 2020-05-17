@@ -40,6 +40,14 @@ public class YoutubeJson
     public YoutubeItemsInfo[] items;
 }
 
+public enum LiveStatus
+{
+    Error,
+    Offline,
+    Streaming,
+    Notlisten
+}
+
 public class HttpRequest : MonoBehaviour
 {
     public static HttpRequest instance = null;
@@ -65,7 +73,8 @@ public class HttpRequest : MonoBehaviour
 
 
     // Save curLiveStream State key channelid   value  State
-    private Dictionary<string,bool> _curLiveStreamState = new Dictionary<string, bool>();
+    private Dictionary<string, LiveStatus> _curLiveStreamState = new Dictionary<string, LiveStatus>();
+    private Dictionary<string, Coroutine> _curLiveCoroutine = new Dictionary<string, Coroutine>();
     private StringBuilder _strBuilder = new StringBuilder(256);
     private void Awake()
     {
@@ -84,13 +93,37 @@ public class HttpRequest : MonoBehaviour
         for (int i = 0; i < configs.Count; ++i)
         {
             var config = configs[i];
-            _curLiveStreamState[config.channelId] = false;
-            StartCoroutine(CheckLiveState(ContactGetUrl(youtubeUrl, config.channelId),config));
+            _curLiveStreamState[config.channelId] = LiveStatus.Offline;
+            var s = StartCoroutine(CheckLiveState(ContactGetUrl(youtubeUrl, config.channelId),config));
+            _curLiveCoroutine[config.channelId] = s;
             EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, "offline");
 
         }
     }
 
+    public void AddListener(ChannelConfig config)
+    {
+        if (_curLiveStreamState.ContainsKey(config.channelId))
+            return;
+        _curLiveStreamState[config.channelId] = LiveStatus.Offline;
+        var s = StartCoroutine(CheckLiveState(ContactGetUrl(youtubeUrl, config.channelId), config));
+        
+        _curLiveCoroutine[config.channelId] = s;
+    }
+
+    public void StopListener(string str)
+    {
+        Coroutine s = null;
+        if (_curLiveCoroutine.TryGetValue(str, out s))
+        {
+
+            StopCoroutine(s);
+            _curLiveCoroutine.Remove(str);
+        }
+
+        if (_curLiveStreamState.ContainsKey(str))
+            _curLiveStreamState.Remove(str);
+    }
 
     void OnDestory()
     {
@@ -108,22 +141,34 @@ public class HttpRequest : MonoBehaviour
         bool connected = false;
         while (true)
         {
-            WWW res = new WWW(_url);
-            yield return res;
-            if (res.error != null)
+            if (ResourcesManager.instance.CanMonitorChannel(_waifu.channelId))
             {
-                connected = false;
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, 1, res.error);
+                WWW res = new WWW(_url);
+                yield return res;
+                if (res.error != null)
+                {
+                    connected = false;
+                    _curLiveStreamState[_waifu.channelId] = LiveStatus.Error;
+                    EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, 1, res.error);
+                }
+                else
+                {
+                    if (!connected)
+                        EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, 1, "checking");
+                    connected = true;
+                    GetLiveStateFromViewCount(res.text, _waifu);
+                }
+
             }
             else
             {
-                if (!connected)
-                    EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, 1, "checking");
-                connected = true;
-                GetLiveStateFromViewCount(res.text, _waifu);
+                _curLiveStreamState[_waifu.channelId] = LiveStatus.Notlisten;
             }
 
             yield return new WaitForSecondsRealtime(updateInterval);
+
+
+
         }
     }
 
@@ -139,17 +184,17 @@ public class HttpRequest : MonoBehaviour
         // EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, "offline");
         if (count == '0')
         {
-            if (_curLiveStreamState[_waifu.channelId])
+            if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
                 EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, _waifu);
-            _curLiveStreamState[_waifu.channelId] = false;
+            _curLiveStreamState[_waifu.channelId] = LiveStatus.Offline;
             return false;
         }
         else
         {
-            if (_curLiveStreamState[_waifu.channelId])
+            if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
                 return true;
             EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, _waifu);
-            _curLiveStreamState[_waifu.channelId] = true;
+            _curLiveStreamState[_waifu.channelId] = LiveStatus.Streaming;
         }
 
         return false;
@@ -163,5 +208,12 @@ public class HttpRequest : MonoBehaviour
         _strBuilder.Append(_channelId);
         return _strBuilder.ToString();
    
+    }
+
+    public LiveStatus GetLiveStatus(string id)
+    {
+        if (_curLiveStreamState.ContainsKey(id))
+            return _curLiveStreamState[id];
+        return LiveStatus.Error;
     }
 }

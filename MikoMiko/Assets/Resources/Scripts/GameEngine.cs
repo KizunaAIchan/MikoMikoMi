@@ -37,6 +37,7 @@ public class GameEngine : MonoBehaviour
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ForTest, 1);
 
         HttpRequest.instance.InitListener();
+        LanguageManager.instance.InitLanguage();
 
 
     }
