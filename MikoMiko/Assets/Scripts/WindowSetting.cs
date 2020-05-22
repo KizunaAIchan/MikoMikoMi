@@ -54,6 +54,10 @@ public class WindowSetting : MonoBehaviour
     static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
     [DllImport("user32.dll")]
     public static extern bool ReleaseCapture();
+
+    [DllImport("user32.dll")]
+    public static extern int GetWindowText(IntPtr hWnd,ref char[] lpString, int nMaxCount);
+
     [DllImport("user32.dll")]
     public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
 
@@ -92,7 +96,9 @@ public class WindowSetting : MonoBehaviour
     {
         instance = this;
 
-        _hwnd = GetActiveWindow();
+        _hwnd = FindWindow(null, UnityEngine.Application.productName);
+        //var _windowHandle = FindWindow(null, UnityEngine.Application.productName);
+        //Debug.Log(_hwnd.ToString() + "    " + _windowHandle.ToString() + "    " + UnityEngine.Application.productName);
 
         if (isDebug)
             return;
@@ -120,9 +126,10 @@ public class WindowSetting : MonoBehaviour
     {
 
     }
+
     public void LateUpdate()
     {
-
+  
         if (Input.GetMouseButtonUp(1))
         {
             if (!UIManager.instance.IsAlive(UINames.configPage))
