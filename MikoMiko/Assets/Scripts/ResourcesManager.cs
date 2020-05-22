@@ -48,7 +48,13 @@ public class ResourcesManager : MonoBehaviour
 
 
     private Dictionary<string, ChannelConfig> channelConfigs = new Dictionary<string, ChannelConfig>();
+
+
+    public Dictionary<int, DialogueInfo> dialogueInfos = new Dictionary<int, DialogueInfo>();
+    public Dictionary<int, OptionInfo> optionInfos = new Dictionary<int, OptionInfo>();
+
     private MikoWindowConfig mikoConfig;
+    private DialogueInfo nullInfo = new DialogueInfo();
     private void Awake()
     {
         instance = this;
@@ -303,5 +309,14 @@ public class ResourcesManager : MonoBehaviour
     public int GetLanguageType()
     {
         return mikoConfig.language;
+    }
+
+    public DialogueInfo GetDialogueInfoById(int id)
+    {
+        DialogueInfo info = null;
+        if (!dialogueInfos.TryGetValue(id, out info)) info = nullInfo;
+
+        return info;
+
     }
 }
