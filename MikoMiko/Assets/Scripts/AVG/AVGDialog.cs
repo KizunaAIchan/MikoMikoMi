@@ -81,6 +81,7 @@ public class AVGDialog : MonoBehaviour
     {
         var info = optionsInfo[index];
         ResetContent(info.DialogueId);
+        StartFadeIn();
     }
 
     public void ResetContent(int dialogId)
