@@ -3,24 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OptionInfo
-{
-    public int Id;
-    //selected -->Dialogue
-    public string content;
-    public int DialogueId;
-}
-
-public class DialogueInfo
-{
-    public int Id;
-    public string content;
-
-    //選択肢 Options for this dialogue
-    public List<OptionInfo> optionsInfo;
-    public string voice;
-    public string animation;
-}
 
 public class AVGDialog : MonoBehaviour
 {
@@ -42,7 +24,7 @@ public class AVGDialog : MonoBehaviour
     {
         mask.SetActive(true);
         content.text = info.content;
-        optionsInfo = info.optionsInfo;
+       // optionsInfo = info.optionsInfo;
         textFadeIn.callback = ShowTextImmediately;
     }
 
@@ -70,7 +52,7 @@ public class AVGDialog : MonoBehaviour
 
     public void ResetContent(int dialogId)
     {
-        var info = ResourcesManager.instance.GetDialogueInfoById(dialogId);
+        var info = AVGDataManager.instance.GetDialogueInfoById(dialogId);
 
         ShowDialog(info);
         SetOptions();
