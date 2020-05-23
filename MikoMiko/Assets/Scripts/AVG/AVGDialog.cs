@@ -10,37 +10,70 @@ public class AVGDialog : MonoBehaviour
     public struct OptionButton
     {
         public Text text;
+        public Image image;
         public GameObject gameObject;
     }
 
 
-    private List<OptionInfo> optionsInfo;
+    private List<OptionInfo> optionsInfo = new List<OptionInfo>();
     public OptionButton[] optionBtns;
     public TextFadeIn textFadeIn;
     public Text content;
     public GameObject mask;
+    public GameObject opNode;
+
+    private DialogueInfo config;
 
     public void ShowDialog(DialogueInfo info)
     {
         mask.SetActive(true);
+        opNode.SetActive(false);
+
         content.text = info.content;
-       // optionsInfo = info.optionsInfo;
+        textFadeIn.SetText(info.content);
+        optionsInfo.Clear();
+        for (int i =0; i<info.optionIds.Count; ++i)
+        {
+            optionsInfo.Add(AVGDataManager.instance.GetOptionById(info.optionIds[i]));
+        }
+   //     optionsInfo = info.optionsInfo;
         textFadeIn.callback = ShowTextImmediately;
+
+        GameEngine.instance.miko.PlayAudio(info.voice,true);
     }
 
-    public void SetOptions()
+    public void StartFadeIn()
     {
-        for (int i=0, jCount = optionsInfo.Count; i< optionBtns.Length; ++i)
+        textFadeIn.ShowText();
+    }
+
+    public void SetOptions(int noOption)
+    {
+        opNode.SetActive(noOption == 0 ? false : true);
+        if (noOption == 1)
         {
-            var btn = optionBtns[i];
-            if (i >= jCount)
+            for (int i = 0, jCount = optionsInfo.Count; i < optionBtns.Length; ++i)
             {
-                btn.gameObject.SetActive(false);
-                continue;
+                var btn = optionBtns[i];
+                if (i >= jCount)
+                {
+                    btn.gameObject.SetActive(false);
+                    continue;
+                }
+
+                Color c = btn.image.color;
+                c.a = 0.5f;
+                btn.image.color = c;
+
+                Color cc = btn.text.color;
+                cc.a = 0.5f;
+                btn.text.color = cc;
+    
+                btn.gameObject.SetActive(true);
+                btn.text.text = optionsInfo[i].content;
             }
-            btn.gameObject.SetActive(true);
-            btn.text.text = optionsInfo[i].content;
         }
+       
     }
 
 
@@ -53,15 +86,17 @@ public class AVGDialog : MonoBehaviour
     public void ResetContent(int dialogId)
     {
         var info = AVGDataManager.instance.GetDialogueInfoById(dialogId);
-
+        config = info;
         ShowDialog(info);
-        SetOptions();
+       // SetOptions(info.type);
     }
 
     public void ShowTextImmediately()
     {
-        mask.SetActive(false);
         textFadeIn.Stop();
+
+        mask.SetActive(false);
+        SetOptions(config.type);
     }
 
 

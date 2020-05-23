@@ -8,7 +8,10 @@ public class UINames
     public static string rightClickMenu = "RightClickMenu";
     public static string configPage = "UIConfig";
     public static string ConfigComponet = "ConfigComponet";
+    public static string AVGDataComponet = "AVGDataComponent";
     public static string Dialog = "Dialog";
+    public static string AvgEditor = "AVGEditor";
+    
 }
 
 

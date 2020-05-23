@@ -134,13 +134,16 @@ public class WindowSetting : MonoBehaviour
         {
             if (!UIManager.instance.IsAlive(UINames.configPage))
             {
-                var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
-                menu.transform.localPosition = new Vector3(0, -60f, 0);
-                menu.InitComponent();
+             //   var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
+                //var menu = UIManager.instance.ShowUI<AVGEditor>(UINames.AvgEditor);
+                //menu.transform.localPosition = Vector3.zero;
+            //    menu.transform.localPosition = new Vector3(0, -60f, 0);
+              //  menu.Init();
             }
            
-            //var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
-
+            var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
+            menu.Init();
+             menu.transform.localPosition = Vector3.zero;
             //menu.transform.position = Input.mousePosition;
             //Debug.Log(menu.transform.position);
             //var pos = menu.transform.position;
@@ -149,10 +152,10 @@ public class WindowSetting : MonoBehaviour
             //menu.transform.position = pos;
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            UIManager.instance.CloseUIByName(UINames.rightClickMenu);
-        }
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    UIManager.instance.CloseUIByName(UINames.rightClickMenu);
+        //}
 
         if (isDebug)
             return;

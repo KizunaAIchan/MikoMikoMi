@@ -32,6 +32,7 @@ public class UI_DetailPage : UIComponentBase
 
     public override void Init(object args)
     {
+        config = new ChannelConfig();
         config = (ChannelConfig)args;
 
         name.text = config.name;

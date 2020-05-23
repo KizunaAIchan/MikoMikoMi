@@ -10,7 +10,7 @@ public class UIBase : MonoBehaviour
 
     public int width = 0;
     public int height = 0;
-    protected virtual void Init()
+    public  virtual void Init()
     {
 
     }
