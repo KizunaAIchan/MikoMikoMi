@@ -989,6 +989,7 @@ GameObject:
   - component: {fileID: 8011547885584276078}
   - component: {fileID: 2273303863679589400}
   - component: {fileID: -5659400527103921722}
+  - component: {fileID: 4046499387019964564}
   m_Layer: 8
   m_Name: MikoChiFBX
   m_TagString: Untagged
@@ -1129,6 +1130,19 @@ MonoBehaviour:
   animatorParameters: []
   body: {fileID: 0}
   audioToFace: 
+--- !u!65 &4046499387019964564
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6446310789012695165}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 450, y: 600, z: 200}
+  m_Center: {x: -25, y: 300, z: 0}
 --- !u!1 &6610510903896412097
 GameObject:
   m_ObjectHideFlags: 0
