@@ -100,7 +100,8 @@ public class WindowSetting : MonoBehaviour
         //var _windowHandle = FindWindow(null, UnityEngine.Application.productName);
         //Debug.Log(_hwnd.ToString() + "    " + _windowHandle.ToString() + "    " + UnityEngine.Application.productName);
 
-        if (isDebug)
+      //  Debug.Log();
+        if (UnityEngine.Application.isEditor)
             return;
 
         UnityEngine.Screen.fullScreen = false;
@@ -124,7 +125,27 @@ public class WindowSetting : MonoBehaviour
 
     public void Update()
     {
+        RECT rect = new RECT();
+        GetWindowRect(_hwnd, ref rect);
+        t.text = rect.Top + "     " + rect.Bottom + "   " + rect.Left + "   " + rect.Right;
 
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+           
+            var x = rect.Left;
+            var y = rect.Top;
+
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+          //  RECT rect = new RECT();
+            GetWindowRect(_hwnd, ref rect);
+            var x = rect.Left;
+            var y = rect.Top;
+            SetWindowPos(_hwnd, -1, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+
+        }
     }
 
     public void LateUpdate()
@@ -143,7 +164,7 @@ public class WindowSetting : MonoBehaviour
            
             var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
             menu.Init();
-             menu.transform.localPosition = Vector3.zero;
+             menu.transform.localPosition = new Vector3(0, 25, 0);
             //menu.transform.position = Input.mousePosition;
             //Debug.Log(menu.transform.position);
             //var pos = menu.transform.position;
@@ -157,7 +178,7 @@ public class WindowSetting : MonoBehaviour
         //    UIManager.instance.CloseUIByName(UINames.rightClickMenu);
         //}
 
-        if (isDebug)
+        if (UnityEngine.Application.isEditor)
             return;
         CheckPosition();
 
@@ -252,5 +273,18 @@ public class WindowSetting : MonoBehaviour
 
         return raycastResults.Count > 0;
 
+    }
+
+    public void DoMoveWindow(int x, int y)
+    {
+        SetWindowPos(_hwnd, -1, x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+
+    }
+
+    public RECT GetCurrentWindowPos()
+    {
+        RECT rect = new RECT();
+        GetWindowRect(_hwnd, ref rect);
+        return rect;
     }
 }

@@ -10,7 +10,7 @@ public class GameEngine : MonoBehaviour
     public string mikoPath = "MikoMikoModels/MikoChi";
 
     //test
-    public MikoChi miko;
+    public MikoChi miko = null;
     private void Awake()
     {
         instance = this;
@@ -44,11 +44,15 @@ public class GameEngine : MonoBehaviour
 
     public void CreateMikoChi()
     {
-        var mikoO = Resources.Load(mikoPath) as GameObject;
-        var miko = GameObject.Instantiate(mikoO, null);
-        miko.transform.position = Vector3.zero;
-        miko.transform.rotation = Quaternion.identity;
-        this.miko = miko.GetComponent<MikoChi>();
+        if (this.miko == null)
+        {
+            var mikoO = Resources.Load(mikoPath) as GameObject;
+            var miko = GameObject.Instantiate(mikoO, null);
+            miko.transform.position = Vector3.zero;
+            miko.transform.rotation = Quaternion.identity;
+            this.miko = miko.GetComponent<MikoChi>();
+        }
+
         this.miko.InitMikoChi();
     }
 

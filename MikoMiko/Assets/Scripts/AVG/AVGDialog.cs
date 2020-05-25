@@ -40,6 +40,10 @@ public class AVGDialog : MonoBehaviour
         textFadeIn.callback = ShowTextImmediately;
 
         GameEngine.instance.miko.PlayAudio(info.voice,true);
+        if (info.Id == 6)
+            GameEngine.instance.miko.PlayAnimation("StayHome");
+        if (info.Id ==7 )
+            GameEngine.instance.miko.PlayAnimation("nyahello");
     }
 
     public void StartFadeIn()

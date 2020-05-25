@@ -172,7 +172,13 @@ public class HttpRequest : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        foreach(var item in _curLiveStreamState)
+        {
 
+        }
+    }
 
     public bool GetLiveStateFromViewCount(string _body, ChannelConfig _waifu)
     {

@@ -28,6 +28,7 @@ public class MikoChi : MonoBehaviour
 
 
     public AudioComponent audio;
+    public AnimationComponent animationComponent;
 
     public List<ComponentBase> componentList = new List<ComponentBase>();
 
@@ -44,8 +45,9 @@ public class MikoChi : MonoBehaviour
     public void InitMikoChi()
     {
         audio = new AudioComponent();
-
+        animationComponent = new AnimationComponent();
         componentList.Add(audio);
+        componentList.Add(animationComponent);
 
 
         for(int i =0; i< componentList.Count; ++i)
@@ -97,7 +99,7 @@ public class MikoChi : MonoBehaviour
 
     //public void PlayVoiceByName(string str = ""){
     //    audio.Play();
-        
+
     //}
 
     //public void FaceChange(int faceId){
@@ -114,12 +116,17 @@ public class MikoChi : MonoBehaviour
     //    FaceChange(faceId);
     //}
 
-    //public void PlayAnimation(int index = 0){
-    //    animation.Play("ShakeChestWithHead2");
-    //    //FaceChange(8);
-    //}
+    public void PlayAnimation(string name = "Jump")
+    {
+        animationComponent.PlayAnimation(name);
+        //FaceChange(8);
+    }
 
-
+    public void PlayAnimator(string name = "Jump")
+    {
+        animationComponent.PlayAnimator(name);
+        //FaceChange(8);
+    }
     //public void ChangeAnimatorState(string key, bool value){
     //    if (OnAnimator)
     //        return;
@@ -183,4 +190,10 @@ public class MikoChi : MonoBehaviour
         audio.Play(str, force);
     }
     
+
+    public void SetRotation(Vector3 r)
+    {
+        Quaternion.Euler(r);
+        body.localEulerAngles = r;
+    }
 }

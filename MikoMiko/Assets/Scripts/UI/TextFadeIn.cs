@@ -84,6 +84,8 @@ public class TextFadeIn : BaseMeshEffect
     {
         for (int i = 0; i < count; i += 6)
         {
+            if (i >= verts.Count)
+                continue;
             var tl = verts[i + 0];
             var tr = verts[i + 1];
             var bl = verts[i + 4];
