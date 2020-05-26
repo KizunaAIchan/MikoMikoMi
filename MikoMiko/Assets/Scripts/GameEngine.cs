@@ -54,6 +54,7 @@ public class GameEngine : MonoBehaviour
         }
 
         this.miko.InitMikoChi();
+        this.miko.PlayAnimator("drag");
     }
 
 

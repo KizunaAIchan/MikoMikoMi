@@ -86,6 +86,9 @@ public class MikoController : MonoBehaviour
 
     public void DoAction()
     {
+
+
+
         if (currentAction == MikoAction.MoveLeft || currentAction == MikoAction.MoveRight)
         {
             var r = GameEngine.instance.miko.body.localEulerAngles;

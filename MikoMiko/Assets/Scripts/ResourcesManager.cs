@@ -29,6 +29,7 @@ public class MikoWindowConfig
     public string startVoice = "";
     public string startAnima = "";
     public int language = 0;
+    public int love　= 0; //好感度
 }
 
 

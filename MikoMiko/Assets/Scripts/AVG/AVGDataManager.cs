@@ -21,6 +21,8 @@ public class DialogueInfo
     public string content = "";
     public int type; //0 no option   1 normal
     public int canRandom; // 0 can be random   1  only for reply
+    public int isChatBubble; // 0 no 1 yes
+    public int love;  // to show must  miko.love > this.love
     //選択肢 Options for this dialogue
     public List<int> optionIds = new List<int>();
     public string voice = "";
@@ -201,14 +203,23 @@ public class AVGDataManager : MonoBehaviour
     }
 
     List<DialogueInfo> tmp = new List<DialogueInfo>();
-    public DialogueInfo GetRandomDialogue()
+
+    //0  normal  1 chatbubble
+    public DialogueInfo GetRandomDialogue(int type = 0)
     {
         tmp.Clear();
 
         for (int i=0; i< dialogueList.Count; ++i)
         {
             if (dialogueList[i].canRandom == 0)
+            {
+                if (type == 1 && dialogueList[i].isChatBubble == 0)
+                    continue;
+                if (dialogueList[i].love < GameEngine.instance.miko.love)
+                    continue;
                 tmp.Add(dialogueList[i]);
+
+            }
         }
         if (tmp.Count == 0)
             return nullInfo;
@@ -217,6 +228,7 @@ public class AVGDataManager : MonoBehaviour
 
         return tmp[idx];
     }
+
 
     public OptionInfo GetOptionById(int id)
     {
