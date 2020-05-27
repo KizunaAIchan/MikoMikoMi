@@ -33,6 +33,7 @@ public class LanguageManager : MonoBehaviour
         {"[LID:15]", "終わり"},
         {"[LID:16]", "動画"},
         {"[LID:17]", "通用"},
+        {"[LID:18]", "の配信がはじまるよ~~"},
 
     };
 
@@ -55,6 +56,7 @@ public class LanguageManager : MonoBehaviour
         {"[LID:15]", "End"},
         {"[LID:16]", "Animation"},
         {"[LID:17]", "Normal"},
+        {"[LID:18]", "is on air"},
 
 
     };
@@ -78,6 +80,7 @@ public class LanguageManager : MonoBehaviour
         {"[LID:15]", "结束"},
         {"[LID:16]", "动作"},
         {"[LID:17]", "常规"},
+        {"[LID:18]", "开始直播了"},
 
     };
 
@@ -135,4 +138,5 @@ public class LanguageManager : MonoBehaviour
 
         return tmp;
     }
+
 }

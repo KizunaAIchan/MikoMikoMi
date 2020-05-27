@@ -31,6 +31,7 @@ public class MikoChi : MonoBehaviour
     public AnimationComponent animationComponent;
 
     public List<ComponentBase> componentList = new List<ComponentBase>();
+    public int love = 0;
 
     void Start()
     {

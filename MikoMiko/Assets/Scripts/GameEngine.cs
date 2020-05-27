@@ -33,8 +33,9 @@ public class GameEngine : MonoBehaviour
 
 
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, ForTest, 1);
-        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest, 1);
-        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ForTest, 1);
+     //   EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, LiveStop, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ShowChatBubble, 1);
 
         HttpRequest.instance.InitListener();
         LanguageManager.instance.InitLanguage();
@@ -54,7 +55,7 @@ public class GameEngine : MonoBehaviour
         }
 
         this.miko.InitMikoChi();
-        this.miko.PlayAnimator("drag");
+     //   this.miko.PlayAnimator("drag");
     }
 
 
@@ -62,12 +63,92 @@ public class GameEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        TimerManager.instance.Update();
     }
     private void LateUpdate()
     {
        
     }
+
+
+    public void ShowChatBubble(int id, object args)
+    {
+        var config = args as ChannelConfig;
+        if (config == null) return;
+        ChatBubble chatBubble = null;
+        if (UIManager.instance.IsAlive(UINames.ChatBubble))
+        {
+            chatBubble = UIManager.instance.GetAliveUI<ChatBubble>(UINames.ChatBubble);
+        }
+        else
+        {
+            chatBubble = UIManager.instance.ShowUI<ChatBubble>(UINames.ChatBubble);
+        }
+
+        if (UIManager.instance.IsAlive(UINames.QuickJump))
+        {
+            var j = UIManager.instance.GetAliveUI<UI_QuickJump>(UINames.QuickJump);
+            if (j != null)
+                j.AddComponent(config.channelId);
+
+        }
+        else
+        {
+            var j = UIManager.instance.ShowUI<UI_QuickJump>(UINames.QuickJump);
+            j.transform.localPosition = new Vector3(120, 140, 0);
+            j.HideComponentNode();
+            j.InitComponent();
+
+        }
+        chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
+
+        chatBubble.DoFadeIn();
+
+        chatBubble.ShowNotification(config.name, config.channelId);
+    }
+
+
+
+    public void LiveStop(int id, object args)
+    {
+        
+        var config = args as ChannelConfig;
+        if (config == null) return;
+        var close = HttpRequest.instance.GetChannelsByStatus(LiveStatus.Streaming).Count == 0;
+
+            if (HttpRequest.instance.GetChannelsByStatus(LiveStatus.Streaming).Count == 0)
+        {
+
+        }
+        if (UIManager.instance.IsAlive(UINames.QuickJump))
+        {
+            var j = UIManager.instance.GetAliveUI<UI_QuickJump>(UINames.QuickJump);
+            if (j != null)
+                j.RemoveComponent(config.channelId);
+
+            if (close)
+                j.onCloseUI();
+        }
+    }
+
+    public void qweqweqweqweqwe()
+    {
+        ChatBubble chatBubble = null;
+        if (UIManager.instance.IsAlive(UINames.ChatBubble))
+        {
+
+        }
+        else
+        {
+            chatBubble = UIManager.instance.ShowUI<ChatBubble>(UINames.ChatBubble);
+        }
+        chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
+
+        chatBubble.DoFadeIn();
+    //    chatBubble.ShowNotification("MikoChi");
+    }
+
+   
 
     public Text t;
 

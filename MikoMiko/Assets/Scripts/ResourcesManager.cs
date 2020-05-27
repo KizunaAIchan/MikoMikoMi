@@ -309,5 +309,13 @@ public class ResourcesManager : MonoBehaviour
         return mikoConfig.language;
     }
 
-   
+    public ChannelConfig GetChannelConfigById(string id)
+    {
+        ChannelConfig config = null;
+        channelConfigs.TryGetValue(id, out config);
+        return config ;
+
+    }
+
+
 }

@@ -3,72 +3,78 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-    public class Timer
-    {
-        public int id = 0;
-        public float duration = 0f;
-        public float startTime = 0f;
-        public float endTime = 0f;
+public class Timer
+{
+    public int id = 0;
+    public float duration = 0f;
+    public float startTime = 0f;
+    public float endTime = 0f;
 
-        public float delay = 0f;
-        public int faceId = 0;
-        public TimerManager.TimerCallBack callBack;
-    }
+    public float delay = 0f;
+    public int faceId = 0;
+    public TimerManager.TimerCallBack callBack;
+}
 
-    public class TimerManager : Singleton<TimerManager>
-    {
-        private static int timerId = 0;
-        private MikoChi miko;
-        public delegate void TimerCallBack(int id);
-        private Dictionary<int, Timer> timers = new Dictionary<int, Timer>();
-        private List<int> waitForDel = new List<int>();
-        //public void Init(MikoChi miko)
-        //{
-        //    this.miko = miko;
-        //    timers.Clear();
-        //    waitForDel.Clear();
-        //}
+public class TimerManager : Singleton<TimerManager>
+{
+    private static int timerId = 0;
+    private MikoChi miko;
+    public delegate void TimerCallBack();
+    private Dictionary<int, Timer> timers = new Dictionary<int, Timer>();
+    private List<int> waitForDel = new List<int>();
+    //public void Init(MikoChi miko)
+    //{
+    //    this.miko = miko;
+    //    timers.Clear();
+    //    waitForDel.Clear();
+    //}
     public override void Init()
     {
         //_listeners.Clear();
     }
 
     public void Update()
+    {
+        waitForDel.Clear();
+        float curTime = Time.realtimeSinceStartup;
+        foreach (var v in timers)
         {
-            waitForDel.Clear();
-            float curTime = Time.realtimeSinceStartup;
-            foreach (var v in timers)
+            var timer = v.Value;
+            if (curTime >= timer.endTime)
             {
-                var timer = v.Value;
-                if (curTime >= timer.endTime)
-                {
-                    timer.callBack(timer.faceId);
-                    waitForDel.Add(v.Key);
-                    continue;
-                }
-                if (curTime - timer.delay >= timer.startTime)
-                {
-
-                }
+                timer.callBack();
+                waitForDel.Add(v.Key);
+                continue;
             }
-
-            for (int i = 0; i < waitForDel.Count; ++i)
+            if (curTime - timer.delay >= timer.startTime)
             {
-                timers.Remove(waitForDel[i]);
+
             }
         }
 
-        public int AddTimer(float duration, int faceId, TimerCallBack callBack)
+        for (int i = 0; i < waitForDel.Count; ++i)
         {
-            float curTime = Time.realtimeSinceStartup;
-            Timer timer = new Timer();
-            timer.startTime = curTime;
-            timer.duration = duration;
-            timer.endTime = curTime + duration;
-            timer.faceId = faceId;
-            timer.callBack = callBack;
-            timer.id = timerId++;
-            timers[timer.id] = timer;
-            return timer.id;
+            timers.Remove(waitForDel[i]);
         }
     }
+
+    public int AddTimer(float duration, TimerCallBack callBack)
+    {
+        float curTime = Time.realtimeSinceStartup;
+        Timer timer = new Timer();
+        timer.startTime = curTime;
+        timer.duration = duration;
+        timer.endTime = curTime + duration;
+        timer.callBack = callBack;
+        timer.id = timerId++;
+        timers[timer.id] = timer;
+        return timer.id;
+    }
+
+    public void RemoveTimer(int id)
+    {
+
+        if (timers.ContainsKey(id))
+            timers.Remove(id);
+    }
+}

@@ -62,5 +62,26 @@ using UnityEngine;
 
 public class MikoMikoMi : MonoBehaviour
 {
-   // to do 
+    public static MikoMikoMi mikomikomi = null;
+
+
+    public void Awake()
+    {
+        mikomikomi = this;
+    }
+    // to do 
+
+
+    public string GetChatBubbleString(string name, string id, string lid)
+    {
+        if (id == "UC1DCedRgGHBdm81E1llLhOQ")
+        {
+            return "<color=blue>" + name + "</color>" + LanguageManager.instance.GetStringByLID(lid) + "HA↑HA↑HA↑";
+
+        }
+        else
+        {
+            return "<color=red>" + name + "</color>" + LanguageManager.instance.GetStringByLID(lid);
+        }
+    }
 }

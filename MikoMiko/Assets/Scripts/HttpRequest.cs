@@ -191,7 +191,10 @@ public class HttpRequest : MonoBehaviour
         if (count == '0')
         {
             if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
+            {
+                _curLiveStreamState[_waifu.channelId] = LiveStatus.Offline;
                 EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, _waifu);
+            }
             _curLiveStreamState[_waifu.channelId] = LiveStatus.Offline;
             return false;
         }
@@ -199,8 +202,9 @@ public class HttpRequest : MonoBehaviour
         {
             if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
                 return true;
-            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, _waifu);
             _curLiveStreamState[_waifu.channelId] = LiveStatus.Streaming;
+            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, _waifu);
+
         }
 
         return false;
@@ -221,5 +225,20 @@ public class HttpRequest : MonoBehaviour
         if (_curLiveStreamState.ContainsKey(id))
             return _curLiveStreamState[id];
         return LiveStatus.Error;
+    }
+
+
+
+    public List<string> ids = new List<string>();
+    public List<string> GetChannelsByStatus(LiveStatus s)
+    {
+        ids.Clear();
+        foreach (var item in _curLiveStreamState)
+        {
+            if (item.Value == s)
+                ids.Add(item.Key);
+        }
+
+        return ids;
     }
 }

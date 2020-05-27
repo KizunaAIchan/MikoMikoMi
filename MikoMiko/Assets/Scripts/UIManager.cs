@@ -11,7 +11,10 @@ public class UINames
     public static string AVGDataComponet = "AVGDataComponent";
     public static string Dialog = "Dialog";
     public static string AvgEditor = "AVGEditor";
-    
+    public static string ChatBubble = "ChatBubble";
+    public static string QuickJump = "QuickJump";
+    public static string QuickJumpItem = "QuickJumpItem";
+
 }
 
 
@@ -100,5 +103,28 @@ public class UIManager : MonoBehaviour
     public bool IsAlive(string name)
     {
         return allAliveUi.ContainsKey(name);
+    }
+
+    public T GetAliveUI<T>(string name) where T : UIBase
+    {
+        UIBase ui = null;
+        allAliveUi.TryGetValue(name, out ui);
+        return ui as T;
+    }
+
+    public static void HideUI(Transform obj, bool hide)
+    {
+        if (obj.position.x > 3535 && !hide)
+        {
+            var pos = obj.position;
+            pos.x -= 3535;
+            obj.position = pos;
+        }
+        else if (obj.position.x < 3535 && hide)
+        {
+            var pos = obj.position;
+            pos.x += 3535;
+            obj.position = pos;
+        }
     }
 }
