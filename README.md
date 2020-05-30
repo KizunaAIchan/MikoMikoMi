@@ -12,8 +12,8 @@ MikoMikoMi
 * 詳細設定では`通知音`、`アニメーション`を設定することができます 
 * 通知を受け付けるかどうかを設定することもできます
 
-[![](/MikoMiko/Example/detail.png "detail.png")
-[![](/MikoMiko/Example/detail1.png "detail1.png")
+![](/MikoMiko/Example/detail.png "detail.png")
+![](/MikoMiko/Example/detail1.png "detail1.png")
 ------
 #### 対話機能 (仮)
 * **みこち**と話せる
@@ -26,7 +26,7 @@ MikoMikoMi
 * みこちの独り言
 * 配信通知、 Youtubeへの**クイックジャンプ**(配信中のみ)
 
-[![](/MikoMiko/Example/chatbubble.gif "miko")
+![](/MikoMiko/Example/chatbubble.gif "miko")
 ------
 ## 起こりうる問題
 * 大量のデータを保存した場合(WriteAllText)。。。。重い
