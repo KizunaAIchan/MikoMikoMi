@@ -12,6 +12,7 @@ public class OptionInfo
     //selected -->Dialogue
     public string content;
     public int DialogueId;
+    public int addLove;
 }
 
 [Serializable]
@@ -215,7 +216,7 @@ public class AVGDataManager : MonoBehaviour
             {
                 if (type == 1 && dialogueList[i].isChatBubble == 0)
                     continue;
-                if (dialogueList[i].love < GameEngine.instance.miko.love)
+                if (dialogueList[i].love < MikoChi.instance.GetLove())
                     continue;
                 tmp.Add(dialogueList[i]);
 
@@ -271,5 +272,16 @@ public class AVGDataManager : MonoBehaviour
         }
 
         SaveOptionToJson();
+    }
+
+
+    public bool DialogueIdIsExists(int id)
+    {
+        return dialogueInfos.ContainsKey(id);
+    }
+
+    public bool OPidIsExists(int id)
+    {
+        return optionInfos.ContainsKey(id);
     }
 }

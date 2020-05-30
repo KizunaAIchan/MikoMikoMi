@@ -28,7 +28,6 @@ public class GameEngine : MonoBehaviour
 
         TimerManager.InitSingletonInstance();
         EventManager.InitSingletonInstance();
-        WinForm.InitSingletonInstance();
 
 
 
@@ -36,7 +35,9 @@ public class GameEngine : MonoBehaviour
      //   EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, LiveStop, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ShowChatBubble, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Bug, ShowChatBubblev2, 1);
 
+       DBManager.instance.InitDB();
         HttpRequest.instance.InitListener();
         LanguageManager.instance.InitLanguage();
 
@@ -68,6 +69,31 @@ public class GameEngine : MonoBehaviour
     private void LateUpdate()
     {
        
+    }
+
+
+    public void OnDestroy()
+    {
+        DBManager.instance.CloseDB();
+        Debug.Log("exit");
+    }
+
+    public void ShowChatBubblev2(int id, object args)
+    {
+        string content = args as string;
+        ChatBubble chatBubble = null;
+        if (UIManager.instance.IsAlive(UINames.ChatBubble))
+        {
+            chatBubble = UIManager.instance.GetAliveUI<ChatBubble>(UINames.ChatBubble);
+        }
+        else
+        {
+            chatBubble = UIManager.instance.ShowUI<ChatBubble>(UINames.ChatBubble);
+            chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
+            chatBubble.DoFadeIn();
+
+        }
+        chatBubble.ShowNormalMessage(content);
     }
 
 

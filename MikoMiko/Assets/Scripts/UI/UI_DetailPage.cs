@@ -22,16 +22,20 @@ public class UI_DetailPage : UIComponentBase
     private ChannelConfig config;
 
     public AudioSource audio;
+    public ConfigType configType = ConfigType.AddNew;
+
     public void Init()
     {
         config = new ChannelConfig();
         name.text = "";
         ChannelId.text = "";
+        configType = ConfigType.AddNew;
         RefreshNotificationDropDown();
     }
 
     public override void Init(object args)
     {
+        configType = ConfigType.Modify;
         config = new ChannelConfig();
         config = (ChannelConfig)args;
 

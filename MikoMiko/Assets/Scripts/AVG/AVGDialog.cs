@@ -85,6 +85,7 @@ public class AVGDialog : MonoBehaviour
     {
         var info = optionsInfo[index];
         ResetContent(info.DialogueId);
+        MikoChi.instance.AddLove(info.addLove);
         StartFadeIn();
     }
 

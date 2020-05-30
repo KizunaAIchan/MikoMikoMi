@@ -32,6 +32,11 @@ public class MikoWindowConfig
     public int love　= 0; //好感度
 }
 
+public enum ConfigType
+{
+    AddNew,
+    Modify,
+}
 
 public class ResourcesManager : MonoBehaviour
 {
@@ -193,7 +198,6 @@ public class ResourcesManager : MonoBehaviour
         string path = Application.dataPath;
         path += "/" + configJson;
         string json = JsonUtility.ToJson(mikoConfig);
-        Debug.Log(json);
         File.WriteAllText(path, json);
     }
 
@@ -246,8 +250,6 @@ public class ResourcesManager : MonoBehaviour
 
     public AudioClip LoadAudio(string path)
     {
-        Debug.Log(path);
-        Debug.Log(Application.dataPath);
         var name = Path.GetFileNameWithoutExtension(path);
         try
         {
@@ -317,5 +319,23 @@ public class ResourcesManager : MonoBehaviour
 
     }
 
+    public void AddLove(int n)
+    {
+        mikoConfig.love += n;
+    }
 
+    public int GetLove()
+    {
+        return mikoConfig.love;
+    }
+
+    public bool ChannelIsExists(string id)
+    {
+        return channelConfigs.ContainsKey(id);
+    }
+
+    public void OnDestroy()
+    {
+        SaveToJsonConfig();
+    }
 }

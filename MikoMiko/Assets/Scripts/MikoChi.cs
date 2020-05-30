@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MikoChi : MonoBehaviour
 {
-  //  public AudioSource audio;
-    // Start is called before the first frame update
+    public static MikoChi instance = null;
     public Material mikoFace = null;
 
     public SkinnedMeshRenderer mikoRenderer = null;
@@ -31,7 +30,11 @@ public class MikoChi : MonoBehaviour
     public AnimationComponent animationComponent;
 
     public List<ComponentBase> componentList = new List<ComponentBase>();
-    public int love = 0;
+
+    public void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -49,7 +52,6 @@ public class MikoChi : MonoBehaviour
         animationComponent = new AnimationComponent();
         componentList.Add(audio);
         componentList.Add(animationComponent);
-
 
         for(int i =0; i< componentList.Count; ++i)
         {
@@ -196,5 +198,15 @@ public class MikoChi : MonoBehaviour
     {
         Quaternion.Euler(r);
         body.localEulerAngles = r;
+    }
+
+    public int GetLove()
+    {
+        return ResourcesManager.instance.GetLove();
+    }
+
+    public void AddLove(int n)
+    {
+        ResourcesManager.instance.AddLove(n);
     }
 }

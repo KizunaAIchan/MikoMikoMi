@@ -75,6 +75,17 @@ public class ChatBubble : UIBase
         Close();
     }
 
+    public void ShowNormalMessage(string content, float delay = 0.2f, float duration = -1f)
+    {
+        if (endTimerId > 0)
+            TimerManager.instance.RemoveTimer(endTimerId);
+
+        isShow = true;
+        chatBubbleLife = duration > 0 ? duration : chatBubbleDuration;
+        this.content.text = content;
+        
+    }
+
 
     public void ShowNotification(string name, string channleid,  float delay = 0.2f, float duration = -1f)
     {

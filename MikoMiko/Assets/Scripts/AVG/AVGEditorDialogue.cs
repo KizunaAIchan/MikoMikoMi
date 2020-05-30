@@ -20,6 +20,7 @@ public class AVGEditorDialogue : MonoBehaviour
     private List<Dropdown.OptionData> _dropdownlist = new List<Dropdown.OptionData>();
 
     public AVGEditor editorrr;
+    public ConfigType configType = ConfigType.AddNew;
 
 
 
@@ -29,6 +30,7 @@ public class AVGEditorDialogue : MonoBehaviour
 
     public void InitData()
     {
+        configType = ConfigType.AddNew;
         idField.interactable = true;
 
         info = new DialogueInfo();
@@ -39,6 +41,8 @@ public class AVGEditorDialogue : MonoBehaviour
 
     public void InitData(DialogueInfo config)
     {
+        configType = ConfigType.Modify;
+
         idField.interactable = false;
         info = new DialogueInfo();
         info = config;
