@@ -186,7 +186,7 @@ public class HttpRequest : MonoBehaviour
     {
         bool isNew = false;
         int idx = _body.LastIndexOf("\"view_count\":");
-        if (idx + 13 >= _body.Length)
+        if (idx + 13 >= _body.Length || idx == -1)
             return false;
         char count = _body[idx + 13];
         // EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, "offline");
@@ -202,10 +202,14 @@ public class HttpRequest : MonoBehaviour
         }
         else
         {
-            if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
-                return true;
-            _curLiveStreamState[_waifu.channelId] = LiveStatus.Streaming;
-            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, _waifu);
+            if (count >= '0' || count <= '9')
+            {
+                if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
+                    return true;
+                _curLiveStreamState[_waifu.channelId] = LiveStatus.Streaming;
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, 1, _waifu);
+
+            }
 
         }
 

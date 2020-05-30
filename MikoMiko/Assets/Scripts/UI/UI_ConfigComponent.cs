@@ -25,7 +25,7 @@ public class UI_ConfigComponent : UIComponentBase
     private bool monitor = false;
     private float _nextClickTime = 0;
     private LiveStatus liveStatus = LiveStatus.Error;
-
+    private int TimerId = 0;
     public override void Init(object args)
     {
         ChannelConfig = (ChannelConfig)args;
@@ -36,6 +36,7 @@ public class UI_ConfigComponent : UIComponentBase
         status.text = monitor ? "ON" : "OFF";
         mask.gameObject.SetActive(!_canClick);
         btnEvent.enabled = _canClick;
+        btn.interactable = true;
         liveStatus = HttpRequest.instance.GetLiveStatus(ChannelConfig.channelId);
         SetLiveStatusText();
 
@@ -64,7 +65,7 @@ public class UI_ConfigComponent : UIComponentBase
                 _canClick = true;
                 btn.interactable = _canClick;
                 btnEvent.enabled = _canClick;
-
+                TimerManager.instance.RemoveTimer(TimerId);
 
             }
         }
@@ -102,11 +103,11 @@ public class UI_ConfigComponent : UIComponentBase
 
                 break;
             case LiveStatus.Streaming:
-                Livestatus.text = "Streaming";
+                Livestatus.text = "On Air";
 
                 break;
             case LiveStatus.Notlisten:
-                Livestatus.text = "X";
+                Livestatus.text = "----";
 
                 break;
             default:
@@ -131,6 +132,12 @@ public class UI_ConfigComponent : UIComponentBase
         ChannelConfig.monitor = monitor ? 0 : 1;
         status.text = monitor ? "ON" : "OFF";
         Livestatus.text = monitor ? "Checking" : "X";
+
+        TimerId = TimerManager.instance.AddTimer(HttpRequest.instance.updateInterval * 1.2f, () =>
+        {
+            btn.interactable = true;
+            btnEvent.enabled = true;
+        });
 
         ResourcesManager.instance. SaveChannelConfig(ChannelConfig);
     }
