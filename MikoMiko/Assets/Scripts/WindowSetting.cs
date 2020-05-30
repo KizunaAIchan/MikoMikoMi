@@ -167,24 +167,15 @@ public class WindowSetting : MonoBehaviour
   
         if (Input.GetMouseButtonUp(1))
         {
-            if (!UIManager.instance.IsAlive(UINames.configPage))
+            if (!UIManager.instance.IsAlive(UINames.configPage)
+                && !UIManager.instance.IsAlive(UINames.AvgEditor))
             {
-             //   var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
-                //var menu = UIManager.instance.ShowUI<AVGEditor>(UINames.AvgEditor);
-                //menu.transform.localPosition = Vector3.zero;
-            //    menu.transform.localPosition = new Vector3(0, -60f, 0);
-              //  menu.Init();
+                var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
+                menu.Init();
+                menu.transform.localPosition = new Vector3(0, 25, 0);
             }
            
-            var menu = UIManager.instance.ShowUI<UI_RightClickMenu>(UINames.rightClickMenu);
-            menu.Init();
-             menu.transform.localPosition = new Vector3(0, 25, 0);
-            //menu.transform.position = Input.mousePosition;
-            //Debug.Log(menu.transform.position);
-            //var pos = menu.transform.position;
-            //pos.x += menu.width / 2;
-            //pos.y -= menu.height;
-            //menu.transform.position = pos;
+          
         }
 
         //if (Input.GetMouseButtonUp(0))
@@ -309,9 +300,9 @@ public class WindowSetting : MonoBehaviour
         var x = rect.Left;
         var y = rect.Top;
         if (top)
-            SetWindowPos(_hwnd, -1, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+            SetWindowPos(_hwnd, -1, x, y, winWidth, winHeight, SWP_SHOWWINDOW);
         else
-            SetWindowPos(_hwnd, -2, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+            SetWindowPos(_hwnd, -2, x, y, winWidth, winHeight, SWP_SHOWWINDOW);
 
         currentTopType = top ? WindowTopType.HWND_TOPMOST : WindowTopType.HWND_NOTOPMOST;
 

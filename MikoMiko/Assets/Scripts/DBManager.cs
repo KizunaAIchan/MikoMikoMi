@@ -42,7 +42,7 @@ public class DBManager : MonoBehaviour
             string conn = "data source=" + Dbpath + "/" + dbName;
             dbConnector = new SqliteConnection(conn);
             dbConnector.Open();
-            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Bug, 1, "DBSuccess!!!");
+            //EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Bug, 1, "DBSuccess!!!");
             
 
             var res = TableExists(dialogTable);

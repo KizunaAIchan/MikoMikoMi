@@ -38,9 +38,12 @@ public class LanguageManager : MonoBehaviour
         {"[LID:20]", "ブートアップ"},
         {"[LID:21]", "ミュート"},
         {"[LID:22]", "チャットバブル"},
-        {"[LID:23]", "既存のID"},
+        {"[LID:23]", "既存のIDだにぇ"},
+        {"[LID:24]", "違法なIDだにぇ"},
+        {"[LID:25]", "データ内容が変更された，セーブせずに終了するのはいいだにぇ?"},
+        {"[LID:26]", "本当に削除していいんですかにぇ？"},
 
-
+        
     };
 
     public static Dictionary<string, string> lagToEn = new Dictionary<string, string>(
@@ -67,7 +70,11 @@ public class LanguageManager : MonoBehaviour
         {"[LID:20]", "Startup"},
         {"[LID:21]", "Mute"},
         {"[LID:22]", "ChatBubble"},
-        {"[LID:23]", "Existing ID"},
+        {"[LID:23]", "Existing IDだにぇ"},
+        {"[LID:24]", "Invalid IDだにぇ"},
+        {"[LID:25]", "Data changed. Are you sure you want to quit?"},
+        {"[LID:26]", "Are you sure you want to delete it?"},
+
 
     };
 
@@ -90,12 +97,15 @@ public class LanguageManager : MonoBehaviour
         {"[LID:15]", "结束"},
         {"[LID:16]", "动作"},
         {"[LID:17]", "常规"},
-        {"[LID:18]", "开始直播了"},
+        {"[LID:18]", "开始直播了呐"},
         {"[LID:19]", "置顶"},
         {"[LID:20]", "开机启动"},
         {"[LID:21]", "静音"},
         {"[LID:22]", "聊天气泡"},
-        {"[LID:23]", "已经存在的ID"},
+        {"[LID:23]", "已经存在的ID呐"},
+        {"[LID:24]", "ID不合法呐"},
+        {"[LID:25]", "不保存退出呐"},
+        {"[LID:26]", "确定删除吗"},
 
     };
 

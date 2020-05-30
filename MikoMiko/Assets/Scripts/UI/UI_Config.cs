@@ -48,6 +48,7 @@ public class UI_Config : UIBase
     private bool top = false;
     private bool mut = false;
     private bool cpu = false;
+    private bool starup = false;
 
 
 
@@ -193,6 +194,7 @@ public class UI_Config : UIBase
         top = ResourcesManager.instance.GetTopOn();
         mut = ResourcesManager.instance.GetMute();
         cpu = GameEngine.instance.cpuNode.gameObject.activeSelf;
+        starup = PlayerPrefs.HasKey(mikomiko);
         RefreshBtn();
     }
 
@@ -215,7 +217,7 @@ public class UI_Config : UIBase
 
     public Image[] btns;
     public Text[] btntxts;
-
+    private string mikomiko = "MikoMiko";
     public void OnSettingBtnClick(int index)
     {
         //on top
@@ -233,7 +235,19 @@ public class UI_Config : UIBase
         //onstarup
         if (index == (int)BtnType.STARUP)
         {
+            if (starup)
+            {
+                Rainity.RemoveFromStartup();
+                PlayerPrefs.DeleteKey(mikomiko);
+                starup = false;
+            }
+            else
+            {
+                PlayerPrefs.SetString(mikomiko, "Pekora");
+                Rainity.AddToStartup();
+                starup = true;
 
+            }
         }
 
         //on chatbubble
@@ -241,6 +255,7 @@ public class UI_Config : UIBase
         {
             chatbubble = !chatbubble;
             ResourcesManager.instance.SetChatBubble(chatbubble);
+
         }
 
         if (index == (int)BtnType.CPURAM)
@@ -259,17 +274,17 @@ public class UI_Config : UIBase
         btns[(int)BtnType.TOP].sprite = ResourcesManager.instance.GetTopOn() ? onsp : offsp;
         btns[(int)BtnType.MUTE].sprite = ResourcesManager.instance.GetMute() ? onsp : offsp;
         btns[(int)BtnType.CHATBUBBLE].sprite = ResourcesManager.instance.GetChatBubble() ? onsp : offsp;
-        btns[(int)BtnType.STARUP].sprite = PlayerPrefs.HasKey("MikoMiko") ? onsp : offsp;
+        btns[(int)BtnType.STARUP].sprite = starup ? onsp : offsp;
         btns[(int)BtnType.CPURAM].sprite = GameEngine.instance.cpuNode.gameObject.activeSelf ? onsp : offsp;
 
-        btntxts[(int)BtnType.STARUP].text = PlayerPrefs.HasKey("MikoMiko") ? "ON" :"OFF";
+        btntxts[(int)BtnType.STARUP].text = starup ? "ON" :"OFF";
         btntxts[(int)BtnType.TOP].text = ResourcesManager.instance.GetTopOn() ? "ON" :"OFF";
         btntxts[(int)BtnType.CHATBUBBLE].text = ResourcesManager.instance.GetChatBubble() ? "ON" :"OFF";
         btntxts[(int)BtnType.MUTE].text = ResourcesManager.instance.GetMute() ? "ON" : "OFF";
         btntxts[(int)BtnType.CPURAM].text = GameEngine.instance.cpuNode.gameObject.activeSelf? "ON" : "OFF";
 
 
-        btntxts[(int)BtnType.STARUP].color = PlayerPrefs.HasKey("MikoMiko") ? Color.red : Color.white;
+        btntxts[(int)BtnType.STARUP].color = starup ? Color.red : Color.white;
         btntxts[(int)BtnType.TOP].color = ResourcesManager.instance.GetTopOn() ? Color.red : Color.white;
         btntxts[(int)BtnType.CHATBUBBLE].color = ResourcesManager.instance.GetChatBubble() ? Color.red : Color.white;
         btntxts[(int)BtnType.MUTE].color = ResourcesManager.instance.GetMute() ? Color.red : Color.white;

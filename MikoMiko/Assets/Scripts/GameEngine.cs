@@ -48,8 +48,9 @@ public class GameEngine : MonoBehaviour
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Stop_Listen, LiveStop, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ShowChatBubble, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Bug, ShowChatBubblev2, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, ShowChatBubblev2, 1);
 
-       DBManager.instance.InitDB();
+        //   DBManager.instance.InitDB();
         HttpRequest.instance.InitListener();
         LanguageManager.instance.InitLanguage();
 
@@ -68,7 +69,10 @@ public class GameEngine : MonoBehaviour
         }
 
         this.miko.InitMikoChi();
-     //   this.miko.PlayAnimator("drag");
+        this.miko.PlayAnimator("WavingHand");
+        this.miko.PlayAudio("nya");
+        EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "にゃっはろ～");
+
     }
 
 
@@ -102,12 +106,13 @@ public class GameEngine : MonoBehaviour
 
     public void OnDestroy()
     {
-        DBManager.instance.CloseDB();
+       // DBManager.instance.CloseDB();
         Debug.Log("exit");
     }
 
     public void ShowChatBubblev2(int id, object args)
     {
+        if (!showChatBubble) return;
         string content = args as string;
         ChatBubble chatBubble = null;
         if (UIManager.instance.IsAlive(UINames.ChatBubble))

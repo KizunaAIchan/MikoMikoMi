@@ -25,6 +25,8 @@ public class UI_DetailPage : UIComponentBase
     public AudioSource audio;
     public ConfigType configType = ConfigType.AddNew;
 
+    private bool modified = false;
+
     public void Init()
     {
         config = new ChannelConfig();
@@ -34,7 +36,7 @@ public class UI_DetailPage : UIComponentBase
         ChannelId.interactable = true;
         RefreshNotificationDropDown();
         RefreshAnimatonDropDown();
-
+        modified = false;
     }
 
     public override void Init(object args)
@@ -50,7 +52,7 @@ public class UI_DetailPage : UIComponentBase
         SetDropDownData();
         RefreshAnimatonDropDown();
         SetAniDropDownData();
-
+        modified = false;
     }
 
     public void SetDropDownData()
@@ -93,7 +95,9 @@ public class UI_DetailPage : UIComponentBase
         notificationOver.ClearOptions();
         notificationStart.ClearOptions();
         _dropdownlist.Clear();
-
+        Dropdown.OptionData data1 = new Dropdown.OptionData();
+        data1.text = "Null";
+        _dropdownlist.Add(data1);
         var voices = ResourcesManager.instance.audioCllips;
         foreach(var v in voices)
         {
@@ -173,10 +177,26 @@ public class UI_DetailPage : UIComponentBase
             return;
         }
 
-        ResourcesManager.instance.DeleteChannelConfig(config);
-        mainPage.DelComponent(config);
+        if (configType == ConfigType.AddNew)
+            mainPage.OnBtnClickBack();
 
-        mainPage.OnBtnClickBack();
+        if (configType == ConfigType.Modify)
+        {
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:26]"), false, () =>
+            {
+                ResourcesManager.instance.DeleteChannelConfig(config);
+                mainPage.DelComponent(config);
+
+                mainPage.OnBtnClickBack();
+
+            });
+
+            return;
+        }
+
+      
 
     }
     public void OnClickSave()
@@ -232,5 +252,28 @@ public class UI_DetailPage : UIComponentBase
         audio.clip = audioclip;
         audio.volume = GameEngine.instance.audioVolume;
         audio.Play();
+    }
+
+    public void OnBtnClickBack()
+    {
+        if (modified)
+        {
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:25]"), false, ()=> {
+                mainPage.OnBtnClickBack();
+
+            });
+
+            return;
+        }
+
+        mainPage.OnBtnClickBack();
+
+    }
+
+    public void ModifyData()
+    {
+        modified = true;
     }
 }

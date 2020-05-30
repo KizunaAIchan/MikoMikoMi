@@ -24,10 +24,10 @@ public class AVGEditorOption : MonoBehaviour
         configType = ConfigType.AddNew;
         idField.interactable = true;
         info = new OptionInfo();
-        idField.text = string.Empty;
+        idField.text = (AVGDataManager.instance.optionInfos.Count+1).ToString();
+        addlove.text = "0";
         ReplyField.text = string.Empty;
         ContentField.text = string.Empty;
-        addlove.text = string.Empty;
         InitDropDown();
 
     }
@@ -49,10 +49,28 @@ public class AVGEditorOption : MonoBehaviour
 
     public void OnBtnClickSave()
     {
+        if (idField.text.Length == 0)
+        {
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:24]"), true, null);
+
+            return;
+        }
+
+        if (configType == ConfigType.AddNew && AVGDataManager.instance.HasOptionID(int.Parse(idField.text)))
+        {
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:23]"), true, null);
+
+            return;
+        }
+
         info.Id = int.Parse(idField.text);
         info.content = ContentField.text;
         info.DialogueId = int.Parse(GetDropDownText(replyIds));
-        info.addLove = int.Parse(addlove.text);
+        info.addLove = addlove.text.Length > 0 ? int.Parse(addlove.text) : 0;
         AVGDataManager.instance.SaveOption(info);
         editorrr.AddOrRefreshOpComponent(info);
         gameObject.SetActive(false);
@@ -113,5 +131,16 @@ public class AVGEditorOption : MonoBehaviour
         var list = drop.options;
 
         return list[drop.value].text;
+    }
+
+    public void CheckID()
+    {
+        if (idField.text.Length == 0)
+            idField.text = "1";
+        else if (idField.text.Contains("-"))
+            idField.text = "1";
+        else if (int.Parse(idField.text) < 1)
+            idField.text = "1";
+
     }
 }

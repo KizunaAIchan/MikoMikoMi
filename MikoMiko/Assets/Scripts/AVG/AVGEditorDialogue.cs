@@ -24,7 +24,7 @@ public class AVGEditorDialogue : MonoBehaviour
 
     public AVGEditor editorrr;
     public ConfigType configType = ConfigType.AddNew;
-
+    public AudioSource audio;
 
 
 
@@ -33,10 +33,13 @@ public class AVGEditorDialogue : MonoBehaviour
 
     public void InitData()
     {
+        audio.Stop();
         configType = ConfigType.AddNew;
         idField.interactable = true;
-
+        requireLove.text = "0";
         info = new DialogueInfo();
+        info.Id = (AVGDataManager.instance.dialogueInfos.Count + 1);
+
         RefreshAnimatonDropDown();
 
         RefreshVoiceDropDown();
@@ -46,6 +49,8 @@ public class AVGEditorDialogue : MonoBehaviour
 
     public void InitData(DialogueInfo config)
     {
+        audio.Stop();
+
         configType = ConfigType.Modify;
 
         idField.interactable = false;
@@ -70,13 +75,32 @@ public class AVGEditorDialogue : MonoBehaviour
             else
                 o.text = info.optionIds[i].ToString();
         }
-
+        requireLove.text = info.love.ToString();
         random.isOn = info.canRandom == 0 ? true : false;
         type.isOn = info.type == 0 ? true : false;
     }
 
     public void OnBtnClickSave()
     {
+        if (idField.text.Length == 0)
+        {
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:24]"), true, null);
+
+            return;
+        }
+
+        if (configType == ConfigType.AddNew && AVGDataManager.instance.HasDialogueID(int.Parse(idField.text)))
+        {
+            var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+            d.transform.localPosition = Vector3.zero;
+            d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:23]"), true, null);
+
+            return;
+        }
+
+        audio.Stop();
         info.Id = int.Parse(idField.text);
         info.content = ContentField.text;
 
@@ -133,6 +157,9 @@ public class AVGEditorDialogue : MonoBehaviour
         voice.ClearOptions();
         _dropdownlist.Clear();
 
+        Dropdown.OptionData data1 = new Dropdown.OptionData();
+        data1.text = "Null";
+        _dropdownlist.Add(data1);
         var voices = ResourcesManager.instance.audioCllips;
         foreach (var v in voices)
         {
@@ -154,6 +181,7 @@ public class AVGEditorDialogue : MonoBehaviour
 
     public void OnBtnClickClose()
     {
+        audio.Stop();
         gameObject.SetActive(false);
     }
 
@@ -161,7 +189,9 @@ public class AVGEditorDialogue : MonoBehaviour
     {
         AVGDataManager.instance.DeleteDialogue(info);
         editorrr.DelDiaComponent(info);
+        audio.Stop();
         gameObject.SetActive(false);
+
     }
 
 
@@ -191,5 +221,51 @@ public class AVGEditorDialogue : MonoBehaviour
         var list = drop.options;
 
         return list[drop.value].text;
+    }
+
+    public void CheckID()
+    {
+        if (idField.text.Length == 0)
+            idField.text = "1";
+        else if (idField.text.Contains("-"))
+            idField.text = "1";
+        else if (int.Parse(idField.text) < 1)
+            idField.text = "1";
+
+    }
+
+
+    public void OnBtnClickPlay()
+    {
+        string audio = "";
+        var list = voice.options;
+
+        audio = list[voice.value].text;
+        //     GameEngine.instance.miko.PlayAudio(audio, true);
+        PlayAudio(audio);
+
+    }
+
+    public void PlayAudio(string str)
+    {
+        var audioclip = ResourcesManager.instance.GetAudioClipByName(str);
+        if (audioclip == null)
+        {
+            GameEngine.instance.Error("Can't find audio：" + str);
+            return;
+        }
+
+        audio.Stop();
+        audio.clip = audioclip;
+        audio.volume = GameEngine.instance.audioVolume;
+        audio.Play();
+    }
+
+    public void OnBtnClickOpenFile(int index)
+    {
+        string path = OpenFileDialog.OpenFile("mp3|wav");
+        path = path.Replace(@"\", "/");
+        PlayAudio(path);
+        RefreshVoiceDropDown();
     }
 }

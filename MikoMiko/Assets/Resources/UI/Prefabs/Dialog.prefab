@@ -1454,7 +1454,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Exit
+  m_Text: Cancel
 --- !u!1 &8777231191140291887
 GameObject:
   m_ObjectHideFlags: 0

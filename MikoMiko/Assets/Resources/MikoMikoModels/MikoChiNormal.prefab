@@ -1309,6 +1309,12 @@ MonoBehaviour:
     animationTime: 2
   - animationName: Shy
     animationTime: 3
+  - animationName: angry
+    animationTime: 3
+  - animationName: lookaway
+    animationTime: 2
+  - animationName: Shyv2
+    animationTime: 3
 --- !u!65 &956377234601237242
 BoxCollider:
   m_ObjectHideFlags: 0

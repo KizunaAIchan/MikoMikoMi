@@ -77,7 +77,7 @@ public class AnimationComponent : ComponentBase
             animationDuration -= deltatime;
             if (animationDuration < 0)
             {
-                animator.CrossFade("Idle", 0.2f);
+                animator.CrossFade("Idle", 0.1f);
                 isPlaying = false;
             }
         }

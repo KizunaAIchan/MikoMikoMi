@@ -64,14 +64,15 @@ public class AVGDataManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
         InitDialogueConfigs();
         InitOptionConfigs();
         nullOpInfo.addLove = 0;
         nullOpInfo.content = "Error";
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void InitDialogueConfigs()
@@ -210,6 +211,16 @@ public class AVGDataManager : MonoBehaviour
 
     }
 
+    public bool HasDialogueID(int id)
+    {
+        return dialogueInfos.ContainsKey(id);
+    }
+
+    public bool HasOptionID(int id)
+    {
+        return optionInfos.ContainsKey(id);
+    }
+
     List<DialogueInfo> tmp = new List<DialogueInfo>();
 
     //0  normal  1 chatbubble
@@ -223,7 +234,7 @@ public class AVGDataManager : MonoBehaviour
             {
                 if (type == 1 && dialogueList[i].isChatBubble == 0)
                     continue;
-                if (dialogueList[i].love < MikoChi.instance.GetLove())
+                if (dialogueList[i].love > MikoChi.instance.GetLove())
                     continue;
                 tmp.Add(dialogueList[i]);
 

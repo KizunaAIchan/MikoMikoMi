@@ -13,6 +13,7 @@ public class EventManager : Singleton<EventManager>
         Stop_Listen,
         Faq,
         Bug,
+        Chat,
     }
 
 

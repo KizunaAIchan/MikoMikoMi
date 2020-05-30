@@ -701,10 +701,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mikoPath: MikoMikoModels/MikoChiNormal
+  cpuNode: {fileID: 1986029128}
   cpu: {fileID: 672851980}
   RAM: {fileID: 226152488}
   cput: {fileID: 1880751461}
   Ramt: {fileID: 685620307}
+  showChatBubble: 1
+  audioVolume: 1
   miko: {fileID: 0}
   t: {fileID: 0}
 --- !u!1 &717309923
