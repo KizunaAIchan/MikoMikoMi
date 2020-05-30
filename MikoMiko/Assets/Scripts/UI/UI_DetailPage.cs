@@ -17,6 +17,7 @@ public class UI_DetailPage : UIComponentBase
     public InputField ChannelId;
 
     private List<Dropdown.OptionData> _dropdownlist = new List<Dropdown.OptionData>();
+    private List<Dropdown.OptionData> _Anidropdownlist = new List<Dropdown.OptionData>();
 
 
     private ChannelConfig config;
@@ -30,7 +31,10 @@ public class UI_DetailPage : UIComponentBase
         name.text = "";
         ChannelId.text = "";
         configType = ConfigType.AddNew;
+        ChannelId.interactable = true;
         RefreshNotificationDropDown();
+        RefreshAnimatonDropDown();
+
     }
 
     public override void Init(object args)
@@ -41,8 +45,12 @@ public class UI_DetailPage : UIComponentBase
 
         name.text = config.name;
         ChannelId.text = config.channelId;
+        ChannelId.interactable = false;
         RefreshNotificationDropDown();
         SetDropDownData();
+        RefreshAnimatonDropDown();
+        SetAniDropDownData();
+
     }
 
     public void SetDropDownData()
@@ -62,6 +70,24 @@ public class UI_DetailPage : UIComponentBase
         notificationStart.value = sidx;
     }
 
+
+    public void SetAniDropDownData()
+    {
+        int sidx = 0;
+        int oidx = 0;
+
+        for (int i = 0; i < _Anidropdownlist.Count; ++i)
+        {
+            if (_Anidropdownlist[i].text == config.startAnima)
+                sidx = i;
+            if (_Anidropdownlist[i].text == config.endAnima)
+                oidx = i;
+        }
+
+        animationOver.value = oidx;
+        animationStart.value = sidx;
+    }
+
     public void RefreshNotificationDropDown()
     {
         notificationOver.ClearOptions();
@@ -79,6 +105,25 @@ public class UI_DetailPage : UIComponentBase
         notificationOver.AddOptions(_dropdownlist);
         notificationStart.AddOptions(_dropdownlist);
 
+    }
+
+    public void RefreshAnimatonDropDown()
+    {
+        animationStart.ClearOptions();
+        animationOver.ClearOptions();
+        _Anidropdownlist.Clear();
+
+        var ani = MikoChi.instance.GetAnimatorList();
+
+        for(int i =0; i< ani.Count; ++i)
+        {
+            Dropdown.OptionData data = new Dropdown.OptionData();
+            data.text = ani[i].animationName;
+            _Anidropdownlist.Add(data);
+        }
+
+        animationOver.AddOptions(_Anidropdownlist);
+        animationStart.AddOptions(_Anidropdownlist);
     }
 
     //0 start 1 over
@@ -105,7 +150,15 @@ public class UI_DetailPage : UIComponentBase
 
     public void OnBtnClickPlayAnimation(int index)
     {
-       
+        string ani = "";
+        var drop = index == 0 ? animationStart : animationOver;
+
+        var list = drop.options;
+
+        ani = list[drop.value].text;
+        //     GameEngine.instance.miko.PlayAudio(audio, true);
+        MikoChi.instance.PlayAnimator(ani);
+
     }
 
     public void OnClickDel()
@@ -116,6 +169,7 @@ public class UI_DetailPage : UIComponentBase
             PlayAudio("aasdsad");
             var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
             d.transform.localPosition = Vector3.zero;
+            d.ShowMiko();
             return;
         }
 
@@ -127,13 +181,24 @@ public class UI_DetailPage : UIComponentBase
     }
     public void OnClickSave()
     {
+
+        if (configType == ConfigType.AddNew)
+        {
+            if (ResourcesManager.instance.GetChannelConfigById(ChannelId.text) != null)
+            {
+                var d = UIManager.instance.ShowUI<UI_Dialog>(UINames.Dialog);
+                d.transform.localPosition = Vector3.zero;
+                d.InitDialog(LanguageManager.instance.GetStringByLID("[LID:23]"), true, null);
+               
+                return;
+            }
+        }
         config.channelId = ChannelId.text;
         config.name = name.text;
         config.startNotification = GetDropDownText(notificationStart);
         config.closureNotice = GetDropDownText(notificationOver);
         config.startAnima = GetDropDownText(animationStart);
         config.endAnima = GetDropDownText(animationOver);
-        config.monitor = 0;
 
         ResourcesManager.instance.SaveChannelConfig(config);
         mainPage.AddOrRefreshComponent(config);
@@ -165,6 +230,7 @@ public class UI_DetailPage : UIComponentBase
 
         audio.Stop();
         audio.clip = audioclip;
+        audio.volume = GameEngine.instance.audioVolume;
         audio.Play();
     }
 }

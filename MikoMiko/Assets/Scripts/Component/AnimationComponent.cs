@@ -7,17 +7,33 @@ public class AnimationComponent : ComponentBase
 {
     private Animation animation;
     private Animator animator;
+    private RuntimeAnimatorController controller;
     public MikoChi miko;
     private string lastAnimator = "";
 
     public float animationDuration = 0;
-    
+
+    public bool isPlaying = false;
+
+    public List<AnimatorControllerParameter> animatorParameterList = new List<AnimatorControllerParameter>();
+
+    public Dictionary<string, float> animationDurationMap = new Dictionary<string, float>();
+  //  public List<AnimatorControllerParameter> animatorParameterList = new List<AnimatorControllerParameter>();
+
     public override void Init(MikoChi mikochi)
     {
         miko = mikochi;
         animation = miko.animation;
         animator = miko.animator;
-
+        animatorParameterList.Clear();
+        animationDurationMap.Clear();
+        
+        for (int i=0; i< miko.animationTimeList.Count; ++i)
+        {
+            var item = miko.animationTimeList[i];
+            animationDurationMap[item.animationName] = item.animationTime;
+        }
+        isPlaying = false;
         //throw new NotImplementedException();
     }
     // Start is called before the first frame update
@@ -43,21 +59,27 @@ public class AnimationComponent : ComponentBase
 
     }
 
-    public void PlayAnimator(string name = "Jump")
+    public void PlayAnimator(string name = "Jump", bool loop = false)
     {
-        animator.SetInteger(lastAnimator, 0);
-        animator.SetInteger(name, 1);
+        if (!animationDurationMap.ContainsKey(name)) return;
+        isPlaying = true;
+        animator.CrossFade(name, 0.1f);
+        var s = animator.GetCurrentAnimatorStateInfo(0);
+        animationDuration = animationDurationMap[name];
         lastAnimator = name;
     }
 
 
     public override void Update(float deltatime)
     {
-        if (animation.isPlaying && animationDuration > 0)
+        if (isPlaying && animationDuration > 0)
         {
             animationDuration -= deltatime;
             if (animationDuration < 0)
-                animation.Stop();
+            {
+                animator.CrossFade("Idle", 0.2f);
+                isPlaying = false;
+            }
         }
     }
 

@@ -71,11 +71,12 @@ public class WindowSetting : MonoBehaviour
     private const int LWA_COLORKEY = 0x00000001;
     private const int LWA_ALPHA = 0x00000002;
     private const int WS_EX_TRANSPARENT = 0x20;
-    
+    private const uint WS_VISIBLE = 0x10000000;
     private const int ULW_COLORKEY = 0x00000001;
     private const int ULW_ALPHA = 0x00000002;
     private const int ULW_OPAQUE = 0x00000004;
     private const int ULW_EX_NORESIZE = 0x00000008;
+    private const uint WS_EX_TOPMOST = 0x00000008;
     #endregion
 
 
@@ -92,6 +93,14 @@ public class WindowSetting : MonoBehaviour
     private bool _canDrag = false;
     private Vector3 _lastMousePositon = Vector3.zero;
 
+
+    public enum WindowTopType{
+        HWND_TOPMOST = -1,
+        HWND_NOTOPMOST = -2,
+    }
+
+    public WindowTopType currentTopType = WindowTopType.HWND_TOPMOST;
+
     void Awake()
     {
         instance = this;
@@ -104,6 +113,7 @@ public class WindowSetting : MonoBehaviour
         if (UnityEngine.Application.isEditor)
             return;
 
+      
         UnityEngine.Screen.fullScreen = false;
 
         SetWindowLong(_hwnd, GWL_EXSTYLE, WS_EX_LAYERED);
@@ -116,10 +126,15 @@ public class WindowSetting : MonoBehaviour
         int currentX = UnityEngine.Screen.currentResolution.width / 2 - winWidth / 2;
         int currentY = UnityEngine.Screen.currentResolution.height / 2 - winHeight / 2;
 
-        SetWindowPos(_hwnd, -1, currentX, currentY, winWidth, winHeight, SWP_SHOWWINDOW);
+        SetWindowPos(_hwnd, (int)currentTopType, currentX, currentY, winWidth, winHeight, SWP_SHOWWINDOW);
 
         var margins = new MARGINS() { cxLeftWidth = -1 };
         DwmExtendFrameIntoClientArea(_hwnd, ref margins);
+
+
+
+
+
 
     }
 
@@ -127,7 +142,6 @@ public class WindowSetting : MonoBehaviour
     {
         RECT rect = new RECT();
         GetWindowRect(_hwnd, ref rect);
-        t.text = rect.Top + "     " + rect.Bottom + "   " + rect.Left + "   " + rect.Right;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -193,8 +207,6 @@ public class WindowSetting : MonoBehaviour
         }
     }
 
-
-    public Text t;
     public void CheckPosition()
     {
         var pos = GetMousePos();
@@ -287,4 +299,31 @@ public class WindowSetting : MonoBehaviour
         GetWindowRect(_hwnd, ref rect);
         return rect;
     }
+
+    public void SetWindowTop(bool top)
+    {
+        if (UnityEngine.Application.isEditor)
+            return;
+        RECT rect = new RECT();
+        GetWindowRect(_hwnd, ref rect);
+        var x = rect.Left;
+        var y = rect.Top;
+        if (top)
+            SetWindowPos(_hwnd, -1, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+        else
+            SetWindowPos(_hwnd, -2, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+
+        currentTopType = top ? WindowTopType.HWND_TOPMOST : WindowTopType.HWND_NOTOPMOST;
+
+    }
+
+
+
+
+
+    //public Material m_Material;
+    //void OnRenderImage(RenderTexture from, RenderTexture to)
+    //{
+    //    Graphics.Blit(from, to, m_Material);
+    //}
 }

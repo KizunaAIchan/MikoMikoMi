@@ -139,18 +139,7 @@ public class DBManager : MonoBehaviour
                 "VARCHAR(128)",
               };
 
-        var d = CreateTable(dialogTable, type, rowName);
-        
-
-
-
-        if (d != null)
-        {
-
-        }
-
-
-
+        CreateTable(dialogTable, type, rowName);
     }
 
     public void CreateOptionInfo()

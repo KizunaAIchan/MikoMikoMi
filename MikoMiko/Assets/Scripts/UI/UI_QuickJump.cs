@@ -19,7 +19,7 @@ public class UI_QuickJump : UIBase
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     public void ShowComponentNode()

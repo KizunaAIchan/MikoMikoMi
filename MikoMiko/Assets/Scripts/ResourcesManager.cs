@@ -30,6 +30,9 @@ public class MikoWindowConfig
     public string startAnima = "";
     public int language = 0;
     public int love　= 0; //好感度
+    public int onTop = 0;  //0  top 1 normal
+    public int mute = 0; // 0 off 1 on
+    public int chattbubble = 0; //0 on 1 off
 }
 
 public enum ConfigType
@@ -66,6 +69,9 @@ public class ResourcesManager : MonoBehaviour
         InitChannelConfigs();
         InitChannelConfigDic();
         LoadCustomAudio();
+        WindowSetting.instance.SetWindowTop(mikoConfig.onTop == 0);
+        GameEngine.instance.showChatBubble = mikoConfig.chattbubble == 0;
+        GameEngine.instance.audioVolume = mikoConfig.mute == 0 ? 1 : 0;
     }
     // Start is called before the first frame update
     void Start()
@@ -198,6 +204,7 @@ public class ResourcesManager : MonoBehaviour
         string path = Application.dataPath;
         path += "/" + configJson;
         string json = JsonUtility.ToJson(mikoConfig);
+        Debug.Log(json);
         File.WriteAllText(path, json);
     }
 
@@ -322,6 +329,7 @@ public class ResourcesManager : MonoBehaviour
     public void AddLove(int n)
     {
         mikoConfig.love += n;
+        SaveToJsonConfig();
     }
 
     public int GetLove()
@@ -337,5 +345,42 @@ public class ResourcesManager : MonoBehaviour
     public void OnDestroy()
     {
         SaveToJsonConfig();
+    }
+
+
+    public void SetMute(bool mute)
+    {
+        mikoConfig.mute = mute ? 1 : 0;
+        GameEngine.instance.audioVolume = mute ? 0 : 1;
+    }
+
+    public void SetTop(bool top)
+    {
+        mikoConfig.onTop = top ?0 : 1;
+        WindowSetting.instance.SetWindowTop(mikoConfig.onTop == 0);
+
+    }
+
+    public void SetChatBubble(bool on)
+    {
+        mikoConfig.chattbubble = on ? 0 : 1;
+        GameEngine.instance.showChatBubble = on;
+    }
+
+
+
+    public bool GetTopOn()
+    {
+        return mikoConfig.onTop == 0;
+    }
+
+    public bool GetChatBubble()
+    {
+        return mikoConfig.chattbubble == 0;
+    }
+
+    public bool GetMute()
+    {
+        return mikoConfig.mute == 1;
     }
 }

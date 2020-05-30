@@ -9,6 +9,16 @@ public class GameEngine : MonoBehaviour
 
     public string mikoPath = "MikoMikoModels/MikoChi";
 
+
+    public Transform cpuNode;
+    public Image cpu;
+    public Image RAM;
+    public Text cput;
+    public Text Ramt;
+
+    public bool showChatBubble = true;
+
+    public float audioVolume = 1;
     //test
     public MikoChi miko = null;
     private void Awake()
@@ -20,6 +30,7 @@ public class GameEngine : MonoBehaviour
     public void Start()
     {
         Init();
+        InitTray();
         CreateMikoChi();
     }
 
@@ -34,6 +45,7 @@ public class GameEngine : MonoBehaviour
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Faq, ForTest, 1);
      //   EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, ForTest, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, LiveStop, 1);
+        EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Stop_Listen, LiveStop, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, ShowChatBubble, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Bug, ShowChatBubblev2, 1);
 
@@ -64,7 +76,23 @@ public class GameEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (TimerManager.instance == null)
+            return;
         TimerManager.instance.Update();
+
+        if (!GameEngine.instance.cpuNode.gameObject.activeSelf) return;
+
+        MemoryInformation memInfo = Rainity.GetMemoryInformation();
+        Ramt.text = Mathf.Round(memInfo.ramUsed / memInfo.ramTotal * 100).ToString() + "%";
+        RAM.fillAmount = memInfo.ramUsed / memInfo.ramTotal;
+
+        cput.text = Mathf.Round(Rainity.GetCPUUsagePercent()).ToString() + "%";
+        cpu.fillAmount = Rainity.GetCPUUsagePercent() / 100;
+
+
+        //var d = Rainity.GetWeatherInformation();
+        // Rainity.GetWallpaperImage();
+        //int x = 0;
     }
     private void LateUpdate()
     {
@@ -101,15 +129,25 @@ public class GameEngine : MonoBehaviour
     {
         var config = args as ChannelConfig;
         if (config == null) return;
-        ChatBubble chatBubble = null;
-        if (UIManager.instance.IsAlive(UINames.ChatBubble))
+        if (showChatBubble)
         {
-            chatBubble = UIManager.instance.GetAliveUI<ChatBubble>(UINames.ChatBubble);
+            ChatBubble chatBubble = null;
+            if (UIManager.instance.IsAlive(UINames.ChatBubble))
+            {
+                chatBubble = UIManager.instance.GetAliveUI<ChatBubble>(UINames.ChatBubble);
+            }
+            else
+            {
+                chatBubble = UIManager.instance.ShowUI<ChatBubble>(UINames.ChatBubble);
+            }
+
+            chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
+
+            chatBubble.DoFadeIn();
+
+            chatBubble.ShowNotification(config.name, config.channelId);
         }
-        else
-        {
-            chatBubble = UIManager.instance.ShowUI<ChatBubble>(UINames.ChatBubble);
-        }
+      
 
         if (UIManager.instance.IsAlive(UINames.QuickJump))
         {
@@ -126,11 +164,7 @@ public class GameEngine : MonoBehaviour
             j.InitComponent();
 
         }
-        chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
-
-        chatBubble.DoFadeIn();
-
-        chatBubble.ShowNotification(config.name, config.channelId);
+       
     }
 
 
@@ -142,10 +176,7 @@ public class GameEngine : MonoBehaviour
         if (config == null) return;
         var close = HttpRequest.instance.GetChannelsByStatus(LiveStatus.Streaming).Count == 0;
 
-            if (HttpRequest.instance.GetChannelsByStatus(LiveStatus.Streaming).Count == 0)
-        {
-
-        }
+       
         if (UIManager.instance.IsAlive(UINames.QuickJump))
         {
             var j = UIManager.instance.GetAliveUI<UI_QuickJump>(UINames.QuickJump);
@@ -186,7 +217,7 @@ public class GameEngine : MonoBehaviour
         }
       //  string a = (string)args;
       ////  Debug.Log("111");
-        t.text = (int)EventManager.EventType.MikoChi_Hajimaruyo == id ? "Online" :"offline";
+        //t.text = (int)EventManager.EventType.MikoChi_Hajimaruyo == id ? "Online" :"offline";
     }
 
     public void ForTest1(int id, object args)
@@ -200,5 +231,21 @@ public class GameEngine : MonoBehaviour
     public void Error(string log)
     {
         Debug.Log(log);
+    }
+
+    public void InitTray()
+    {
+        var tray = Rainity.CreateSystemTrayIcon();
+        if (tray != null)
+        {
+            tray.AddItem("Exit", null);
+            tray.SetTitle("Rainity Demo Application");
+        }
+    }
+
+
+    public void SetCPURAM(bool show)
+    {
+        cpuNode.gameObject.SetActive(show);
     }
 }

@@ -73,6 +73,7 @@ public class AudioComponent : ComponentBase
         }
         audioSource.clip = audio;
         _audioLeftTime = audio.length;
+        audioSource.volume = GameEngine.instance.audioVolume;
         audioSource.Play();
     }
 

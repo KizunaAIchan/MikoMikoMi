@@ -7,6 +7,7 @@ public class AVGEditorDialogue : MonoBehaviour
 {
     public InputField idField;
     public InputField ContentField;
+    public InputField requireLove;
 
     public List<InputField> opField;
 
@@ -14,10 +15,12 @@ public class AVGEditorDialogue : MonoBehaviour
     public Dropdown animation;
     public Toggle type;
     public Toggle random;
+    public Toggle chatBubble;
 
 
     public DialogueInfo info = new DialogueInfo();
     private List<Dropdown.OptionData> _dropdownlist = new List<Dropdown.OptionData>();
+    private List<Dropdown.OptionData> _Anidropdownlist = new List<Dropdown.OptionData>();
 
     public AVGEditor editorrr;
     public ConfigType configType = ConfigType.AddNew;
@@ -34,6 +37,8 @@ public class AVGEditorDialogue : MonoBehaviour
         idField.interactable = true;
 
         info = new DialogueInfo();
+        RefreshAnimatonDropDown();
+
         RefreshVoiceDropDown();
         InitComponentData();
     }
@@ -47,9 +52,10 @@ public class AVGEditorDialogue : MonoBehaviour
         info = new DialogueInfo();
         info = config;
         InitComponentData();
-
+        RefreshAnimatonDropDown();
         RefreshVoiceDropDown();
         SetDropDownData();
+        SetAniDropDownData();
     }
 
     public void InitComponentData()
@@ -75,6 +81,7 @@ public class AVGEditorDialogue : MonoBehaviour
         info.content = ContentField.text;
 
         info.optionIds.Clear();
+        
         for (int i=0; i<opField.Count; ++i)
         {
             var o = opField[i];
@@ -84,13 +91,28 @@ public class AVGEditorDialogue : MonoBehaviour
         info.animation = GetDropDownText(animation);
         info.voice = GetDropDownText(voice);
         info.type = type.isOn ? 0:1;
+        
         info.canRandom = random.isOn ? 0 : 1;
+        info.isChatBubble = chatBubble.isOn ? 1 : 0;
+        info.love = requireLove.text.Length > 0? int.Parse(requireLove.text) : 0;
+       
         AVGDataManager.instance.SaveDialogue(info);
         editorrr.AddOrRefreshDiaComponent(info);
         gameObject.SetActive(false);
 
     }
+    public void SetAniDropDownData()
+    {
+        int oidx = 0;
 
+        for (int i = 0; i < _Anidropdownlist.Count; ++i)
+        {
+            if (_Anidropdownlist[i].text == info.animation)
+                oidx = i;
+        }
+
+        animation.value = oidx;
+    }
 
 
     public void SetDropDownData()
@@ -141,6 +163,28 @@ public class AVGEditorDialogue : MonoBehaviour
         editorrr.DelDiaComponent(info);
         gameObject.SetActive(false);
     }
+
+
+
+    public void RefreshAnimatonDropDown()
+    {
+        animation.ClearOptions();
+        _Anidropdownlist.Clear();
+
+        var ani = MikoChi.instance.GetAnimatorList();
+
+        for (int i = 0; i < ani.Count; ++i)
+        {
+            Dropdown.OptionData data = new Dropdown.OptionData();
+            data.text = ani[i].animationName;
+            _Anidropdownlist.Add(data);
+        }
+
+        animation.AddOptions(_Anidropdownlist);
+    }
+
+
+
 
     public string GetDropDownText(Dropdown drop)
     {

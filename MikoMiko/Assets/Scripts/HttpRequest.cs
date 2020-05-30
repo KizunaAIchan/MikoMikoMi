@@ -163,6 +163,8 @@ public class HttpRequest : MonoBehaviour
             else
             {
                 _curLiveStreamState[_waifu.channelId] = LiveStatus.Notlisten;
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Stop_Listen, 1, _waifu);
+
             }
 
             yield return new WaitForSecondsRealtime(updateInterval);

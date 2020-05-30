@@ -31,6 +31,18 @@ public class MikoChi : MonoBehaviour
 
     public List<ComponentBase> componentList = new List<ComponentBase>();
 
+
+
+
+
+    [System.Serializable]
+    public struct AnimationTime
+    {
+        public string animationName;
+        public float animationTime;
+    }
+    public List<AnimationTime> animationTimeList;
+
     public void Awake()
     {
         instance = this;
@@ -125,9 +137,9 @@ public class MikoChi : MonoBehaviour
         //FaceChange(8);
     }
 
-    public void PlayAnimator(string name = "Jump")
+    public void PlayAnimator(string name = "Jump", bool loop = false)
     {
-        animationComponent.PlayAnimator(name);
+        animationComponent.PlayAnimator(name, false);
         //FaceChange(8);
     }
     //public void ChangeAnimatorState(string key, bool value){
@@ -171,14 +183,15 @@ public class MikoChi : MonoBehaviour
         {
             case (int)EventManager.EventType.MikoChi_Hajimaruyo:
                 {
-                    ChannelConfig cf = (ChannelConfig)args;
+                    ChannelConfig cf = args as ChannelConfig;
+                    PlayAnimator(cf.startAnima);
                     PlayAudio(cf.startNotification);
                     break;
                 }
             case (int)EventManager.EventType.MikoChi_Oyasumi:
                 {
-                    ChannelConfig cf = (ChannelConfig)args;
-
+                    ChannelConfig cf = args as ChannelConfig;
+                    PlayAnimator(cf.endAnima);
                     PlayAudio(cf.closureNotice);
 
                     break;
@@ -208,5 +221,10 @@ public class MikoChi : MonoBehaviour
     public void AddLove(int n)
     {
         ResourcesManager.instance.AddLove(n);
+    }
+
+    public List<AnimationTime> GetAnimatorList()
+    {
+        return animationTimeList;
     }
 }

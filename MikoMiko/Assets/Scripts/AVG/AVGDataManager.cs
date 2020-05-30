@@ -70,6 +70,8 @@ public class AVGDataManager : MonoBehaviour
     {
         InitDialogueConfigs();
         InitOptionConfigs();
+        nullOpInfo.addLove = 0;
+        nullOpInfo.content = "Error";
     }
 
     public void InitDialogueConfigs()
@@ -182,6 +184,11 @@ public class AVGDataManager : MonoBehaviour
         string json = JsonUtility.ToJson(optioninfoList);
         Debug.Log(json);
         File.WriteAllText(path, json);
+    }
+
+    public void SaveOptionToDB()
+    {
+       // DBManager.instance.in
     }
 
     public void SaveDialogueToJson()

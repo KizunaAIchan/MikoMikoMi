@@ -51,7 +51,7 @@ public class AVGEditorOption : MonoBehaviour
     {
         info.Id = int.Parse(idField.text);
         info.content = ContentField.text;
-        info.DialogueId = int.Parse(ReplyField.text);
+        info.DialogueId = int.Parse(GetDropDownText(replyIds));
         info.addLove = int.Parse(addlove.text);
         AVGDataManager.instance.SaveOption(info);
         editorrr.AddOrRefreshOpComponent(info);
@@ -62,9 +62,11 @@ public class AVGEditorOption : MonoBehaviour
     public void InitDropDown()
     {
         _dropdownlist.Clear();
-        Dropdown.OptionData noneData = new Dropdown.OptionData();
-        noneData.text = "None";
-        _dropdownlist.Add(noneData);
+        replyIds.ClearOptions();
+
+        //Dropdown.OptionData noneData = new Dropdown.OptionData();
+        //noneData.text = "None";
+        //_dropdownlist.Add(noneData);
 
         foreach ( var item in AVGDataManager.instance.dialogueInfos)
         {
@@ -104,5 +106,12 @@ public class AVGEditorOption : MonoBehaviour
         AVGDataManager.instance.DeleteOption(info);
         editorrr.DelOpComponent(info);
         gameObject.SetActive(false);
+    }
+
+    public string GetDropDownText(Dropdown drop)
+    {
+        var list = drop.options;
+
+        return list[drop.value].text;
     }
 }

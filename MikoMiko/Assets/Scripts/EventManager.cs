@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EventArgs
-{
-    public Dictionary<string, string> strArgs;
-}
 
 public class EventManager : Singleton<EventManager>
 {
@@ -14,6 +10,7 @@ public class EventManager : Singleton<EventManager>
     {
         MikoChi_Hajimaruyo,
         MikoChi_Oyasumi,
+        Stop_Listen,
         Faq,
         Bug,
     }

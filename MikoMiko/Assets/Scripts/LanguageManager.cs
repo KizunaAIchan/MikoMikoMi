@@ -33,7 +33,13 @@ public class LanguageManager : MonoBehaviour
         {"[LID:15]", "終わり"},
         {"[LID:16]", "動画"},
         {"[LID:17]", "通用"},
-        {"[LID:18]", "の配信がはじまるよ~~"},
+        {"[LID:18]", "の配信がはじまるにぇ！"},
+        {"[LID:19]", "固定"},
+        {"[LID:20]", "ブートアップ"},
+        {"[LID:21]", "ミュート"},
+        {"[LID:22]", "チャットバブル"},
+        {"[LID:23]", "既存のID"},
+
 
     };
 
@@ -57,7 +63,11 @@ public class LanguageManager : MonoBehaviour
         {"[LID:16]", "Animation"},
         {"[LID:17]", "Normal"},
         {"[LID:18]", "is on air"},
-
+        {"[LID:19]", "OnTop"},
+        {"[LID:20]", "Startup"},
+        {"[LID:21]", "Mute"},
+        {"[LID:22]", "ChatBubble"},
+        {"[LID:23]", "Existing ID"},
 
     };
 
@@ -81,6 +91,11 @@ public class LanguageManager : MonoBehaviour
         {"[LID:16]", "动作"},
         {"[LID:17]", "常规"},
         {"[LID:18]", "开始直播了"},
+        {"[LID:19]", "置顶"},
+        {"[LID:20]", "开机启动"},
+        {"[LID:21]", "静音"},
+        {"[LID:22]", "聊天气泡"},
+        {"[LID:23]", "已经存在的ID"},
 
     };
 
