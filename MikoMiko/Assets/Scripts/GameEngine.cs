@@ -62,6 +62,7 @@ public class GameEngine : MonoBehaviour
         //   DBManager.instance.InitDB();
         HttpRequest.instance.InitListener();
         LanguageManager.instance.InitLanguage();
+        TimerManager.instance.Init();
 
 
     }

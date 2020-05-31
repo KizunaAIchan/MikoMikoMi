@@ -56,6 +56,7 @@
 
 
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +65,7 @@ public class MikoMikoMi : MonoBehaviour
 {
     public static MikoMikoMi mikomikomi = null;
 
+    public DateTime s;
 
     public void Awake()
     {

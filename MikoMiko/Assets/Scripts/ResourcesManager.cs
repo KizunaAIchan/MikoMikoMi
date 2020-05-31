@@ -22,6 +22,13 @@ public class ChannelConfig
 }
 
 [Serializable]
+public class TimeInfo
+{
+    public int hour = 0;
+    public int minute = 0;
+}
+
+[Serializable]
 public class MikoWindowConfig
 {
     public List<ChannelConfig> channelConfigs;
@@ -33,6 +40,10 @@ public class MikoWindowConfig
     public int onTop = 0;  //0  top 1 normal
     public int mute = 0; // 0 off 1 on
     public int chattbubble = 0; //0 on 1 off
+    public int sleepMode = 0; //0 off 1 on
+
+    public TimeInfo muteStartTime;
+    public TimeInfo muteEndTime;
 }
 
 public enum ConfigType
@@ -104,6 +115,11 @@ public class ResourcesManager : MonoBehaviour
         {
             PaddingConfigDefaultConfig();
         }
+
+        if (mikoConfig.muteStartTime == null)
+            mikoConfig.muteStartTime = new TimeInfo();
+        if (mikoConfig.muteEndTime == null)
+            mikoConfig.muteEndTime = new TimeInfo();
 
         if (mikoConfig.channelConfigs == null || mikoConfig.channelConfigs.Count == 0)
             PaddingConfigDefaultChannelId();
@@ -424,5 +440,15 @@ public class ResourcesManager : MonoBehaviour
     public bool GetMute()
     {
         return mikoConfig.mute == 1;
+    }
+
+    public bool GeSleepMode()
+    {
+        return mikoConfig.sleepMode == 1;
+    }
+
+    public TimeInfo GetMuteTime(int idx)
+    {
+        return idx == 0 ? mikoConfig.muteStartTime : mikoConfig.muteEndTime;
     }
 }
