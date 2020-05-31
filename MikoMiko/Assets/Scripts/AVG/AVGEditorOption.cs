@@ -89,7 +89,7 @@ public class AVGEditorOption : MonoBehaviour
         foreach ( var item in AVGDataManager.instance.dialogueInfos)
         {
             Dropdown.OptionData data = new Dropdown.OptionData();
-            data.text = item.Key.ToString();
+            data.text = item.Key.ToString() + ":" + item.Value.content;
             _dropdownlist.Add(data);
         }
 
@@ -102,7 +102,9 @@ public class AVGEditorOption : MonoBehaviour
 
         for (int i = 0; i < _dropdownlist.Count; ++i)
         {
-            if (_dropdownlist[i].text == info.DialogueId.ToString())
+            var str = _dropdownlist[i].text;
+            var strs = str.Split(':');
+            if (strs[0] == info.DialogueId.ToString())
             {
                 idx = i;
                 break;
@@ -129,8 +131,9 @@ public class AVGEditorOption : MonoBehaviour
     public string GetDropDownText(Dropdown drop)
     {
         var list = drop.options;
-
-        return list[drop.value].text;
+        var str = list[drop.value].text;
+        var strs = str.Split(':');
+        return strs[0];
     }
 
     public void CheckID()

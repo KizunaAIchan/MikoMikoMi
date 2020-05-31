@@ -1297,6 +1297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1514628447}
   - component: {fileID: 1514628448}
+  - component: {fileID: 1514628449}
   m_Layer: 0
   m_Name: Miko
   m_TagString: Untagged
@@ -1330,6 +1331,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc191ae2a628f5046ac2bc921b108962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1514628449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514628446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e563aac59ebd145bb70172d0ef24c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windowOffset: {x: 0, y: -40}
+  hideFromTaskbar: 0
+  neverHideWindow: 0
+  keepBottomMost: 0
+  borderless: 0
+  behindIcons: 0
+  useRainityInput: 0
 --- !u!1 &1783893583
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameEngine : MonoBehaviour
 {
+
+    [DllImport("DesktopApplication")]
+    private static extern int GetCPUPercent();
+
     public static GameEngine instance = null;
 
     public string mikoPath = "MikoMikoModels/MikoChi";
@@ -23,6 +28,8 @@ public class GameEngine : MonoBehaviour
     public MikoChi miko = null;
 
     public GameObject Loading;
+
+    private float timer = 1;
     private void Awake()
     {
         instance = this;
@@ -93,11 +100,18 @@ public class GameEngine : MonoBehaviour
         MemoryInformation memInfo = Rainity.GetMemoryInformation();
         Ramt.text = Mathf.Round(memInfo.ramUsed / memInfo.ramTotal * 100).ToString() + "%";
         RAM.fillAmount = memInfo.ramUsed / memInfo.ramTotal;
+        DiskInformation diskInfo = Rainity.GetDiskInformation("C:\\");
 
-        cput.text = Mathf.Round(Rainity.GetCPUUsagePercent()).ToString() + "%";
-        cpu.fillAmount = Rainity.GetCPUUsagePercent() / 100;
+     
 
-
+        if (timer <= 0)
+        {
+            timer = 1f;
+            var cpuUsage = GetCPUPercent() / 1000000f;
+            cput.text = Mathf.Round(cpuUsage).ToString() + "%";
+            cpu.fillAmount = cpuUsage / 100;
+        }
+        timer -= Time.deltaTime;
         //var d = Rainity.GetWeatherInformation();
         // Rainity.GetWallpaperImage();
         //int x = 0;
