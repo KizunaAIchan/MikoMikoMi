@@ -74,6 +74,7 @@ public class MikoChi : MonoBehaviour
 
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Hajimaruyo, EventReceiver, 1);
         EventManager.instance.AddListener((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, EventReceiver, 1);
+        AddMikoLove();
     }
 
 
@@ -84,6 +85,7 @@ public class MikoChi : MonoBehaviour
         {
             componentList[i].Update(dlt);
         }
+
     }
 
 
@@ -226,5 +228,49 @@ public class MikoChi : MonoBehaviour
     public List<AnimationTime> GetAnimatorList()
     {
         return animationTimeList;
+    }
+
+
+    public void RandomChatBubble()
+    {
+        if (GameEngine.instance.showChatBubble)
+        {
+            var c = AVGDataManager.instance.GetRandomDialogue(1);
+            PlayAnimator(c.animation);
+            PlayAudio(c.voice);
+            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, c.content);
+
+        }
+
+
+        this.Invoke("AddRandomChat", 1.0f);
+       
+
+
+    }
+
+    public void AddRandomChat()
+    {
+        var delay = Random.Range(35,350);
+        
+        TimerManager.instance.AddTimer(delay, () =>
+        {
+            RandomChatBubble();
+        });
+    }
+
+
+    public void AddMikoLove()
+    {
+        TimerManager.instance.AddTimer(3535, () =>
+        {
+            DoRealAddLove();
+        });
+    }
+
+    public void DoRealAddLove()
+    {
+        AddLove(1);
+        this.Invoke("AddMikoLove", 1.0f);
     }
 }

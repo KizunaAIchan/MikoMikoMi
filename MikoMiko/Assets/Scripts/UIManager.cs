@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
 
     public Dictionary<int, CustomText> customTexts = new Dictionary<int, CustomText>();
     public Dictionary<string, UIBase> allAliveUi = new Dictionary<string, UIBase>();
+    public Dictionary<string, UIBase> poolUi = new Dictionary<string, UIBase>();
 
     public static UIManager instance = null;
     public Transform root;
@@ -30,6 +31,9 @@ public class UIManager : MonoBehaviour
     {
         instance = this;
         allAliveUi.Clear();
+        PreLoadUI<UI_Config>(UINames.configPage);
+        PreLoadUI<UI_RightClickMenu>(UINames.rightClickMenu);
+        PreLoadUI<ChatBubble>(UINames.ChatBubble);
     }
     // Start is called before the first frame update
     void Start()
@@ -49,11 +53,15 @@ public class UIManager : MonoBehaviour
         if (allAliveUi.TryGetValue(name, out ui))
             return ui as T;
 
-        ui = ResourcesManager.instance.CreateUIPrefab(name);
+        if (!poolUi.TryGetValue(name, out ui))
+        {
+            ui = ResourcesManager.instance.CreateUIPrefab(name);
+        }
         if (ui == null) {
             Debug.Log("Check it !!!!");
             return null;
         }
+        ui.gameObject.SetActive(true);
         ui.transform.SetParent(root);
         ui.transform.position = Vector3.zero;
         T t = ui as T;
@@ -84,7 +92,8 @@ public class UIManager : MonoBehaviour
         UIBase ui = null;
         if (!allAliveUi.TryGetValue(name, out ui)) return;
         allAliveUi.Remove(name);
-        Destroy(ui.gameObject);
+        AddToPool(name, ui);
+      //  Destroy(ui.gameObject);
     }
 
     public void OnChangeLanguageSetting()
@@ -126,5 +135,29 @@ public class UIManager : MonoBehaviour
             pos.x += 3535;
             obj.position = pos;
         }
+    }
+
+
+    public void AddToPool(string name, UIBase ui)
+    {
+        poolUi[name] = ui;
+        ui.transform.position = new Vector3(3535, -3535, 3535);
+        ui.gameObject.SetActive(false);
+    }
+
+    public void PreLoadUI<T>(string name) where T : UIBase
+    {
+        UIBase ui = null;
+
+        if (!poolUi.TryGetValue(name, out ui))
+        {
+            ui = ResourcesManager.instance.CreateUIPrefab(name);
+        }
+        if (ui == null)
+        {
+            Debug.Log("Check it !!!!");
+            return ;
+        }
+        AddToPool(name, ui);
     }
 }

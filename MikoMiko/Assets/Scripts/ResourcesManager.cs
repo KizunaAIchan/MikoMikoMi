@@ -329,6 +329,48 @@ public class ResourcesManager : MonoBehaviour
     public void AddLove(int n)
     {
         mikoConfig.love += n;
+
+        if (mikoConfig.love >= 100)
+        {
+            if (!PlayerPrefs.HasKey("Miko100"))
+            {
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度100だにぇ じゅ~~");
+                PlayerPrefs.SetString("Miko100", "mi");
+            }
+
+        }
+        else if (mikoConfig.love >= 70)
+        {
+            if (!PlayerPrefs.HasKey("Miko70"))
+            {
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度70だにぇ");
+                PlayerPrefs.SetString("Miko70", "mi");
+            }
+        }
+        else if (mikoConfig.love >= 50)
+        {
+            if (!PlayerPrefs.HasKey("Miko50"))
+            {
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度50だにぇ");
+                PlayerPrefs.SetString("Miko50", "mi");
+            }
+        }
+        else if (mikoConfig.love >= 35)
+        {
+            if (!PlayerPrefs.HasKey("Miko35"))
+            {
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度35だにぇ");
+                PlayerPrefs.SetString("Miko35", "mi");
+            }
+        }
+        else if (mikoConfig.love >= 15)
+        {
+            if (!PlayerPrefs.HasKey("Miko15"))
+            {
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度15だにぇ");
+                PlayerPrefs.SetString("Miko15", "mi");
+            }
+        }
         SaveToJsonConfig();
     }
 

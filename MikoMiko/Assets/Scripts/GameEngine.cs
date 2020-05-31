@@ -21,6 +21,8 @@ public class GameEngine : MonoBehaviour
     public float audioVolume = 1;
     //test
     public MikoChi miko = null;
+
+    public GameObject Loading;
     private void Awake()
     {
         instance = this;
@@ -71,7 +73,9 @@ public class GameEngine : MonoBehaviour
         this.miko.InitMikoChi();
         this.miko.PlayAnimator("WavingHand");
         this.miko.PlayAudio("nya");
+        Loading.SetActive(false);
         EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "にゃっはろ～");
+        this.miko.AddRandomChat();
 
     }
 
