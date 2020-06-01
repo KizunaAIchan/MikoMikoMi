@@ -127,7 +127,7 @@ public class TimerManager : Singleton<TimerManager>
         StopAlarm();
         DateTime s = DateTime.Now;
         var w = alarm - s;
-        TimerManager.instance.AddTimer((float)w.TotalSeconds, () =>
+        AlarmId = TimerManager.instance.AddTimer((float)w.TotalSeconds, () =>
         {
             GameEngine.instance.miko.PlayAnimator(anima);
             GameEngine.instance.miko.PlayAudio(voice, true);

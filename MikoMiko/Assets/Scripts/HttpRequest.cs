@@ -202,7 +202,7 @@ public class HttpRequest : MonoBehaviour
         }
         else
         {
-            if (count >= '0' || count <= '9')
+            if (count >= '1' || count <= '9')
             {
                 if (_curLiveStreamState[_waifu.channelId] == LiveStatus.Streaming)
                     return true;
