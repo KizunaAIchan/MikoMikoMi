@@ -1315,6 +1315,8 @@ MonoBehaviour:
     animationTime: 2
   - animationName: Shyv2
     animationTime: 3
+  - animationName: piece
+    animationTime: 3
 --- !u!65 &956377234601237242
 BoxCollider:
   m_ObjectHideFlags: 0

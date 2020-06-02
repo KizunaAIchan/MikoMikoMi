@@ -10,7 +10,7 @@ public class Timer
     public float duration = 0f;
     public float startTime = 0f;
     public float endTime = 0f;
-
+    public bool enable = false;
     public float delay = 0f;
     public int faceId = 0;
     public TimerManager.TimerCallBack callBack;
@@ -72,6 +72,11 @@ public class TimerManager : Singleton<TimerManager>
         foreach (var v in timers)
         {
             var timer = v.Value;
+            if (!timer.enable)
+            {
+                waitForDel.Add(v.Key);
+                continue;
+            }
             if (curTime >= timer.endTime)
             {
                 timer.callBack();
@@ -110,6 +115,7 @@ public class TimerManager : Singleton<TimerManager>
         timer.endTime = curTime + duration;
         timer.callBack = callBack;
         timer.id = timerId++;
+        timer.enable = true;
         timers[timer.id] = timer;
         return timer.id;
     }
@@ -118,7 +124,7 @@ public class TimerManager : Singleton<TimerManager>
     {
 
         if (timers.ContainsKey(id))
-            timers.Remove(id);
+            timers[id].enable = false;
     }
 
 

@@ -14,6 +14,7 @@ public class UINames
     public static string ChatBubble = "ChatBubble";
     public static string QuickJump = "QuickJump";
     public static string QuickJumpItem = "QuickJumpItem";
+    public static string LoveBar = "LovePointBar";
 
 }
 

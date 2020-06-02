@@ -60,8 +60,18 @@ public class ResourcesManager : MonoBehaviour
     public string configJson = "Config.txt";
     public string audioClipsPath = "Audios/";
     public string uiPath = "UI/Prefabs/";
+
+    public string audioClipsLevelPath = "Audios/LV";
     
-    public Dictionary<string, AudioClip> audioCllips = new Dictionary<string, AudioClip>();
+
+    public class AudioLoveConfig
+    {
+        public AudioClip clip;
+        public int requireLv = 0;
+    }
+
+
+    public Dictionary<string, AudioLoveConfig> audioCllips = new Dictionary<string, AudioLoveConfig>();
     public Dictionary<string, AudioClip> audioCllipsByPath = new Dictionary<string, AudioClip>();
     public Dictionary<string, UIBase> uiPrefabs = new Dictionary<string, UIBase>();
     public Dictionary<string, UIComponentBase> uiComponentPrefabs = new Dictionary<string, UIComponentBase>();
@@ -72,6 +82,7 @@ public class ResourcesManager : MonoBehaviour
 
 
     private MikoWindowConfig mikoConfig;
+    private int LoveLevel = 0;
     private void Awake()
     {
         instance = this;
@@ -83,12 +94,14 @@ public class ResourcesManager : MonoBehaviour
         WindowSetting.instance.SetWindowTop(mikoConfig.onTop == 0);
         GameEngine.instance.showChatBubble = mikoConfig.chattbubble == 0;
         GameEngine.instance.audioVolume = mikoConfig.mute == 0 ? 1 : 0;
+        
     }
     // Start is called before the first frame update
     void Start()
     {
-       // instance = this;
-      
+        LoveLevel = AVGDataManager.instance.GetCurrentLoveLevel(mikoConfig.love);
+
+
     }
 
     // Update is called once per frame
@@ -231,23 +244,44 @@ public class ResourcesManager : MonoBehaviour
 
     public void InitAudioClips()
     {
-        var audios = Resources.LoadAll<AudioClip>(audioClipsPath);
-        for (int i=0; i< audios.Length; ++i)
+        //var audios = Resources.LoadAll<AudioClip>(audioClipsPath);
+        //for (int i=0; i< audios.Length; ++i)
+        //{
+        //    var audio = Instantiate<AudioClip>(audios[i]);
+        //    audioCllips.Add(audios[i].name, audio);
+
+        //}
+        for(int i =0; i<AVGDataManager.instance.LoveLevelConfig.Length; ++i)
+        {
+            InitAudioByLoveLevel(AVGDataManager.instance.LoveLevelConfig[i].lv);
+        }
+    }
+
+    public void InitAudioByLoveLevel(int lv)
+    {
+        string path = audioClipsLevelPath + lv.ToString() + "/";
+        var audios = Resources.LoadAll<AudioClip>(path);
+        for (int i = 0; i < audios.Length; ++i)
         {
             var audio = Instantiate<AudioClip>(audios[i]);
-            audioCllips.Add(audios[i].name, audio);
+            AudioLoveConfig config = new AudioLoveConfig();
+            config.requireLv = lv;
+            config.clip = audio;
+            if (audioCllips.ContainsKey(audios[i].name))
+                Debug.Log(audios[i].name + " " + path + "  " + i + "   " + audios.Length);
+            audioCllips.Add(audios[i].name, config);
 
         }
     }
 
     public AudioClip GetAudioClipByName(string name)
     {
-        AudioClip audio = null;
+        AudioLoveConfig audio = null;
         if(!audioCllips.TryGetValue(name, out audio))
         {
             return LoadAudio(name);
         }
-        return audio;
+        return audio.clip;
     }
 
     public List<ChannelConfig> GetChannelConfigs()
@@ -285,7 +319,11 @@ public class ResourcesManager : MonoBehaviour
             if (clip.isReadyToPlay)
             {
                 aud.Dispose();
-                audioCllips.Add(path, clip);
+                AudioLoveConfig config = new AudioLoveConfig();
+                config.clip = clip;
+                config.requireLv = 1;
+
+                audioCllips.Add(path, config);
                 // audioCllips.Add(name, clip);
                 return clip;
             }
@@ -345,47 +383,15 @@ public class ResourcesManager : MonoBehaviour
     public void AddLove(int n)
     {
         mikoConfig.love += n;
+        int Lv = AVGDataManager.instance.GetCurrentLoveLevel(mikoConfig.love);
 
-        if (mikoConfig.love >= 100)
+        if (Lv != LoveLevel)
         {
-            if (!PlayerPrefs.HasKey("Miko100"))
-            {
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度100だにぇ じゅ~~");
-                PlayerPrefs.SetString("Miko100", "mi");
-            }
-
-        }
-        else if (mikoConfig.love >= 70)
-        {
-            if (!PlayerPrefs.HasKey("Miko70"))
-            {
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度70だにぇ");
-                PlayerPrefs.SetString("Miko70", "mi");
-            }
-        }
-        else if (mikoConfig.love >= 50)
-        {
-            if (!PlayerPrefs.HasKey("Miko50"))
-            {
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度50だにぇ");
-                PlayerPrefs.SetString("Miko50", "mi");
-            }
-        }
-        else if (mikoConfig.love >= 35)
-        {
-            if (!PlayerPrefs.HasKey("Miko35"))
-            {
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度35だにぇ");
-                PlayerPrefs.SetString("Miko35", "mi");
-            }
-        }
-        else if (mikoConfig.love >= 15)
-        {
-            if (!PlayerPrefs.HasKey("Miko15"))
-            {
-                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "好感度15だにぇ");
-                PlayerPrefs.SetString("Miko15", "mi");
-            }
+            string str = "好感度Level" + Lv + "だにぇ";
+            if (Lv >= 4)
+                str += "じゅ~~";
+            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, str);
+            LoveLevel = Lv;
         }
         SaveToJsonConfig();
     }

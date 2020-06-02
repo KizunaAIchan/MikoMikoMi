@@ -58,8 +58,24 @@ public class AVGDataManager : MonoBehaviour
 
     private List<DialogueInfo> dialogueList = new List<DialogueInfo>();
     private List<OptionInfo> optionList = new List<OptionInfo>();
+    [HideInInspector]
     public DialogueInfoList dialoginfolist;
+    [HideInInspector]
     public OptionInfoList optioninfoList;
+
+    [Serializable]
+    public struct LoveLevel
+    {
+        public int lv;
+        public int lovePoint;
+
+        public int totalPoint;
+    }
+
+    public LoveLevel[] LoveLevelConfig;
+
+
+    private LoveLevel aaaaaaaa;
 
     private void Awake()
     {
@@ -68,6 +84,9 @@ public class AVGDataManager : MonoBehaviour
         InitOptionConfigs();
         nullOpInfo.addLove = 0;
         nullOpInfo.content = "Error";
+        aaaaaaaa.lv = -35;
+        aaaaaaaa.lovePoint = -35;
+        aaaaaaaa.totalPoint = -35;
     }
 
     private void Start()
@@ -301,5 +320,34 @@ public class AVGDataManager : MonoBehaviour
     public bool OPidIsExists(int id)
     {
         return optionInfos.ContainsKey(id);
+    }
+
+
+    public int GetCurrentLoveLevel(int love)
+    {
+        if (love < 0)
+            return -1;
+
+        if (love < LoveLevelConfig[0].totalPoint)
+            return LoveLevelConfig[0].lv;
+        else if (love < LoveLevelConfig[1].totalPoint)
+            return LoveLevelConfig[1].lv;
+        else if (love < LoveLevelConfig[2].totalPoint)
+            return LoveLevelConfig[2].lv;
+        else if (love < LoveLevelConfig[3].totalPoint)
+            return LoveLevelConfig[3].lv;
+        else if (love < LoveLevelConfig[4].totalPoint)
+            return LoveLevelConfig[4].lv;
+        else if (love < LoveLevelConfig[5].totalPoint)
+            return LoveLevelConfig[5].lv;
+        return 999;
+    }
+
+    public LoveLevel GetLoveConfigByLv(int lv)
+    {
+        if (lv < 0 || lv >= LoveLevelConfig.Length)
+            return aaaaaaaa;
+
+        return LoveLevelConfig[lv];
     }
 }

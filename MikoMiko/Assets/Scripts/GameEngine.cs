@@ -142,9 +142,10 @@ public class GameEngine : MonoBehaviour
         {
             chatBubble = UIManager.instance.ShowUI<ChatBubble>(UINames.ChatBubble);
             chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
-            chatBubble.DoFadeIn();
 
         }
+        chatBubble.DoFadeIn();
+
         chatBubble.ShowNormalMessage(content);
     }
 

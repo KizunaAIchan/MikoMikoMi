@@ -223,6 +223,11 @@ public class MikoChi : MonoBehaviour
     public void AddLove(int n)
     {
         ResourcesManager.instance.AddLove(n);
+        var lovebar = UIManager.instance.ShowUI<UILovePointBar>(UINames.LoveBar);
+        lovebar.Show();
+        lovebar.AddPoint(n);
+        lovebar.RefreshProcess();
+
     }
 
     public List<AnimationTime> GetAnimatorList()
