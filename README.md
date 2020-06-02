@@ -5,7 +5,14 @@ MikoMikoMi
 
 ![](/MikoMiko/Example/33.png "m3o")
 
-## 現在の機能
+# 目録
+* [機能](#機能)
+* [アニメーション素材](#アニメーション素材)
+* [起こりうる問題](#起こりうる問題)
+* [このプロジェクトについて](#このプロジェクトについて)
+* [開発環境](#開発環境)
+****
+## 機能
 * [Youtubeチャンネル配信通知](#youtubeチャンネル配信通知)
 * [対話機能(仮)](#対話機能-仮)
 * [チャットバブル](#チャットバブル)
@@ -46,6 +53,13 @@ MikoMikoMi
 ![](/MikoMiko/Example/detail1.png "detail1.png")
 ![](/MikoMiko/Example/chat1.png "chat1.png")
 ------
+## アニメーション素材
+*  SD Unity-chan Action Adventure Pack：https://assetstore.unity.com/packages/3d/animations/sd-unity-chan-action-adventure-pack-62560
+* Anime Girl Idle Animations https://assetstore.unity.com/packages/3d/animations/anime-girl-idle-animations-free-150406
+------
+## このプロジェクトについて
+* 一部有料プラグインを使用しました,そのため、コードの一部がアップロードされていない(Shader)、Errorが出しことがあります
+------
 ## 起こりうる問題
 * 大量のデータを保存した場合(WriteAllText)。。。。重い
 * 通知音はキューを使用します、大量のチャンネル通知の時、通知音が長く続きます
@@ -55,3 +69,4 @@ MikoMikoMi
 * Unity2019.3.2f1
 * MagicaVoxel
 * Blender
+------
