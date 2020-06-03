@@ -459,24 +459,27 @@ MonoBehaviour:
   optioninfoList:
     list: []
   LoveLevelConfig:
-  - lv: 1
-    lovePoint: 0
-    totalPoint: 5
-  - lv: 2
+  - lv: 0
     lovePoint: 5
-    totalPoint: 10
-  - lv: 3
+    totalPoint: 5
+  - lv: 1
     lovePoint: 10
-    totalPoint: 20
-  - lv: 4
+    totalPoint: 15
+  - lv: 2
     lovePoint: 20
-    totalPoint: 40
-  - lv: 5
+    totalPoint: 35
+  - lv: 3
     lovePoint: 35
-    totalPoint: 75
-  - lv: 6
+    totalPoint: 70
+  - lv: 4
     lovePoint: 50
-    totalPoint: 125
+    totalPoint: 120
+  - lv: 5
+    lovePoint: 70
+    totalPoint: 190
+  - lv: 6
+    lovePoint: 3535
+    totalPoint: 3725
 --- !u!1 &185563603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,6 +1411,7 @@ MonoBehaviour:
   configJson: Config.txt
   audioClipsPath: 
   uiPath: UI/Prefabs/
+  audioClipsLevelPath: Audios/LV
 --- !u!1 &1509443202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1564,6 +1568,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc191ae2a628f5046ac2bc921b108962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleAnimation:
+  - animationName: right
+    animationTime: 1.8
+  - animationName: left
+    animationTime: 1.8
+  - animationName: neck
+    animationTime: 1.8
+  - animationName: Idle1
+    animationTime: 2
+  - animationName: lookaway
+    animationTime: 2
+  - animationName: Idle2
+    animationTime: 2
+  - animationName: Idle3
+    animationTime: 2
+  - animationName: Idle4
+    animationTime: 2
+  - animationName: Idle5
+    animationTime: 2
 --- !u!1 &1783893583
 GameObject:
   m_ObjectHideFlags: 0

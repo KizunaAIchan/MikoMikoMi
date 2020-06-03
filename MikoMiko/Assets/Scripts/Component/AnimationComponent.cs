@@ -15,6 +15,8 @@ public class AnimationComponent : ComponentBase
 
     public bool isPlaying = false;
 
+    public float nextRandomIdelTime = 0;
+
     public List<AnimatorControllerParameter> animatorParameterList = new List<AnimatorControllerParameter>();
 
     public Dictionary<string, float> animationDurationMap = new Dictionary<string, float>();
@@ -33,7 +35,16 @@ public class AnimationComponent : ComponentBase
             var item = miko.animationTimeList[i];
             animationDurationMap[item.animationName] = item.animationTime;
         }
+
+        var idles = MikoMikoMi.mikomikomi.idleAnimation;
+        for (int i = 0; i < idles.Length; ++i)
+        {
+            var item = idles[i];
+            animationDurationMap[item.animationName] = item.animationTime;
+        }
+
         isPlaying = false;
+        nextRandomIdelTime = Time.realtimeSinceStartup +  UnityEngine.Random.Range(5, 35f);
         //throw new NotImplementedException();
     }
     // Start is called before the first frame update
@@ -72,14 +83,25 @@ public class AnimationComponent : ComponentBase
 
     public override void Update(float deltatime)
     {
+        float curtime = Time.realtimeSinceStartup;
         if (isPlaying && animationDuration > 0)
         {
             animationDuration -= deltatime;
             if (animationDuration < 0)
             {
-                animator.CrossFade("Idle", 0.1f);
+                animator.CrossFade("Idle", 0.125f);
+                lastAnimator = "Idle";
                 isPlaying = false;
             }
+        }
+
+        if (!isPlaying && lastAnimator == "Idle" && curtime > nextRandomIdelTime)
+        {
+            nextRandomIdelTime = curtime + UnityEngine.Random.Range(5, 35f);
+            var idles = MikoMikoMi.mikomikomi.idleAnimation;
+            int i = UnityEngine.Random.Range(0, idles.Length);
+
+            PlayAnimator(idles[i].animationName);
         }
     }
 

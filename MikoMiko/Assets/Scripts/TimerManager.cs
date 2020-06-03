@@ -23,6 +23,7 @@ public class TimerManager : Singleton<TimerManager>
     public delegate void TimerCallBack();
     private Dictionary<int, Timer> timers = new Dictionary<int, Timer>();
     private List<int> waitForDel = new List<int>();
+    private List<Timer> waitForAdd = new List<Timer>();
 
 
     public bool sleepMode = true;
@@ -67,8 +68,21 @@ public class TimerManager : Singleton<TimerManager>
 
     public void Update()
     {
-        waitForDel.Clear();
         float curTime = Time.realtimeSinceStartup;
+
+        for (int i = 0; i < waitForAdd.Count; ++i)
+        {
+            int id = waitForAdd[i].id;
+            timers[id] = (waitForAdd[i]);
+            timers[id].startTime = curTime;
+            timers[id].endTime = curTime + waitForAdd[i].duration;
+        }
+        waitForAdd.Clear();
+
+
+
+        waitForDel.Clear();
+     //   float curTime = Time.realtimeSinceStartup;
         foreach (var v in timers)
         {
             var timer = v.Value;
@@ -108,15 +122,15 @@ public class TimerManager : Singleton<TimerManager>
 
     public int AddTimer(float duration, TimerCallBack callBack)
     {
-        float curTime = Time.realtimeSinceStartup;
         Timer timer = new Timer();
-        timer.startTime = curTime;
+     //   timer.startTime = curTime;
         timer.duration = duration;
-        timer.endTime = curTime + duration;
+      //  timer.endTime = curTime + duration;
         timer.callBack = callBack;
         timer.id = timerId++;
         timer.enable = true;
-        timers[timer.id] = timer;
+        //   timers[timer.id] = timer;
+        waitForAdd.Add(timer);
         return timer.id;
     }
 

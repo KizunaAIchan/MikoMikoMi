@@ -40,6 +40,7 @@ public class MikoChi : MonoBehaviour
     {
         public string animationName;
         public float animationTime;
+        public int requireLoveLv;
     }
     public List<AnimationTime> animationTimeList;
 
@@ -276,6 +277,7 @@ public class MikoChi : MonoBehaviour
     public void DoRealAddLove()
     {
         AddLove(1);
+      //  this.CancelInvoke("AddMikoLove");
         this.Invoke("AddMikoLove", 1.0f);
     }
 }

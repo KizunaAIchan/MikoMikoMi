@@ -1301,22 +1301,109 @@ MonoBehaviour:
   animationTimeList:
   - animationName: Idle
     animationTime: 1
+    requireLoveLv: 0
   - animationName: Nodding
     animationTime: 0.6
+    requireLoveLv: 0
   - animationName: Yeah
     animationTime: 2
+    requireLoveLv: 0
   - animationName: WavingHand
     animationTime: 2
+    requireLoveLv: 0
   - animationName: Shy
     animationTime: 3
+    requireLoveLv: 0
   - animationName: angry
     animationTime: 3
-  - animationName: lookaway
+    requireLoveLv: 1
+  - animationName: sex03
     animationTime: 2
+    requireLoveLv: 4
   - animationName: Shyv2
     animationTime: 3
+    requireLoveLv: 0
   - animationName: piece
     animationTime: 3
+    requireLoveLv: 3
+  - animationName: kick
+    animationTime: 0.9
+    requireLoveLv: 5
+  - animationName: punch
+    animationTime: 0.8
+    requireLoveLv: 5
+  - animationName: fail
+    animationTime: 2.2
+    requireLoveLv: 5
+  - animationName: success
+    animationTime: 1.8
+    requireLoveLv: 5
+  - animationName: wrong
+    animationTime: 3
+    requireLoveLv: 5
+  - animationName: correct
+    animationTime: 3
+    requireLoveLv: 5
+  - animationName: jump
+    animationTime: 1.2
+    requireLoveLv: 0
+  - animationName: search
+    animationTime: 2.1
+    requireLoveLv: 0
+  - animationName: uchi
+    animationTime: 3
+    requireLoveLv: 0
+  - animationName: cry
+    animationTime: 2.4
+    requireLoveLv: 0
+  - animationName: cute
+    animationTime: 2.8
+    requireLoveLv: 0
+  - animationName: deny
+    animationTime: 2.4
+    requireLoveLv: 0
+  - animationName: flex
+    animationTime: 1.8
+    requireLoveLv: 0
+  - animationName: sex01
+    animationTime: 2.2
+    requireLoveLv: 4
+  - animationName: sex02
+    animationTime: 2.2
+    requireLoveLv: 4
+  - animationName: think
+    animationTime: 2
+    requireLoveLv: 0
+  - animationName: laugh1
+    animationTime: 2.2
+    requireLoveLv: 0
+  - animationName: laugh2
+    animationTime: 2.2
+    requireLoveLv: 0
+  - animationName: nodding2
+    animationTime: 1.6
+    requireLoveLv: 1
+  - animationName: shakebody
+    animationTime: 2.4
+    requireLoveLv: 0
+  - animationName: shakehead
+    animationTime: 2
+    requireLoveLv: 0
+  - animationName: cat
+    animationTime: 2.2
+    requireLoveLv: 0
+  - animationName: enegetic
+    animationTime: 2.4
+    requireLoveLv: 0
+  - animationName: pointf
+    animationTime: 2
+    requireLoveLv: 0
+  - animationName: www
+    animationTime: 7
+    requireLoveLv: 6
+  - animationName: piece
+    animationTime: 3
+    requireLoveLv: 0
 --- !u!65 &956377234601237242
 BoxCollider:
   m_ObjectHideFlags: 0
