@@ -14,7 +14,7 @@ public class UILovePointBar : UIBase
     public float startTime = 0;
     private bool show = false;
 
-    private int timerid = 0;
+    private int timerid = -1;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,9 +43,16 @@ public class UILovePointBar : UIBase
         });
     }
 
-    public void AddPoint(int n)
+    public void AddPoint(int n, bool limit)
     {
-        addPoint.text = "+" + n.ToString();
+        if (limit)
+        {
+            addPoint.text = "Limit";
+        }
+        else
+        {
+            addPoint.text = "+" + n.ToString();
+        }
         anima.Play("addlovepoint");
 
     }
@@ -61,7 +68,7 @@ public class UILovePointBar : UIBase
         }
         else
         {
-            var config = AVGDataManager.instance.GetLoveConfigByLv(Lv-1);
+            var config = AVGDataManager.instance.GetLoveConfigByLv(Lv);
             lv.text = Lv.ToString();
 
             loveprocess.fillAmount = (float)(love - (config.totalPoint - config.lovePoint)) / (float)config.lovePoint;

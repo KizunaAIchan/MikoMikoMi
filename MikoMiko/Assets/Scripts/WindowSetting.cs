@@ -91,6 +91,7 @@ public class WindowSetting : MonoBehaviour
 
     private IntPtr _hwnd;
     private bool _canDrag = false;
+    public bool canLook = false;
     private Vector3 _lastMousePositon = Vector3.zero;
 
 
@@ -100,6 +101,16 @@ public class WindowSetting : MonoBehaviour
     }
 
     public WindowTopType currentTopType = WindowTopType.HWND_TOPMOST;
+
+
+    public enum SwipeType
+    {
+        Left,
+        Right,
+        None,
+    }
+
+    private SwipeType currentSwipeType = SwipeType.None;
 
     void Awake()
     {
@@ -140,26 +151,51 @@ public class WindowSetting : MonoBehaviour
 
     public void Update()
     {
+        //if (Input.touchCount > 0)
+        //{
+        //    Debug.Log(Input.GetTouch(0).phase);
+        //}
+        RaycastHit hitinfo;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo, 10000f, LayerMask.GetMask("TouchArea"))
+         && !IsPointOnUI(Input.mousePosition))
+        {
+            CheckSwipeType();
+
+        }
+        else if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo, 10000f, LayerMask.GetMask("ClickArea"))
+         && !IsPointOnUI(Input.mousePosition))
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!MikoChi.instance.animationComponent.isPlaying)
+                    MikoChi.instance.PlayAnimator("Shy");
+            }
+           
+        }
+
+
+        
+
         RECT rect = new RECT();
         GetWindowRect(_hwnd, ref rect);
 
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
+        //if (Input.GetKey(KeyCode.LeftArrow))
+        //{
            
-            var x = rect.Left;
-            var y = rect.Top;
+        //    var x = rect.Left;
+        //    var y = rect.Top;
 
-        }
+        //}
 
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-          //  RECT rect = new RECT();
-            GetWindowRect(_hwnd, ref rect);
-            var x = rect.Left;
-            var y = rect.Top;
-            SetWindowPos(_hwnd, -1, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
+        //if (Input.GetKey(KeyCode.RightArrow))
+        //{
+        //  //  RECT rect = new RECT();
+        //    GetWindowRect(_hwnd, ref rect);
+        //    var x = rect.Left;
+        //    var y = rect.Top;
+        //    SetWindowPos(_hwnd, -1, --x, y, winWidth, winHeight, SWP_SHOWWINDOW);
 
-        }
+        //}
     }
 
     public void LateUpdate()
@@ -178,11 +214,22 @@ public class WindowSetting : MonoBehaviour
           
         }
 
+    
         //if (Input.GetMouseButtonUp(0))
         //{
         //    UIManager.instance.CloseUIByName(UINames.rightClickMenu);
         //}
 
+        RaycastHit hitinfo1;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitinfo1, 10000f, LayerMask.GetMask("LookMouse"))
+           && !IsPointOnUI(Input.mousePosition))
+        {
+            canLook = true;
+        }
+        else
+        {
+            canLook = false;
+        }
         if (UnityEngine.Application.isEditor)
             return;
         CheckPosition();
@@ -203,7 +250,6 @@ public class WindowSetting : MonoBehaviour
         var pos = GetMousePos();
         var screenPos = new Vector3(pos.x, pos.y, 0);
         if (Vector3.Distance(screenPos, _lastMousePositon) < 1) return;
-
 
         RaycastHit hitInfo;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hitInfo, 10000f, LayerMask.GetMask("WindowRect"))
@@ -309,6 +355,68 @@ public class WindowSetting : MonoBehaviour
     }
 
 
+    private List<Vector3> pointsList = new List<Vector3>();
+    public void CheckSwipeType()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            pointsList.Clear();
+
+            currentSwipeType = SwipeType.None;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            pointsList.Add(Input.mousePosition);
+
+            if (pointsList.Count >= 3)
+            {
+                int a = 0;
+                int g = 0;
+                for (int i = 1; i < pointsList.Count; ++i)
+                {
+                    if (Mathf.Abs(pointsList[i].y - pointsList[i - 1].y) >= 10)
+                    {
+                        currentSwipeType = SwipeType.None;
+
+                        pointsList.Clear();
+                        break;
+                    }
+
+                    if (pointsList[i].x < pointsList[i - 1].x)
+                    {
+                        a++;
+                    }
+
+                    if (pointsList[i].x > pointsList[i - 1].x)
+                    {
+                        a--;
+                    }
+
+                    if (pointsList[i].x == pointsList[i - 1].x)
+                        g++;
+                }
+
+                if (Mathf.Abs(a) + g + 1 == pointsList.Count
+                    && a != 0)
+                {
+                    var p = a > 0 ? SwipeType.Left : SwipeType.Right;
+                    if ((p == SwipeType.Right && currentSwipeType == SwipeType.Left)
+                        || (p == SwipeType.Left && currentSwipeType == SwipeType.Right))
+                    {
+                        Debug.Log("Swipe");
+                        p = SwipeType.None;
+                        if (!MikoChi.instance.animationComponent.isPlaying)
+                            MikoChi.instance.PlayAnimator("Shyv2");
+                    }
+                    currentSwipeType = p;
+
+                }
+
+                pointsList.Clear();
+            }
+        }
+    }
 
 
 

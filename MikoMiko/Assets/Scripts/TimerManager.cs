@@ -13,6 +13,7 @@ public class Timer
     public bool enable = false;
     public float delay = 0f;
     public int faceId = 0;
+    public bool repeat = false;
     public TimerManager.TimerCallBack callBack;
 }
 
@@ -94,6 +95,11 @@ public class TimerManager : Singleton<TimerManager>
             if (curTime >= timer.endTime)
             {
                 timer.callBack();
+                if (timer.repeat)
+                {
+                    timer.endTime = curTime + timer.duration;
+                    continue;
+                }
                 waitForDel.Add(v.Key);
                 continue;
             }
@@ -120,7 +126,7 @@ public class TimerManager : Singleton<TimerManager>
         }
     }
 
-    public int AddTimer(float duration, TimerCallBack callBack)
+    public int AddTimer(float duration, TimerCallBack callBack, bool repeat = false)
     {
         Timer timer = new Timer();
      //   timer.startTime = curTime;
@@ -129,6 +135,7 @@ public class TimerManager : Singleton<TimerManager>
         timer.callBack = callBack;
         timer.id = timerId++;
         timer.enable = true;
+        timer.repeat = repeat;
         //   timers[timer.id] = timer;
         waitForAdd.Add(timer);
         return timer.id;

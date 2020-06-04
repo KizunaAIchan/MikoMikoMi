@@ -96,7 +96,14 @@ public class AVGDataManager : MonoBehaviour
 
     public void InitDialogueConfigs()
     {
+        
         string path = Application.dataPath;
+        path += "/../Saves";
+
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
         path += "/" + dialogueConfigJson;
 
         if (!File.Exists(path))
@@ -127,6 +134,12 @@ public class AVGDataManager : MonoBehaviour
     public void InitOptionConfigs()
     {
         string path = Application.dataPath;
+        path += "/../Saves";
+
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
         path += "/" + optionConfigJson;
 
         if (!File.Exists(path))
@@ -199,6 +212,7 @@ public class AVGDataManager : MonoBehaviour
     public void SaveOptionToJson()
     {
         string path = Application.dataPath;
+        path += "/../Saves";
         path += "/" + optionConfigJson;
         optioninfoList.list = optionList;
         string json = JsonUtility.ToJson(optioninfoList);
@@ -214,6 +228,7 @@ public class AVGDataManager : MonoBehaviour
     public void SaveDialogueToJson()
     {
         string path = Application.dataPath;
+        path += "/../Saves";
         path += "/" + dialogueConfigJson;
         dialoginfolist.list = dialogueList;
         string json = JsonUtility.ToJson(dialoginfolist);

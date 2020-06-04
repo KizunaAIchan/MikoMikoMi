@@ -1257,6 +1257,7 @@ MonoBehaviour:
   winWidth: 600
   winHeight: 400
   isDebug: 1
+  canLook: 0
   currentTopType: -1
 --- !u!114 &963194230
 MonoBehaviour:
@@ -1364,6 +1365,7 @@ MonoBehaviour:
   winWidth: 600
   winHeight: 400
   isDebug: 1
+  canLook: 0
   currentTopType: -1
 --- !u!1 &1199028416
 GameObject:
@@ -1571,22 +1573,31 @@ MonoBehaviour:
   idleAnimation:
   - animationName: right
     animationTime: 1.8
+    requireLoveLv: 0
   - animationName: left
     animationTime: 1.8
+    requireLoveLv: 0
   - animationName: neck
     animationTime: 1.8
+    requireLoveLv: 0
   - animationName: Idle1
     animationTime: 2
+    requireLoveLv: 0
   - animationName: lookaway
     animationTime: 2
+    requireLoveLv: 0
   - animationName: Idle2
     animationTime: 2
+    requireLoveLv: 0
   - animationName: Idle3
     animationTime: 2
+    requireLoveLv: 0
   - animationName: Idle4
     animationTime: 2
+    requireLoveLv: 0
   - animationName: Idle5
     animationTime: 2
+    requireLoveLv: 0
 --- !u!1 &1783893583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,6 +1642,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   root: {fileID: 2012544526}
+--- !u!1 &1858042778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858042780}
+  - component: {fileID: 1858042779}
+  m_Layer: 10
+  m_Name: FakeWall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1858042779
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858042778}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 180, y: 60, z: 1}
+  m_Center: {x: 0, y: 5, z: 0}
+--- !u!4 &1858042780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858042778}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.03125, y: 33.720966, z: 5.7857604}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1880751459
 GameObject:
   m_ObjectHideFlags: 0

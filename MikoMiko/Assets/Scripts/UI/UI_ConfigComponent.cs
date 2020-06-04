@@ -25,7 +25,7 @@ public class UI_ConfigComponent : UIComponentBase
     private bool monitor = false;
     private float _nextClickTime = 0;
     private LiveStatus liveStatus = LiveStatus.Error;
-    private int TimerId = 0;
+    private int TimerId = -1;
     public override void Init(object args)
     {
         ChannelConfig = (ChannelConfig)args;

@@ -221,12 +221,15 @@ public class MikoChi : MonoBehaviour
         return ResourcesManager.instance.GetLove();
     }
 
-    public void AddLove(int n)
+    public void AddLove(int n, AddLoveType type)
     {
-        ResourcesManager.instance.AddLove(n);
+        bool limit = ResourcesManager.instance.GetLoveTypeCount(type) <= 0;
+
+        if (!limit)
+            ResourcesManager.instance.AddLove(n, type);
         var lovebar = UIManager.instance.ShowUI<UILovePointBar>(UINames.LoveBar);
         lovebar.Show();
-        lovebar.AddPoint(n);
+        lovebar.AddPoint(n, limit);
         lovebar.RefreshProcess();
 
     }
@@ -271,13 +274,27 @@ public class MikoChi : MonoBehaviour
         TimerManager.instance.AddTimer(3535, () =>
         {
             DoRealAddLove();
-        });
+        }, true);
     }
 
     public void DoRealAddLove()
     {
-        AddLove(1);
+        AddLove(1, AddLoveType.Idle);
       //  this.CancelInvoke("AddMikoLove");
-        this.Invoke("AddMikoLove", 1.0f);
+      //  this.Invoke("AddMikoLove", 1.0f);
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (animationComponent == null)
+            return;
+        if (animationComponent.isPlaying)
+            return;
+        if (!WindowSetting.instance.canLook)
+            return;
+
+        animator.SetLookAtWeight(0.8f);
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 3);
+        animator.SetLookAtPosition(Camera.main.ScreenToWorldPoint(mousePos));
     }
 }

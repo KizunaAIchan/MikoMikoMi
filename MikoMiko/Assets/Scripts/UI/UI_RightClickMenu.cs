@@ -46,7 +46,8 @@ public class UI_RightClickMenu : UIBase
     {
         var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
         menu.InitComponent();
-        menu.transform.localPosition = new Vector3(0, -35f, 0);
+     //   menu.transform.localPosition = new Vector3(0, -35f, 0);
+        menu.transform.localPosition = new Vector3(0, -60f, 0);
         Close();
     }
 }

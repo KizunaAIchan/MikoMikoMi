@@ -137,7 +137,7 @@ public class LanguageManager : MonoBehaviour
         UIManager.instance.OnChangeLanguageSetting();
         ResourcesManager.instance.SetLanguageType((int)curLagType);
 
-        ResourcesManager.instance.SaveToJsonConfig();
+        ResourcesManager.instance.SaveConfigToJsonConfig();
 
     }
 

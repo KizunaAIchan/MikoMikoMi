@@ -102,6 +102,7 @@ public class UI_Config : UIBase
 
     public void OnBtnClickQuit()
     {
+        ClearComponent();
         Close();
     }
 
@@ -265,7 +266,7 @@ public class UI_Config : UIBase
         }
 
         RefreshBtn();
-        ResourcesManager.instance.SaveToJsonConfig();
+        ResourcesManager.instance.SaveConfigToJsonConfig();
 
     }
 

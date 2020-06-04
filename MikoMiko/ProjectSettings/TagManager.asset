@@ -15,9 +15,9 @@ TagManager:
   - 
   - WindowRect
   - Post-Process
-  - 
-  - 
-  - 
+  - LookMouse
+  - TouchArea
+  - ClickArea
   - 
   - 
   - 

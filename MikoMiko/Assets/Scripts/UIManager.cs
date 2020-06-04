@@ -35,6 +35,10 @@ public class UIManager : MonoBehaviour
         PreLoadUI<UI_Config>(UINames.configPage);
         PreLoadUI<UI_RightClickMenu>(UINames.rightClickMenu);
         PreLoadUI<ChatBubble>(UINames.ChatBubble);
+
+        var m = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
+        m.InitComponent();
+        m.OnBtnClickQuit();
     }
     // Start is called before the first frame update
     void Start()
