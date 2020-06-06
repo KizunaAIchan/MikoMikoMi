@@ -68,6 +68,7 @@ public class MikoMikoMi : MonoBehaviour
     public DateTime s;
 
     public MikoChi.AnimationTime[] idleAnimation;
+    public MikoChi.AnimationTime[] MoveAnimation;
 
     public void Awake()
     {

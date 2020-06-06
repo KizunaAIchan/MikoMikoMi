@@ -233,6 +233,7 @@ public class WindowSetting : MonoBehaviour
         {
             canLook = false;
         }
+        CheckDrag();
 
 
         if (UnityEngine.Application.isEditor)
@@ -355,7 +356,7 @@ public class WindowSetting : MonoBehaviour
 
     }
 
-
+    public TheWorld theworld;
     private List<Vector3> pointsList = new List<Vector3>();
     public void CheckSwipeType()
     {
@@ -370,7 +371,7 @@ public class WindowSetting : MonoBehaviour
         {
             pointsList.Add(Input.mousePosition);
 
-            if (pointsList.Count >= 4)
+            if (pointsList.Count >= 5)
             {
                 int a = 0;
                 int g = 0;
@@ -437,7 +438,11 @@ public class WindowSetting : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
+           // if (readyToDrag)
+                theworld.theWorld(false);
             _StartDrag = false;
+            readyToDrag = false;
+
             lastpressTime = -1;
         }
 
@@ -461,7 +466,10 @@ public class WindowSetting : MonoBehaviour
             }
             else if (t - lastpressTime > 1 && lastpressTime > 0 && !IsPointOnUI(Input.mousePosition))
             {
+                if (!readyToDrag)
+                    theworld.theWorld(true);
                 readyToDrag = true;
+              
 
             }
         }

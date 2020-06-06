@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MikoMat
-  m_Shader: {fileID: 4800000, guid: 80412fe88398cd147be3aacebe2c3fe3, type: 3}
-  m_ShaderKeywords: OUTLINES TCP2_DISABLE_WRAPPED_LIGHT TCP2_NONE TCP2_ZSMOOTH_ON
-    _EMISSION
+  m_Shader: {fileID: 4800000, guid: 1b964ec570c352449908b73af2627f0b, type: 3}
+  m_ShaderKeywords: OUTLINES OUTLINE_BLENDING TCP2_DISABLE_WRAPPED_LIGHT TCP2_NONE
+    TCP2_ZSMOOTH_ON _EMISSION
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -65,6 +65,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _DstBlendOutline: 10
     - _GlossMapScale: 0
     - _Glossiness: 0.1
     - _GlossyReflections: 1
@@ -87,6 +88,7 @@ Material:
     - _SpecSmooth: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SrcBlendOutline: 1
     - _TCP2_DISABLE_WRAPPED_LIGHT: 1
     - _TCP2_OUTLINE_CONST_SIZE: 0
     - _TCP2_OUTLINE_TEXTURED: 0
@@ -104,5 +106,5 @@ Material:
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
-    - _SColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
+    - _SColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

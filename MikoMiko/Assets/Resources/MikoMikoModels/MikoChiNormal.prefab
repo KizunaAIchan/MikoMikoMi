@@ -121,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 689013784864721795}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children:
   - {fileID: 6295033629403557406}
   - {fileID: 3490157074749536413}
@@ -264,7 +264,7 @@ MonoBehaviour:
   animation: {fileID: 0}
   animator: {fileID: 5863269425573516522}
   animatorParameters: []
-  body: {fileID: 6295033629403557406}
+  body: {fileID: 4599450360634112400}
   audioToFace: 
   animationTimeList:
   - animationName: Idle
@@ -290,16 +290,16 @@ MonoBehaviour:
     requireLoveLv: 4
   - animationName: Shyv2
     animationTime: 3
-    requireLoveLv: 0
+    requireLoveLv: 1
   - animationName: piece
     animationTime: 3
     requireLoveLv: 3
   - animationName: kick
     animationTime: 0.9
-    requireLoveLv: 5
+    requireLoveLv: 4
   - animationName: punch
     animationTime: 0.8
-    requireLoveLv: 5
+    requireLoveLv: 4
   - animationName: fail
     animationTime: 2.2
     requireLoveLv: 5
@@ -313,26 +313,26 @@ MonoBehaviour:
     animationTime: 3
     requireLoveLv: 5
   - animationName: jump
-    animationTime: 1.2
-    requireLoveLv: 0
+    animationTime: 1.1
+    requireLoveLv: 1
   - animationName: search
     animationTime: 2.1
-    requireLoveLv: 0
+    requireLoveLv: 3
   - animationName: uchi
     animationTime: 3
-    requireLoveLv: 0
+    requireLoveLv: 2
   - animationName: cry
     animationTime: 2.4
-    requireLoveLv: 0
+    requireLoveLv: 3
   - animationName: cute
     animationTime: 2.8
-    requireLoveLv: 0
+    requireLoveLv: 3
   - animationName: deny
     animationTime: 2.4
-    requireLoveLv: 0
+    requireLoveLv: 5
   - animationName: flex
     animationTime: 1.8
-    requireLoveLv: 0
+    requireLoveLv: 3
   - animationName: sex01
     animationTime: 2.2
     requireLoveLv: 4
@@ -341,37 +341,37 @@ MonoBehaviour:
     requireLoveLv: 4
   - animationName: think
     animationTime: 2
-    requireLoveLv: 0
+    requireLoveLv: 1
   - animationName: laugh1
     animationTime: 2.2
-    requireLoveLv: 0
+    requireLoveLv: 2
   - animationName: laugh2
     animationTime: 2.2
-    requireLoveLv: 0
+    requireLoveLv: 2
   - animationName: nodding2
     animationTime: 1.6
     requireLoveLv: 1
   - animationName: shakebody
     animationTime: 2.4
-    requireLoveLv: 0
+    requireLoveLv: 2
   - animationName: shakehead
     animationTime: 2
-    requireLoveLv: 0
+    requireLoveLv: 2
   - animationName: cat
     animationTime: 2.2
-    requireLoveLv: 0
+    requireLoveLv: 6
   - animationName: enegetic
     animationTime: 2.4
-    requireLoveLv: 0
+    requireLoveLv: 6
   - animationName: pointf
     animationTime: 2
-    requireLoveLv: 0
+    requireLoveLv: 6
   - animationName: www
     animationTime: 7
     requireLoveLv: 6
   - animationName: si
     animationTime: 2
-    requireLoveLv: 0
+    requireLoveLv: 6
 --- !u!65 &8592601420710293575
 BoxCollider:
   m_ObjectHideFlags: 0

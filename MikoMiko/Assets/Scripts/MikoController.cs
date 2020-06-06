@@ -37,13 +37,19 @@ public class MikoController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (isJumping && actionDuration > 0)
+        {
+            actionDuration -= Time.deltaTime;
+            if (actionDuration < 0)
+                isJumping = false;
+        }
        
         if (Input.GetKeyUp(KeyCode.Space) && !isJumping)
         {
             DoJump();
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             var rect = WindowSetting.instance.GetCurrentWindowPos();
             WindowSetting.instance.DoMoveWindow(rect.Left + speed, rect.Top);
@@ -63,24 +69,6 @@ public class MikoController : MonoBehaviour
         }
 
         DoAction();
-            if (isJumping)
-        {
-            startPosition.y -=  velocity.y;
-            WindowSetting.instance.DoMoveWindow(startPosition.x, startPosition.y);
-            ++flag;
-            velocity.y--;
-            //if (flag%10 == 0)
-            //{
-            //    velocity.y--;
-            //    if (velocity.y == 0)
-            //        velocity.y = -1;
-            //}
-
-            if (velocity.y == -8)
-            {
-                isJumping = false;
-            }
-        }
     }
 
 
@@ -92,10 +80,15 @@ public class MikoController : MonoBehaviour
         if (currentAction == MikoAction.MoveLeft || currentAction == MikoAction.MoveRight)
         {
             var r = GameEngine.instance.miko.body.localEulerAngles;
-            r.y = 0;
-            r.z = currentAction == MikoAction.MoveLeft ? 30f : -30f;
+          //  r.y = 0;
+            r.y = currentAction == MikoAction.MoveLeft ? 30f : -30f;
             GameEngine.instance.miko.SetRotation(r);
-            GameEngine.instance.miko.PlayAnimator("walk");
+            if (!isJumping)
+            {
+                GameEngine.instance.miko.animationComponent.ChangeState(AnimationComponent.AnimaState.Move);
+                GameEngine.instance.miko.animationComponent.ChangeAnimatorState("walk");
+            }
+
         }
 
         if (currentAction == MikoAction.Idle)
@@ -103,20 +96,28 @@ public class MikoController : MonoBehaviour
             var r = GameEngine.instance.miko.body.localEulerAngles;
             r.z = r.y = 0;
             GameEngine.instance.miko.SetRotation(r);
-            GameEngine.instance.miko.PlayAnimator("Idle");
 
+            if (!isJumping)
+            {
+                GameEngine.instance.miko.animationComponent.ChangeAnimatorState("Idle");
+
+                GameEngine.instance.miko.animationComponent.ChangeState(AnimationComponent.AnimaState.Idle);
+            }
+  
         }
     }
 
     public void DoJump()
     {
-        var rect = WindowSetting.instance.GetCurrentWindowPos();
-        startPosition.x = rect.Left;
-        startPosition.y = rect.Top;
-        flag = 0;
-        velocity.y = 15;
+        //var rect = WindowSetting.instance.GetCurrentWindowPos();
+        //startPosition.x = rect.Left;
+        //startPosition.y = rect.Top;
+        //flag = 0;
+        //velocity.y = 15;
         isJumping = true;
-        GameEngine.instance.miko.PlayAnimation();
+        actionDuration = 0.8f;
+        GameEngine.instance.miko.animationComponent.ChangeState(AnimationComponent.AnimaState.Jump);
+        GameEngine.instance.miko.animationComponent.ChangeAnimatorState("jump");
     }
 
     public void RandomMove()

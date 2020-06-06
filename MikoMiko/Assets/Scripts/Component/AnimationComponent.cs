@@ -10,6 +10,7 @@ public class AnimationComponent : ComponentBase
     private RuntimeAnimatorController controller;
     public MikoChi miko;
     private string lastAnimator = "";
+    private string lastAnimatorState = "";
 
     public float animationDuration = 0;
 
@@ -20,6 +21,15 @@ public class AnimationComponent : ComponentBase
     public List<AnimatorControllerParameter> animatorParameterList = new List<AnimatorControllerParameter>();
 
     public Dictionary<string, float> animationDurationMap = new Dictionary<string, float>();
+
+    public enum AnimaState
+    {
+        Idle,
+        Move,
+        Jump,
+    }
+
+    public AnimaState currentState = AnimaState.Idle;
   //  public List<AnimatorControllerParameter> animatorParameterList = new List<AnimatorControllerParameter>();
 
     public override void Init(MikoChi mikochi)
@@ -40,6 +50,13 @@ public class AnimationComponent : ComponentBase
         for (int i = 0; i < idles.Length; ++i)
         {
             var item = idles[i];
+            animationDurationMap[item.animationName] = item.animationTime;
+        }
+
+        var w = MikoMikoMi.mikomikomi.MoveAnimation;
+        for (int i = 0; i < w.Length; ++i)
+        {
+            var item = w[i];
             animationDurationMap[item.animationName] = item.animationTime;
         }
 
@@ -72,12 +89,43 @@ public class AnimationComponent : ComponentBase
 
     public void PlayAnimator(string name = "Jump", bool loop = false)
     {
+        if (currentState != AnimaState.Idle )
+            return;
         if (!animationDurationMap.ContainsKey(name)) return;
         isPlaying = true;
         animator.CrossFade(name, 0.1f);
         var s = animator.GetCurrentAnimatorStateInfo(0);
         animationDuration = animationDurationMap[name];
         lastAnimator = name;
+    }
+
+    public void ChangeAnimatorState(string name)
+    {
+        if (lastAnimatorState == name)
+            return;
+        if (lastAnimatorState == null)
+            return;
+        animator.SetInteger(lastAnimatorState, 0);
+        animator.SetInteger(name, 1);
+        if (name == "jump")
+            animator.Play("jump2");
+        if (name == "walk" /*&& lastAnimatorState != "jump"*/)
+            animator.CrossFade("walk", 0.15f);
+
+        lastAnimatorState = name;
+    }
+
+    public void ChangeState(AnimaState state)
+    {
+        if (currentState != AnimaState.Idle && state == AnimaState.Idle)
+        {
+            if (nextRandomIdelTime - Time.realtimeSinceStartup < 2f)
+                nextRandomIdelTime += 2;
+            if (currentState == AnimaState.Move)
+                animator.Play("Idle");
+
+        }
+        currentState = state;
     }
 
 
@@ -92,10 +140,12 @@ public class AnimationComponent : ComponentBase
                 animator.CrossFade("Idle", 0.125f);
                 lastAnimator = "Idle";
                 isPlaying = false;
+                if (nextRandomIdelTime - curtime < 2f)
+                    nextRandomIdelTime += 2; 
             }
         }
 
-        if (!isPlaying && lastAnimator == "Idle" && curtime > nextRandomIdelTime)
+        if (!isPlaying && lastAnimator == "Idle" && curtime > nextRandomIdelTime && currentState == AnimaState.Idle)
         {
             nextRandomIdelTime = curtime + UnityEngine.Random.Range(5, 35f);
             var idles = MikoMikoMi.mikomikomi.idleAnimation;

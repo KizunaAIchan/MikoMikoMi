@@ -1169,6 +1169,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1241,6 +1242,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a604c9b88529447449307a2722225f49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {x: 0, y: 0.1}
+  radius: 0
+  impactColor: {r: 1, g: 0.18396229, b: 0.53990173, a: 0.8784314}
+  impactRadius: 0
+  impactRadius1: 0
+  isGray: 1
+  wave_intensity: 0.01
+  wave_shape: 0.3
+  twist_intensity: 0.01
+  twist_speed: 0.2
+  blur_intensity: 0.24
+  blur_radius: 1.6
+  colorShader: {fileID: 4800000, guid: 6380396eb3c26cf49a08fe6ceeef06a5, type: 3}
+  blurShader: {fileID: 4800000, guid: d1db9a33f280ad94cbe4b6c6133f0047, type: 3}
+  tex: {fileID: 2800000, guid: f67ddc53b9812eb48b1404b8c9602105, type: 3}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,10 +1373,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winWidth: 600
-  winHeight: 400
+  winHeight: 500
   isDebug: 1
   canLook: 0
   currentTopType: -1
+  theworld: {fileID: 963194229}
 --- !u!1 &1199028416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1583,6 +1612,10 @@ MonoBehaviour:
   - animationName: Idle5
     animationTime: 2
     requireLoveLv: 0
+  MoveAnimation:
+  - animationName: walk
+    animationTime: 2
+    requireLoveLv: 0
 --- !u!1 &1783893583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,7 +1819,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935168041}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f13fed7bf7b4ff544817f73e19480884, type: 3}
   m_Name: 
@@ -1796,7 +1829,7 @@ MonoBehaviour:
   isJumping: 0
   startPosition: {x: 0, y: 0}
   currentAction: 0
-  speed: 2
+  speed: 1
 --- !u!1 &1945319374
 GameObject:
   m_ObjectHideFlags: 0
