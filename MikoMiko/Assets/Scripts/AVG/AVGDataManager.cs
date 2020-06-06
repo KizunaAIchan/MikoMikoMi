@@ -87,6 +87,7 @@ public class AVGDataManager : MonoBehaviour
         aaaaaaaa.lv = -35;
         aaaaaaaa.lovePoint = -35;
         aaaaaaaa.totalPoint = -35;
+        nullInfo.Id = -35;
     }
 
     private void Start()

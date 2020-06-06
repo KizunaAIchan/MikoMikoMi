@@ -245,9 +245,13 @@ public class MikoChi : MonoBehaviour
         if (GameEngine.instance.showChatBubble)
         {
             var c = AVGDataManager.instance.GetRandomDialogue(1);
-            PlayAnimator(c.animation);
-            PlayAudio(c.voice);
-            EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, c.content);
+            if (c.Id != -35)
+            {
+                PlayAnimator(c.animation);
+                PlayAudio(c.voice);
+                EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, c.content);
+            }
+
 
         }
 

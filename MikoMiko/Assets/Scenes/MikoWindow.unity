@@ -402,13 +402,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 103027730}
-  m_LocalRotation: {x: 0.48102924, y: -0.24300534, z: 0.0890829, w: 0.83762974}
+  m_LocalRotation: {x: 0.9332125, y: -0.23448217, z: -0.10956956, w: 0.24925287}
   m_LocalPosition: {x: 25.218521, y: -68.63622, z: 35.660248}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 58.119003, y: -37.482002, z: -9.212001}
+  m_LocalEulerAnglesHint: {x: 24.446001, y: -159.326, z: -147.266}
 --- !u!1 &124643916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1168,6 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
@@ -1242,23 +1241,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &963194229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35f63fc3b1c6bcc41bdf3dcff11be963, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  winWidth: 600
-  winHeight: 400
-  isDebug: 1
-  canLook: 0
-  currentTopType: -1
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,7 +1339,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1124568890}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35f63fc3b1c6bcc41bdf3dcff11be963, type: 3}
   m_Name: 
@@ -1411,9 +1393,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configJson: Config.txt
+  ChannelsJson: ChannelConfig.txt
   audioClipsPath: 
   uiPath: UI/Prefabs/
   audioClipsLevelPath: Audios/LV
+  audioTotalCount: 0
+  audioClilpName: []
 --- !u!1 &1509443202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,7 +1508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c625197e017396c44aa67a5f93bb05fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateInterval: 2
+  updateInterval: 5
   channelIds:
   - UC-hM6YJuNYVAmUWxeIr9FeA
   ids: []
@@ -1670,7 +1655,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 180, y: 60, z: 1}
+  m_Size: {x: 180, y: 80, z: 1}
   m_Center: {x: 0, y: 5, z: 0}
 --- !u!4 &1858042780
 Transform:

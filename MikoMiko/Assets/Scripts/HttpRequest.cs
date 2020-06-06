@@ -186,9 +186,16 @@ public class HttpRequest : MonoBehaviour
     {
         bool isNew = false;
         int idx = _body.LastIndexOf("\"view_count\":");
+        int w = _body.LastIndexOf("\"length_seconds\":");
         if (idx + 13 >= _body.Length || idx == -1)
             return false;
         char count = _body[idx + 13];
+
+        if (w + 17 >= _body.Length || w == -1)
+            return false;
+        char lens = _body[w + 17];
+
+        Debug.Log(_waifu.name + "      " + "Length:" + lens + "    View:" + count);
         // EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.MikoChi_Oyasumi, 1, "offline");
         if (count == '0')
         {

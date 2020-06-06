@@ -91,9 +91,12 @@ public class WindowSetting : MonoBehaviour
 
     private IntPtr _hwnd;
     private bool _canDrag = false;
+    private bool _StartDrag = false;
+    private bool readyToDrag = false;
     public bool canLook = false;
     private Vector3 _lastMousePositon = Vector3.zero;
-
+    private Vector3 _lastMousePositonV2 = Vector3.zero;
+    private float lastpressTime = -1f;
 
     public enum WindowTopType{
         HWND_TOPMOST = -1,
@@ -210,8 +213,8 @@ public class WindowSetting : MonoBehaviour
                 menu.Init();
                 menu.transform.localPosition = new Vector3(0, 25, 0);
             }
-           
-          
+
+            lastpressTime = -1f;
         }
 
     
@@ -230,26 +233,24 @@ public class WindowSetting : MonoBehaviour
         {
             canLook = false;
         }
+
+
         if (UnityEngine.Application.isEditor)
             return;
         CheckPosition();
-
         if (_canDrag)
-        {
-            
-
-            if (Input.GetMouseButtonDown(0) && !IsPointOnUI(Input.mousePosition))
-            {
-                DragWindow();
-            }
-        }
+            CheckDrag();
     }
 
     public void CheckPosition()
     {
         var pos = GetMousePos();
         var screenPos = new Vector3(pos.x, pos.y, 0);
-        if (Vector3.Distance(screenPos, _lastMousePositon) < 1) return;
+        if (Vector3.Distance(screenPos, _lastMousePositon) < 1)
+        {
+
+            return;
+        }
 
         RaycastHit hitInfo;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hitInfo, 10000f, LayerMask.GetMask("WindowRect"))
@@ -369,7 +370,7 @@ public class WindowSetting : MonoBehaviour
         {
             pointsList.Add(Input.mousePosition);
 
-            if (pointsList.Count >= 3)
+            if (pointsList.Count >= 4)
             {
                 int a = 0;
                 int g = 0;
@@ -407,7 +408,10 @@ public class WindowSetting : MonoBehaviour
                         Debug.Log("Swipe");
                         p = SwipeType.None;
                         if (!MikoChi.instance.animationComponent.isPlaying)
+                        {
+                            MikoChi.instance.AddLove(1, AddLoveType.Touch);
                             MikoChi.instance.PlayAnimator("Shyv2");
+                        }
                     }
                     currentSwipeType = p;
 
@@ -418,7 +422,50 @@ public class WindowSetting : MonoBehaviour
         }
     }
 
+    public void CheckDrag()
+    {
 
+        float t = Time.realtimeSinceStartup;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _lastMousePositonV2 = Input.mousePosition;
+            lastpressTime = t;
+            readyToDrag = false;
+            _StartDrag = false;
+
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            _StartDrag = false;
+            lastpressTime = -1;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+
+            if (readyToDrag && Vector3.Distance(Input.mousePosition, _lastMousePositonV2) > 1)
+            {
+                _StartDrag = true;
+                DragWindow(); 
+            }
+
+
+            if (Vector3.Distance(Input.mousePosition, _lastMousePositonV2) > 1 && !_StartDrag)
+            {
+                lastpressTime = t;
+                readyToDrag = false;
+
+                _lastMousePositonV2 = Input.mousePosition;
+
+            }
+            else if (t - lastpressTime > 1 && lastpressTime > 0 && !IsPointOnUI(Input.mousePosition))
+            {
+                readyToDrag = true;
+
+            }
+        }
+    }
 
     //public Material m_Material;
     //void OnRenderImage(RenderTexture from, RenderTexture to)

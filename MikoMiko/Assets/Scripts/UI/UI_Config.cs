@@ -16,6 +16,8 @@ public class UI_Config : UIBase
 
     public Transform scrollView;
     public Transform tabButtonsNode;
+    public Transform LoveNode;
+    public LoveSystemDetailComponent loveConfig;
     // Start is called before the first frame update
 
 
@@ -28,6 +30,8 @@ public class UI_Config : UIBase
     {
         main = 0,
         normal,
+        Love,
+        alarm,
         detail,
         //sub
     }
@@ -102,6 +106,9 @@ public class UI_Config : UIBase
 
     public void OnBtnClickQuit()
     {
+        if (loveConfig != null)
+            loveConfig.Close();
+        loveConfig = null;
         ClearComponent();
         Close();
     }
@@ -114,8 +121,18 @@ public class UI_Config : UIBase
 
         if (curpage == ConfigPage.normal)
             RefreshNormalPage();
+        if (curpage == ConfigPage.Love)
+        {
+            if (loveConfig == null)
+                loveConfig = UIManager.instance.CreateComponent<LoveSystemDetailComponent>(UINames.LovePoint, LoveNode);
+            loveConfig.InitComponent();
+            loveConfig.transform.localPosition = Vector3.zero;
+        }
 
-        for (int i =0; i< nodelist.Count; ++i)
+      //  if (curpage == ConfigPage.alarm)
+
+
+            for (int i =0; i< nodelist.Count; ++i)
         {
             nodelist[i].gameObject.SetActive(i == (int)curpage);
         }

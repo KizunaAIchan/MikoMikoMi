@@ -1483,6 +1483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiName: 
+  InitPos: {x: 0, y: 0, z: 0}
   width: 80
   height: 100
   dialog: {fileID: 4165689850873722556}
@@ -1884,6 +1885,8 @@ MonoBehaviour:
   content: {fileID: 3100936340995160090}
   mask: {fileID: 7606855772171983221}
   opNode: {fileID: 7422683139063848422}
+  mmm: {fileID: 5199432066678403112}
+  currentTyep: 0
 --- !u!1 &7199611373122846574
 GameObject:
   m_ObjectHideFlags: 0

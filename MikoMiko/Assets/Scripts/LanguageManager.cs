@@ -31,7 +31,7 @@ public class LanguageManager : MonoBehaviour
         {"[LID:13]", "チャンネルID"},
         {"[LID:14]", "名前"},
         {"[LID:15]", "終わり"},
-        {"[LID:16]", "動画"},
+        {"[LID:16]", "アニメーション"},
         {"[LID:17]", "通用"},
         {"[LID:18]", "の配信がはじまるにぇ！"},
         {"[LID:19]", "固定"},
@@ -42,8 +42,19 @@ public class LanguageManager : MonoBehaviour
         {"[LID:24]", "違法なIDだにぇ"},
         {"[LID:25]", "データ内容が変更された，セーブせずに終了するのはいいだにぇ?"},
         {"[LID:26]", "本当に削除していいんですかにぇ？"},
+        {"[LID:27]", "好感度"},
+        {"[LID:28]", "対話"},
+        {"[LID:29]", "撫で"},
+        {"[LID:30]", "待機"},
+        {"[LID:31]", "ロック解除された内容"},
+        {"[LID:32]", "残りの増加数"},
+        {"[LID:33]", "アラーム"},
+        {"[LID:34]", "設定"},
+            {"[LID:35]", "みこちに何をしますか"},
+        {"[LID:36]", "設定"},
+        {"[LID:37]", "みこち大冒険"},
 
-        
+
     };
 
     public static Dictionary<string, string> lagToEn = new Dictionary<string, string>(
@@ -74,7 +85,16 @@ public class LanguageManager : MonoBehaviour
         {"[LID:24]", "Invalid IDだにぇ"},
         {"[LID:25]", "Data changed. Are you sure you want to quit?"},
         {"[LID:26]", "Are you sure you want to delete it?"},
-
+              {"[LID:27]", "好感度"},
+        {"[LID:28]", "対話"},
+        {"[LID:29]", "撫で"},
+        {"[LID:30]", "待機"},
+        {"[LID:31]", "Unlock"},
+        {"[LID:32]", "残りの増加数"},
+        {"[LID:33]", "アラーム"},
+        {"[LID:35]", "みこちに何をしますか"},
+        {"[LID:36]", "設定"},
+        {"[LID:37]", "みこち大冒険"},
 
     };
 
@@ -106,7 +126,16 @@ public class LanguageManager : MonoBehaviour
         {"[LID:24]", "ID不合法呐"},
         {"[LID:25]", "不保存退出呐"},
         {"[LID:26]", "确定删除吗"},
-
+              {"[LID:27]", "好感度"},
+        {"[LID:28]", "対話"},
+        {"[LID:29]", "撫で"},
+        {"[LID:30]", "待機"},
+        {"[LID:31]", "ロック解除された内容"},
+        {"[LID:32]", "残りの増加数"},
+        {"[LID:33]", "アラーム"},
+             {"[LID:35]", "みこちに何をしますか"},
+        {"[LID:36]", "設定"},
+        {"[LID:37]", "みこち大冒険"},
     };
 
     private void Awake()

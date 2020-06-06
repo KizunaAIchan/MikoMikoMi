@@ -53,7 +53,8 @@ public class UILovePointBar : UIBase
         {
             addPoint.text = "+" + n.ToString();
         }
-        anima.Play("addlovepoint");
+       // if (anima.)
+      //  anima.Play("addlovepoint");
 
     }
 

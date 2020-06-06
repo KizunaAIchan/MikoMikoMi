@@ -33,8 +33,8 @@ public class GameEngine : MonoBehaviour
     private void Awake()
     {
         instance = this;
-      
-        
+
+        Tools.Init();
     }
     public void Start()
     {
@@ -84,6 +84,10 @@ public class GameEngine : MonoBehaviour
         Loading.SetActive(false);
         EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, "にゃっはろ～");
         this.miko.AddRandomChat();
+        TimerManager.instance.AddTimer(3.5f, () =>
+        {
+            ResourcesManager.instance.CanResetLoveCount();
+        }, true);
 
     }
 

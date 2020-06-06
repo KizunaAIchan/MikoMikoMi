@@ -21,8 +21,18 @@ public class AVGDialog : MonoBehaviour
     public Text content;
     public GameObject mask;
     public GameObject opNode;
+    public UI_RightClickMenu mmm;
 
     private DialogueInfo config;
+
+
+    public enum DialogType
+    {
+        Config,
+        Normal,
+    }
+
+    public DialogType currentTyep = DialogType.Config;
 
     public void ShowDialog(DialogueInfo info)
     {
@@ -36,15 +46,10 @@ public class AVGDialog : MonoBehaviour
         {
             optionsInfo.Add(AVGDataManager.instance.GetOptionById(info.optionIds[i]));
         }
-   //     optionsInfo = info.optionsInfo;
         textFadeIn.callback = ShowTextImmediately;
 
         GameEngine.instance.miko.PlayAnimator(info.animation);
         GameEngine.instance.miko.PlayAudio(info.voice,true);
-        //if (info.Id == 6)
-        //    GameEngine.instance.miko.PlayAnimation("StayHome");
-        //if (info.Id ==7 )
-        //    GameEngine.instance.miko.PlayAnimation("nyahello");
     }
 
     public void StartFadeIn()
@@ -84,6 +89,30 @@ public class AVGDialog : MonoBehaviour
 
     public void OnSelected(int index)
     {
+        if (currentTyep == DialogType.Config)
+        {
+
+            if (index == 0)
+            {
+                currentTyep = DialogType.Normal;
+                var dialoginfo = AVGDataManager.instance.GetRandomDialogue();
+
+                ResetContent(dialoginfo.Id);
+                StartFadeIn();
+            }
+            if (index == 1)
+            {
+                mmm.OnBtnClickShowConfig();
+              //  Close();
+            }
+            if (index == 2)
+            {
+
+            }
+
+            return;
+        }
+
         var info = optionsInfo[index];
         ResetContent(info.DialogueId);
         MikoChi.instance.AddLove(info.addLove, AddLoveType.Dialogue);
@@ -103,7 +132,35 @@ public class AVGDialog : MonoBehaviour
         textFadeIn.Stop();
 
         mask.SetActive(false);
-        SetOptions(config.type);
+        if (currentTyep == DialogType.Config)
+        {
+            opNode.SetActive(true);
+            for (int i = 0; i < optionBtns.Length; ++i)
+            {
+                var btn = optionBtns[i];
+
+                Color c = btn.image.color;
+                c.a = 0.5f;
+                btn.image.color = c;
+
+                Color cc = btn.text.color;
+                cc.a = 0.5f;
+                btn.text.color = cc;
+
+                btn.gameObject.SetActive(true);
+                if (i == 0)
+                    btn.text.text =LanguageManager.instance.GetStringByLID("[LID:28]");
+                if (i == 1)
+                    btn.text.text = LanguageManager.instance.GetStringByLID("[LID:36]");
+                if (i == 2)
+                    btn.text.text = LanguageManager.instance.GetStringByLID("[LID:37]");
+            }
+
+        }
+        else
+        {
+            SetOptions(config.type);
+        }
     }
 
 
@@ -116,7 +173,16 @@ public class AVGDialog : MonoBehaviour
 
     public void ShowOptions()
     {
+        currentTyep = DialogType.Config;
+        mask.SetActive(true);
+        opNode.SetActive(false);
 
+        var s = LanguageManager.instance.GetStringByLID("[LID:35]");
+
+        content.text = s;
+        textFadeIn.SetText(s);
+        textFadeIn.callback = ShowTextImmediately;
+        
     }
 
 }

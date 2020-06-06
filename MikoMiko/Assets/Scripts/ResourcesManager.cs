@@ -109,10 +109,12 @@ public class ResourcesManager : MonoBehaviour
     private ChannelData ChannelData;
     private MikoWindowConfig mikoConfig;
     private int LoveLevel = 0;
+    public int audioTotalCount = 0;
     private void Awake()
     {
         instance = this;
         InitAudioClips();
+        audioTotalCount = audioCllips.Count;
         InitUIPrefabs();
         InitChannelConfigs();
         InitChannelConfigDic();
@@ -286,6 +288,7 @@ public class ResourcesManager : MonoBehaviour
         mikoConfig.loveConfig = new LoveSystem();
         mikoConfig.loveConfig.lastUpdateDay = DateTime.Now.DayOfYear;
         mikoConfig.loveConfig.LastUpdateYear = DateTime.Now.Year;
+        ResetLoveCount();
         mikoConfig.autoStart = 1;
         mikoConfig.startAnima = "";
         mikoConfig.startVoice = "";
@@ -395,7 +398,7 @@ public class ResourcesManager : MonoBehaviour
                 aud.Dispose();
                 AudioLoveConfig config = new AudioLoveConfig();
                 config.clip = clip;
-                config.requireLv = 1;
+                config.requireLv = -1;
 
                 audioCllips.Add(path, config);
                 // audioCllips.Add(name, clip);
@@ -469,6 +472,7 @@ public class ResourcesManager : MonoBehaviour
         }
         SaveConfigToJsonConfig();
     }
+
 
     public int GetLove()
     {
@@ -574,9 +578,9 @@ public class ResourcesManager : MonoBehaviour
 
     public void ResetLoveCount()
     {
-        mikoConfig.loveConfig.dialogueCount = 12;
+        mikoConfig.loveConfig.dialogueCount = 10;
         mikoConfig.loveConfig.idleCount = 8;
-        mikoConfig.loveConfig.touchCount = 4;
+        mikoConfig.loveConfig.touchCount = 6;
         mikoConfig.loveConfig.lastUpdateDay = DateTime.Now.DayOfYear;
         mikoConfig.loveConfig.LastUpdateYear = DateTime.Now.Year;
         Debug.Log("rest");
@@ -592,5 +596,29 @@ public class ResourcesManager : MonoBehaviour
         if (d2.DayOfYear != day)
             return true;
         return false;
+    }
+
+    public List<string> audioClilpName = new List<string>();
+    public List<string> GetaudioClipList(bool customer = false)
+    {
+        audioClilpName.Clear();
+
+        foreach(var i in audioCllips)
+        {
+            if (LoveLevel >=  i.Value.requireLv)
+            {
+                if (i.Value.requireLv == -1 && customer)
+                    continue;
+                audioClilpName.Add(i.Key);
+            }
+        }
+
+        return audioClilpName;
+    }
+
+    public void CanResetLoveCount()
+    {
+        if (DifferentDay(mikoConfig.loveConfig.LastUpdateYear, mikoConfig.loveConfig.lastUpdateDay, DateTime.Now))
+            ResetLoveCount();
     }
 }

@@ -14,7 +14,10 @@ public class UI_RightClickMenu : UIBase
 
     public void Init()
     {
-        OnShowDialog();
+        dialog.ShowOptions();
+        dialog.StartFadeIn();
+
+        // OnShowDialog();
     }
 
     public void OnBtnClickClose()
@@ -27,6 +30,10 @@ public class UI_RightClickMenu : UIBase
         var dialoginfo = AVGDataManager.instance.GetRandomDialogue();
         dialog.ResetContent(dialoginfo.Id);
         dialog.StartFadeIn();
+    }
+    public void ShowConfig()
+    {
+
     }
 
     public void OnBtnClickExit()
