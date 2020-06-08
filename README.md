@@ -73,4 +73,5 @@ MikoMikoMi
 ## 引用されたプロジェクト
 * CSCore  https://github.com/hallidev/UnityWasapiAudio  https://github.com/filoe/cscore
 * Bunny83 https://github.com/Bunny83/UnityWindowsFileDrag-Drop
+* Unity InpuFieldMode https://pastebin.com/AHggHUMX
 ------
