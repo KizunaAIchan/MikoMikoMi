@@ -27,7 +27,11 @@ MikoMikoMi
 * 詳細設定では`通知音`、`終わり音`、 `アニメーション`を設定することができます 
 * お気に入りのオーディオを追加することができます
 * 通知を受け付けるかどうかを設定することもできます
-* <div class="text-white bg-gray-dark mb-2">ボイスの数量：70 アニメーションの数量：35</div>
+* 
+<a class="text-gray-dark no-underline" href="#url">
+  A link with only part of it is <span class="link-hover-blue">blue on hover</span>.
+</a>
+<div class="text-white bg-gray-dark mb-2">ボイスの数量：70 アニメーションの数量：35</div>
 #### 対話機能 (仮)
 * **みこち**と話せる
 * 一部の対話には**選択肢**があります
