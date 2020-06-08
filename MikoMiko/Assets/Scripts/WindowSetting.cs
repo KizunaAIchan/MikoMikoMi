@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using B83.Win32;
 
 public class WindowSetting : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class WindowSetting : MonoBehaviour
     static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     [DllImport("user32.dll")]
+    static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+    [DllImport("user32.dll")]
     static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
     [DllImport("user32.dll")]
@@ -61,6 +65,7 @@ public class WindowSetting : MonoBehaviour
     [DllImport("user32.dll")]
     public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
 
+
     private const int WS_POPUP = 0x800000;
     private const int GWL_EXSTYLE = -20;
     private const int GWL_STYLE = -16;
@@ -77,6 +82,8 @@ public class WindowSetting : MonoBehaviour
     private const int ULW_OPAQUE = 0x00000004;
     private const int ULW_EX_NORESIZE = 0x00000008;
     private const uint WS_EX_TOPMOST = 0x00000008;
+    const int WM_DRAWCLIPBOARD = 0x308;
+    const int WM_CHANGECBCHAIN = 0x030D;
     #endregion
 
 
@@ -120,10 +127,9 @@ public class WindowSetting : MonoBehaviour
         instance = this;
 
         _hwnd = FindWindow(null, UnityEngine.Application.productName);
-        //var _windowHandle = FindWindow(null, UnityEngine.Application.productName);
-        //Debug.Log(_hwnd.ToString() + "    " + _windowHandle.ToString() + "    " + UnityEngine.Application.productName);
+        UnityDragAndDropHook.InstallHook(_hwnd);
+        UnityDragAndDropHook.OnDroppedFiles += OpenDragFile;
 
-      //  Debug.Log();
         if (UnityEngine.Application.isEditor)
             return;
 
@@ -147,13 +153,27 @@ public class WindowSetting : MonoBehaviour
 
 
 
-
+      
 
 
     }
 
+
     public void Update()
     {
+
+        //if (iData.GetDataPresent(DataFormats.Rtf))
+        //{
+        //    Debug.Log(1);
+        //    EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, (string)iData.GetData(DataFormats.Rtf));
+        //}
+        //else if (iData.GetDataPresent(DataFormats.Text))
+        //{
+        //    Debug.Log(1);
+
+        //    EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, (string)iData.GetData(DataFormats.Text));
+
+        //}
         //if (Input.touchCount > 0)
         //{
         //    Debug.Log(Input.GetTouch(0).phase);
@@ -203,6 +223,7 @@ public class WindowSetting : MonoBehaviour
 
     public void LateUpdate()
     {
+        
   
         if (Input.GetMouseButtonUp(1))
         {
@@ -475,6 +496,25 @@ public class WindowSetting : MonoBehaviour
         }
     }
 
+    public void OnDestroy()
+    {
+        UnityDragAndDropHook.UninstallHook();
+
+    }
+
+    public void OpenDragFile(List<string> aFiles, POINT aPos)
+    {
+        if (aFiles.Count == 0)
+            return;
+        string str = "Dropped " + aFiles.Count + " files at: " + aPos + "\n\t" +aFiles[0];
+        EventManager.instance.SendEvent((int)EventManager.EventSender.MikoChi, (int)EventManager.EventType.Chat, 1, str);
+
+    }
+
+    void wndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+    {
+      
+    }
     //public Material m_Material;
     //void OnRenderImage(RenderTexture from, RenderTexture to)
     //{

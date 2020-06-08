@@ -49,11 +49,24 @@ public class UI_RightClickMenu : UIBase
         Close();
     }
 
+    public void OnBtnClickClipBroad()
+    {
+        var m = UIManager.instance.GetAliveUI<Clipboard>(UINames.Clipboard);
+        m.Show();
+        //   var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
+        //   menu.InitComponent();
+        ////   menu.transform.localPosition = new Vector3(0, -35f, 0);
+        //   menu.transform.localPosition = new Vector3(0, -60f, 0);
+        Close();
+    }
+
     public void OnBtnClickShowConfig()
     {
+        //var m = UIManager.instance.GetAliveUI<Clipboard>(UINames.Clipboard);
+        //m.Show();
         var menu = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
         menu.InitComponent();
-     //   menu.transform.localPosition = new Vector3(0, -35f, 0);
+        //   menu.transform.localPosition = new Vector3(0, -35f, 0);
         menu.transform.localPosition = new Vector3(0, -60f, 0);
         Close();
     }

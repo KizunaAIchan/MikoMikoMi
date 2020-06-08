@@ -53,6 +53,9 @@ public class LanguageManager : MonoBehaviour
             {"[LID:35]", "みこちに何をしますか"},
         {"[LID:36]", "設定"},
         {"[LID:37]", "みこち大冒険"},
+        {"[LID:38]", "貼り"},
+        {"[LID:39]", "隠蔽"},
+        {"[LID:40]", "クリア"},
 
 
     };
@@ -95,6 +98,7 @@ public class LanguageManager : MonoBehaviour
         {"[LID:35]", "みこちに何をしますか"},
         {"[LID:36]", "設定"},
         {"[LID:37]", "みこち大冒険"},
+        {"[LID:38]", "貼り"},
 
     };
 
@@ -136,6 +140,8 @@ public class LanguageManager : MonoBehaviour
              {"[LID:35]", "みこちに何をしますか"},
         {"[LID:36]", "設定"},
         {"[LID:37]", "みこち大冒険"},
+        {"[LID:38]", "貼り"},
+
     };
 
     private void Awake()

@@ -754,7 +754,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: System
+  m_Text: ClipBroad
   isLanguageText: 0
   LanguageId: 
 --- !u!1 &4192127233857235565
@@ -2007,7 +2007,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5199432066678403112}
-        m_MethodName: OnBtnClickShowConfig
+        m_MethodName: OnBtnClickClipBroad
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

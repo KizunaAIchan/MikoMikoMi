@@ -79,7 +79,7 @@ public class TheWorld : PostEffectsBase
     public void Step1()
     {
         tweenlist.Clear();
-        DOTween.To(() => impactRadius, x => impactRadius = x, 2, 1f).SetEase(Ease.InCubic);
+        tweenlist.Add(DOTween.To(() => impactRadius, x => impactRadius = x, 0.3f, 1f).SetEase(Ease.InCubic));
         TimerId =TimerManager.instance.AddTimer(0.05f, () =>
         {
             Step2();
@@ -93,7 +93,7 @@ public class TheWorld : PostEffectsBase
         //  radius = 0.18f;
         tweenlist.Add(DOTween.To(() => radius, x => radius = x,0.18f, 0.05f).SetEase(Ease.InCubic));
 
-        tweenlist.Add(DOTween.To(() => impactRadius1, x => impactRadius1 = x, 2, 0.3f).SetEase(Ease.InCubic));
+        tweenlist.Add(DOTween.To(() => impactRadius1, x => impactRadius1 = x, 2f, 0.3f).SetEase(Ease.InCubic));
         var t = DOTween.To(() => blur_intensity, x => blur_intensity = x, 1.5f, 0.1f).SetEase(Ease.InCubic);
         t.onComplete = delegate { DOTween.To(() => blur_intensity, x => blur_intensity = x, 0f, 0.2f).SetEase(Ease.InCubic); };
 
@@ -126,7 +126,7 @@ public class TheWorld : PostEffectsBase
         t3.onComplete = delegate { DOTween.To(() => blur_intensity, x => blur_intensity = x, 0f, 0.2f).SetEase(Ease.InCubic); };
         DOTween.To(() => radius, x => radius = x, 0, 0.18f).SetEase(Ease.InCubic);
         DOTween.To(() => impactRadius, x => impactRadius = x, 0, 0.5f).SetEase(Ease.InCubic);
-        DOTween.To(() => impactRadius, x => impactRadius = x, 0, 0.6f).SetEase(Ease.InCubic);
+       DOTween.To(() => impactRadius1, x => impactRadius1 = x, 0, 0.6f).SetEase(Ease.InCubic);
         Time.timeScale = 0;
 
     }

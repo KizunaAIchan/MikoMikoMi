@@ -16,6 +16,9 @@ public class UINames
     public static string QuickJumpItem = "QuickJumpItem";
     public static string LoveBar = "LovePointBar";
     public static string LovePoint = "LovePoint";
+    public static string ClipboardComponent = "ClipboardComponent"; 
+    public static string Clipboard = "Clipboard";
+
 
 }
 
@@ -37,14 +40,14 @@ public class UIManager : MonoBehaviour
         PreLoadUI<UI_RightClickMenu>(UINames.rightClickMenu);
         PreLoadUI<ChatBubble>(UINames.ChatBubble);
 
-        var m = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
-        m.InitComponent();
-        m.OnBtnClickQuit();
+    
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        var m = UIManager.instance.ShowUI<UI_Config>(UINames.configPage);
+        m.InitComponent();
+        m.OnBtnClickQuit();
     }
 
     // Update is called once per frame
@@ -129,17 +132,17 @@ public class UIManager : MonoBehaviour
 
     public static void HideUI(Transform obj, bool hide)
     {
-        if (obj.position.x > 3535 && !hide)
+        if (obj.localPosition.x > 3535 && !hide)
         {
-            var pos = obj.position;
-            pos.x -= 3535;
-            obj.position = pos;
+            var pos = obj.localPosition;
+            pos.x -= 35353;
+            obj.localPosition = pos;
         }
-        else if (obj.position.x < 3535 && hide)
+        else if (obj.localPosition.x < 3535 && hide)
         {
-            var pos = obj.position;
-            pos.x += 3535;
-            obj.position = pos;
+            var pos = obj.localPosition;
+            pos.x += 35353;
+            obj.localPosition = pos;
         }
     }
 

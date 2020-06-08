@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,7 +66,9 @@ public class GameEngine : MonoBehaviour
         LanguageManager.instance.InitLanguage();
         TimerManager.instance.Init();
 
-
+        var m = UIManager.instance.ShowUI<Clipboard>(UINames.Clipboard);
+        m.Init();
+        m.Show();
     }
 
     public void CreateMikoChi()
@@ -231,12 +235,32 @@ public class GameEngine : MonoBehaviour
         chatBubble.transform.localPosition = new Vector3(-160, 130, 0);
 
         chatBubble.DoFadeIn();
-    //    chatBubble.ShowNotification("MikoChi");
+        miko.PlayAnimator("deny");
+        chatBubble.ShowNormalMessage("死ね Win32API!!!");
     }
 
    
 
     public Text t;
+    public InputField qwe;
+    public void DDD()
+    {
+        string path = Application.dataPath;
+        path += "/../Saves";
+
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+
+        path += "/" + "we.txt";
+
+        if (!File.Exists(path))
+            File.Create(path).Dispose();
+        var s = File.ReadAllText(path,Encoding.UTF8);
+        qwe.text = s;
+    }
 
     public void ForTest(int id, object args)
     {
