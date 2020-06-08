@@ -28,9 +28,9 @@ MikoMikoMi
 * お気に入りのオーディオを追加することができます
 * 通知を受け付けるかどうかを設定することもできます
 * 
-<a class="text-gray-dark no-underline" href="#url">
-  A link with only part of it is <span class="link-hover-blue">blue on hover</span>.
-</a>
+<div class="text-white bg-blue mb-2">
+  .text-white on .bg-blue
+</div>
 <div class="text-white bg-gray-dark mb-2">ボイスの数量：70 アニメーションの数量：35</div>
 #### 対話機能 (仮)
 * **みこち**と話せる
