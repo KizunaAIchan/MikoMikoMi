@@ -257,9 +257,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281c93f67a5561947997e4ab921bc525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mikoFace: {fileID: 0}
+  mikoFace: {fileID: 2100000, guid: 879e41e36314b144c959bff8762c48c3, type: 2}
   mikoRenderer: {fileID: 0}
-  mikoFaceArray: []
+  mikoFaceArray:
+  - {fileID: 2800000, guid: b9749629114b79c43a25ea0132ebc4e0, type: 3}
   currentFace: 0
   animation: {fileID: 0}
   animator: {fileID: 5863269425573516522}
@@ -270,108 +271,144 @@ MonoBehaviour:
   - animationName: Idle
     animationTime: 1
     requireLoveLv: 0
+    faceName: 
   - animationName: Nodding
     animationTime: 0.6
     requireLoveLv: 0
+    faceName: 
   - animationName: Yeah
     animationTime: 2
     requireLoveLv: 0
+    faceName: 
   - animationName: WavingHand
     animationTime: 2
     requireLoveLv: 0
+    faceName: 
   - animationName: Shy
     animationTime: 3
     requireLoveLv: 0
+    faceName: 
   - animationName: angry
     animationTime: 3
     requireLoveLv: 1
+    faceName: 
   - animationName: sex03
     animationTime: 2
     requireLoveLv: 4
+    faceName: 
   - animationName: Shyv2
     animationTime: 3
     requireLoveLv: 1
+    faceName: 
   - animationName: piece
     animationTime: 3
     requireLoveLv: 3
+    faceName: 
   - animationName: kick
     animationTime: 0.9
     requireLoveLv: 4
+    faceName: 
   - animationName: punch
     animationTime: 0.8
     requireLoveLv: 4
+    faceName: 
   - animationName: fail
     animationTime: 2.2
     requireLoveLv: 5
+    faceName: 
   - animationName: success
     animationTime: 1.8
     requireLoveLv: 5
+    faceName: 
   - animationName: wrong
     animationTime: 3
     requireLoveLv: 5
+    faceName: 
   - animationName: correct
     animationTime: 3
     requireLoveLv: 5
+    faceName: 
   - animationName: jump
     animationTime: 1.1
     requireLoveLv: 1
+    faceName: 
   - animationName: search
     animationTime: 2.1
     requireLoveLv: 3
+    faceName: 
   - animationName: uchi
     animationTime: 3
     requireLoveLv: 2
+    faceName: 
   - animationName: cry
     animationTime: 2.4
     requireLoveLv: 3
+    faceName: 
   - animationName: cute
     animationTime: 2.8
     requireLoveLv: 3
+    faceName: 
   - animationName: deny
     animationTime: 2.4
     requireLoveLv: 5
+    faceName: 
   - animationName: flex
     animationTime: 1.8
     requireLoveLv: 3
+    faceName: 
   - animationName: sex01
     animationTime: 2.2
     requireLoveLv: 4
+    faceName: 
   - animationName: sex02
     animationTime: 2.2
     requireLoveLv: 4
+    faceName: 
   - animationName: think
     animationTime: 2
     requireLoveLv: 1
+    faceName: 
   - animationName: laugh1
     animationTime: 2.2
     requireLoveLv: 2
+    faceName: 
   - animationName: laugh2
     animationTime: 2.2
     requireLoveLv: 2
+    faceName: 
   - animationName: nodding2
     animationTime: 1.6
     requireLoveLv: 1
+    faceName: 
   - animationName: shakebody
     animationTime: 2.4
     requireLoveLv: 2
+    faceName: 
   - animationName: shakehead
     animationTime: 2
     requireLoveLv: 2
+    faceName: 
   - animationName: cat
     animationTime: 2.2
     requireLoveLv: 6
+    faceName: 
   - animationName: enegetic
     animationTime: 2.4
     requireLoveLv: 6
+    faceName: 
   - animationName: pointf
     animationTime: 2
     requireLoveLv: 6
+    faceName: 
   - animationName: www
     animationTime: 7
     requireLoveLv: 6
+    faceName: 
   - animationName: si
     animationTime: 2
     requireLoveLv: 6
+    faceName: 
+  cacheAnimaList: []
 --- !u!65 &8592601420710293575
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -88,7 +88,8 @@ public class ResourcesManager : MonoBehaviour
     public string uiPath = "UI/Prefabs/";
 
     public string audioClipsLevelPath = "Audios/LV";
-    
+
+    public string MemoPath = "";
 
     public class AudioLoveConfig
     {
@@ -122,7 +123,8 @@ public class ResourcesManager : MonoBehaviour
         WindowSetting.instance.SetWindowTop(mikoConfig.onTop == 0);
         GameEngine.instance.showChatBubble = mikoConfig.chattbubble == 0;
         GameEngine.instance.audioVolume = mikoConfig.mute == 0 ? 1 : 0;
-        
+        MemoPath= Application.dataPath +  "/../Saves/Memo";
+
     }
     // Start is called before the first frame update
     void Start()
@@ -599,7 +601,7 @@ public class ResourcesManager : MonoBehaviour
     }
 
     public List<string> audioClilpName = new List<string>();
-    public List<string> GetaudioClipList(bool customer = false)
+    public List<string> GetaudioClipList(bool custome = false)
     {
         audioClilpName.Clear();
 
@@ -607,7 +609,7 @@ public class ResourcesManager : MonoBehaviour
         {
             if (LoveLevel >=  i.Value.requireLv)
             {
-                if (i.Value.requireLv == -1 && customer)
+                if (i.Value.requireLv == -1 && custome)
                     continue;
                 audioClilpName.Add(i.Key);
             }
@@ -620,5 +622,10 @@ public class ResourcesManager : MonoBehaviour
     {
         if (DifferentDay(mikoConfig.loveConfig.LastUpdateYear, mikoConfig.loveConfig.lastUpdateDay, DateTime.Now))
             ResetLoveCount();
+    }
+
+    public int GetLoveLV()
+    {
+        return LoveLevel;
     }
 }

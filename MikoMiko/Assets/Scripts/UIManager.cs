@@ -18,6 +18,8 @@ public class UINames
     public static string LovePoint = "LovePoint";
     public static string ClipboardComponent = "ClipboardComponent"; 
     public static string Clipboard = "Clipboard";
+    public static string MemoComponent = "MemoComponent";
+    public static string UIMemo = "UIMemo";
 
 
 }

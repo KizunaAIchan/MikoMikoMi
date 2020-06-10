@@ -9,13 +9,12 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: CubeAudio
   m_Shader: {fileID: 4800000, guid: 0d325ef349acc794da37e3dd556b7a99, type: 3}
-  m_ShaderKeywords: TCP2_NONE _ALPHAPREMULTIPLY_ON
+  m_ShaderKeywords: TCP2_NONE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -60,7 +59,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _EnableConstSizeOutline: 0
     - _EnableTexturedOutline: 0
     - _EnableZSmooth: 0
@@ -68,7 +67,7 @@ Material:
     - _Glossiness: 0.558
     - _GlossyReflections: 1
     - _Metallic: 0.428
-    - _Mode: 3
+    - _Mode: 0
     - _OcclusionStrength: 1
     - _Offset1: 0
     - _Offset2: 0
@@ -89,7 +88,7 @@ Material:
     - _TexLod: 5
     - _UVSec: 0
     - _ZSmooth: -0.5
-    - _ZWrite: 0
+    - _ZWrite: 1
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:

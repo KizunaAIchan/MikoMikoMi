@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiName: 
-  InitPos: {x: 190, y: 130, z: 0}
+  InitPos: {x: 170, y: 130, z: 0}
   width: 0
   height: 0
   comList:

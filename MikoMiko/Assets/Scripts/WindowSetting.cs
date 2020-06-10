@@ -84,6 +84,8 @@ public class WindowSetting : MonoBehaviour
     private const uint WS_EX_TOPMOST = 0x00000008;
     const int WM_DRAWCLIPBOARD = 0x308;
     const int WM_CHANGECBCHAIN = 0x030D;
+
+    const uint WS_EX_TOOLWINDOW = 0x00000080;
     #endregion
 
 
@@ -104,6 +106,7 @@ public class WindowSetting : MonoBehaviour
     private Vector3 _lastMousePositon = Vector3.zero;
     private Vector3 _lastMousePositonV2 = Vector3.zero;
     private float lastpressTime = -1f;
+    public Material m;
 
     public enum WindowTopType{
         HWND_TOPMOST = -1,
@@ -133,8 +136,15 @@ public class WindowSetting : MonoBehaviour
         if (UnityEngine.Application.isEditor)
             return;
 
-      
-        UnityEngine.Screen.fullScreen = false;
+
+        //  UnityEngine.Screen.fullScreen = false;
+
+        //SetWindowLong(_hwnd, GWL_EXSTYLE, WS_EX_LAYERED);
+        //int intExTemp = GetWindowLong(_hwnd, GWL_EXSTYLE);
+
+        //SetWindowLong(_hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+        //SetWindowLong(_hwnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT);
+
 
         SetWindowLong(_hwnd, GWL_EXSTYLE, WS_EX_LAYERED);
         int intExTemp = GetWindowLong(_hwnd, GWL_EXSTYLE);
@@ -518,6 +528,6 @@ public class WindowSetting : MonoBehaviour
     //public Material m_Material;
     //void OnRenderImage(RenderTexture from, RenderTexture to)
     //{
-    //    Graphics.Blit(from, to, m_Material);
+    //    Graphics.Blit(from, to, m);
     //}
 }

@@ -109,7 +109,7 @@ public class GameEngine : MonoBehaviour
         MemoryInformation memInfo = Rainity.GetMemoryInformation();
         Ramt.text = Mathf.Round(memInfo.ramUsed / memInfo.ramTotal * 100).ToString() + "%";
         RAM.fillAmount = memInfo.ramUsed / memInfo.ramTotal;
-        DiskInformation diskInfo = Rainity.GetDiskInformation("C:\\");
+       // DiskInformation diskInfo = Rainity.GetDiskInformation("C:\\");
 
      
 
@@ -291,8 +291,8 @@ public class GameEngine : MonoBehaviour
         var tray = Rainity.CreateSystemTrayIcon();
         if (tray != null)
         {
-            tray.AddItem("Exit", null);
-            tray.SetTitle("Rainity Demo Application");
+            tray.AddItem("Exit", Quit);
+            tray.SetTitle("35Miko");
         }
     }
 
@@ -300,5 +300,10 @@ public class GameEngine : MonoBehaviour
     public void SetCPURAM(bool show)
     {
         cpuNode.gameObject.SetActive(show);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

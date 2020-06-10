@@ -22,6 +22,8 @@ namespace Assets.WasapiAudio.Scripts.Unity
         public int MaxFrequency = 20000;
         public WasapiAudioFilter[] Filters;
 
+
+        public bool isStart = false;
         public void Awake()
         {
             // Setup loopback audio and start listening
@@ -29,7 +31,6 @@ namespace Assets.WasapiAudio.Scripts.Unity
             {
                 _spectrumData = spectrumData;
             });
-
             _wasapiAudio.StartListen();
         }
 
@@ -127,6 +128,26 @@ namespace Assets.WasapiAudio.Scripts.Unity
             {
                 _wasapiAudio.StopListen();
             }
+        }
+
+
+        public void RestartListen()
+        {
+            if (_wasapiAudio != null)
+            {
+                _wasapiAudio.StopListen();
+                _wasapiAudio = null;
+                _wasapiAudio = new Wasapi.WasapiAudio(CaptureType, SpectrumSize, ScalingStrategy, MinFrequency, MaxFrequency, Filters, spectrumData =>
+                {
+                    _spectrumData = spectrumData;
+                });
+                _wasapiAudio.StartListen();
+            }
+        }
+
+        public int GetLastWasapiAudioUpdateTime()
+        {
+            return _wasapiAudio.updateCnt;
         }
 
         //public void OnApplicationQuit()

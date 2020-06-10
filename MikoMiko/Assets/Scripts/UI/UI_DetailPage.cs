@@ -98,11 +98,13 @@ public class UI_DetailPage : UIComponentBase
         Dropdown.OptionData data1 = new Dropdown.OptionData();
         data1.text = "Null";
         _dropdownlist.Add(data1);
-        var voices = ResourcesManager.instance.audioCllips;
-        foreach(var v in voices)
+        var voices = ResourcesManager.instance.GetaudioClipList(true);
+
+        for (int i=0; i< voices.Count; ++i)
         {
+            var v = voices[i];
             Dropdown.OptionData data = new Dropdown.OptionData();
-            data.text = v.Key;
+            data.text = v;
             _dropdownlist.Add(data);
         }
 
@@ -117,7 +119,7 @@ public class UI_DetailPage : UIComponentBase
         animationOver.ClearOptions();
         _Anidropdownlist.Clear();
 
-        var ani = MikoChi.instance.GetAnimatorList();
+        var ani = MikoChi.instance.GetAnimatorListByLv();
 
         for(int i =0; i< ani.Count; ++i)
         {

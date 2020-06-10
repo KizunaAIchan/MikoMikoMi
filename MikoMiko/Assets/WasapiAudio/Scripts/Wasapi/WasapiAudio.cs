@@ -107,8 +107,14 @@ namespace Assets.WasapiAudio.Scripts.Wasapi
 
             _soundInSource.DataAvailable += (s, ea) =>
             {
+                   UnityEngine.Debug.Log(buffer.Length);
+
                 while (_realtimeSource.Read(buffer, 0, buffer.Length) > 0)
                 {
+                    updateCnt++;
+                    if (updateCnt > 353535)
+                        updateCnt = 0;
+
                     float[] spectrumData = _lineSpectrum.GetSpectrumData(MaxAudioValue);
 
                     if (spectrumData != null)
@@ -132,9 +138,12 @@ namespace Assets.WasapiAudio.Scripts.Wasapi
             _wasapiCapture.Dispose();
         }
 
+
+        public int updateCnt = 0;
         private void SingleBlockNotificationStream_SingleBlockRead(object sender, SingleBlockReadEventArgs e)
         {
-            UnityEngine.Debug.Log(123123);
+            
+            
             _basicSpectrumProvider.Add(e.Left, e.Right);
         }
     }

@@ -20,7 +20,7 @@ public class AnimationComponent : ComponentBase
 
     public List<AnimatorControllerParameter> animatorParameterList = new List<AnimatorControllerParameter>();
 
-    public Dictionary<string, float> animationDurationMap = new Dictionary<string, float>();
+    public Dictionary<string, MikoChi.AnimationTime> animationInfoMap = new Dictionary<string, MikoChi.AnimationTime>();
 
     public enum AnimaState
     {
@@ -38,26 +38,26 @@ public class AnimationComponent : ComponentBase
         animation = miko.animation;
         animator = miko.animator;
         animatorParameterList.Clear();
-        animationDurationMap.Clear();
+        animationInfoMap.Clear();
         
         for (int i=0; i< miko.animationTimeList.Count; ++i)
         {
             var item = miko.animationTimeList[i];
-            animationDurationMap[item.animationName] = item.animationTime;
+            animationInfoMap[item.animationName] = item;
         }
 
         var idles = MikoMikoMi.mikomikomi.idleAnimation;
         for (int i = 0; i < idles.Length; ++i)
         {
             var item = idles[i];
-            animationDurationMap[item.animationName] = item.animationTime;
+            animationInfoMap[item.animationName] = item;
         }
 
         var w = MikoMikoMi.mikomikomi.MoveAnimation;
         for (int i = 0; i < w.Length; ++i)
         {
             var item = w[i];
-            animationDurationMap[item.animationName] = item.animationTime;
+            animationInfoMap[item.animationName] = item;
         }
 
         isPlaying = false;
@@ -91,12 +91,15 @@ public class AnimationComponent : ComponentBase
     {
         if (currentState != AnimaState.Idle )
             return;
-        if (!animationDurationMap.ContainsKey(name)) return;
+        if (!animationInfoMap.ContainsKey(name)) return;
         isPlaying = true;
         animator.CrossFade(name, 0.1f);
         var s = animator.GetCurrentAnimatorStateInfo(0);
-        animationDuration = animationDurationMap[name];
+        animationDuration = animationInfoMap[name].animationTime;
         lastAnimator = name;
+
+        if (name == "flex")
+            FaceManager.instance.ChangeFace(animationInfoMap[name].faceName);
     }
 
     public void ChangeAnimatorState(string name)
@@ -108,9 +111,15 @@ public class AnimationComponent : ComponentBase
         animator.SetInteger(lastAnimatorState, 0);
         animator.SetInteger(name, 1);
         if (name == "jump")
+        {
             animator.Play("jump2");
+
+        }
         if (name == "walk" /*&& lastAnimatorState != "jump"*/)
+        {
             animator.CrossFade("walk", 0.15f);
+            FaceManager.instance.ChangeFace("Normal");
+        }
 
         lastAnimatorState = name;
     }
@@ -122,7 +131,10 @@ public class AnimationComponent : ComponentBase
             if (nextRandomIdelTime - Time.realtimeSinceStartup < 2f)
                 nextRandomIdelTime += 2;
             if (currentState == AnimaState.Move)
+            {
                 animator.Play("Idle");
+                FaceManager.instance.ChangeFace("Normal");
+            }
 
         }
         currentState = state;
@@ -138,6 +150,8 @@ public class AnimationComponent : ComponentBase
             if (animationDuration < 0)
             {
                 animator.CrossFade("Idle", 0.125f);
+                FaceManager.instance.ChangeFace("Normal");
+
                 lastAnimator = "Idle";
                 isPlaying = false;
                 if (nextRandomIdelTime - curtime < 2f)

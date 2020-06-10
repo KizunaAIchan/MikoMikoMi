@@ -32,9 +32,23 @@ namespace Assets.Scripts
 
             Prefab.SetActive(false);
         }
+        private int lastupdatecnt = 0;
+        private float lastupdatetime = 0;
 
         public void Update()
         {
+
+            if (lastupdatecnt != GetLastUpdateTime())
+            {
+                lastupdatecnt = GetLastUpdateTime();
+                lastupdatetime = Time.realtimeSinceStartup;
+            }
+
+            if (lastupdatecnt == GetLastUpdateTime() && Time.realtimeSinceStartup - lastupdatetime > 10){
+                Debug.Log(12333);
+                RestartListen();
+                return;
+            }
             var spectrumData = GetSpectrumData();
 
             for (var i = 0; i < SpectrumSize; i++)

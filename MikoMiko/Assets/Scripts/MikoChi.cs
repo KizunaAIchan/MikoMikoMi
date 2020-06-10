@@ -41,6 +41,7 @@ public class MikoChi : MonoBehaviour
         public string animationName;
         public float animationTime;
         public int requireLoveLv;
+        public string faceName;
     }
     public List<AnimationTime> animationTimeList;
 
@@ -143,6 +144,7 @@ public class MikoChi : MonoBehaviour
     public void PlayAnimator(string name = "Jump", bool loop = false)
     {
         animationComponent.PlayAnimator(name, false);
+
         //FaceChange(8);
     }
     //public void ChangeAnimatorState(string key, bool value){
@@ -239,8 +241,20 @@ public class MikoChi : MonoBehaviour
         return animationTimeList;
     }
 
+    public List<AnimationTime> cacheAnimaList = new List<AnimationTime>();
+    public List<AnimationTime> GetAnimatorListByLv()
+    {
+        int lovelv = ResourcesManager.instance.GetLoveLV();
+        cacheAnimaList.Clear();
+        for (int i =0; i< animationTimeList.Count; ++i)
+        {
+            if (lovelv >= animationTimeList[i].requireLoveLv)
+                cacheAnimaList.Add(animationTimeList[i]);
+        }
+        return animationTimeList;
+    }
 
-    public void RandomChatBubble()
+    public void RandomChatBubble()    
     {
         if (GameEngine.instance.showChatBubble)
         {
